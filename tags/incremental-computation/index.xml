@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>incremental computation on Rado&#39;s Blog</title>
+    <title>incremental computation on Subtly Different Semantics</title>
     <link>https://rkirov.github.io/tags/incremental-computation/</link>
-    <description>Recent content in incremental computation on Rado&#39;s Blog</description>
+    <description>Recent content in incremental computation on Subtly Different Semantics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 26 Apr 2020 00:00:00 -0700</lastBuildDate>
