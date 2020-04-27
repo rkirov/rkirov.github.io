@@ -1,26 +1,24 @@
-
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
- <channel>
-   <title>Rado&#39;s Blog</title>
-   <link>http://rkirov.github.io/</link>
-   <description>Recent content on Rado&#39;s Blog</description>
-   <generator>Hugo -- gohugo.io</generator>
-   <language>en-us</language>
-   <lastBuildDate>Sat, 25 Apr 2020 20:47:02 -0700</lastBuildDate>
-   
-       <atom:link href="http://rkirov.github.io/index.xml" rel="self" type="application/rss+xml" />
-   
-   
-     <item>
-       <title>Hello</title>
-       <link>http://rkirov.github.io/posts/hello/</link>
-       <pubDate>Sat, 25 Apr 2020 20:47:02 -0700</pubDate>
-       
-       <guid>http://rkirov.github.io/posts/hello/</guid>
-       <description>&lt;h1 id=&#34;first-post&#34;&gt;First Post&lt;/h1&gt;
-&lt;p&gt;This is this first post. Just kicking the tires.&lt;/p&gt;
-</description>
-     </item>
-   
- </channel>
+  <channel>
+    <title>Rado&#39;s Blog</title>
+    <link>http://rkirov.github.io/</link>
+    <description>Recent content on Rado&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 25 Apr 2020 20:47:02 -0700</lastBuildDate>
+    
+	<atom:link href="http://rkirov.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hello</title>
+      <link>http://rkirov.github.io/posts/hello/</link>
+      <pubDate>Sat, 25 Apr 2020 20:47:02 -0700</pubDate>
+      
+      <guid>http://rkirov.github.io/posts/hello/</guid>
+      <description>First Post This is this first post. Just kicking the tires.</description>
+    </item>
+    
+  </channel>
 </rss>
