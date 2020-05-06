@@ -265,10 +265,10 @@ input computation chain can be skipped to its end upon the first repeated
 output.</p>
 <p>To make the example above fully incremental requires adding <code>lastX</code> and <code>lastY</code>
 and the following checks (at the right places):</p>
-<pre><code>if (x === lastX &amp;&amp; y === lastY) return lastOp4;  // memoization condition
-...
-if (op1 === lastOp1 &amp;&amp; y === lastY) return lastOp4;
-</code></pre><p>Notice how much has our simple one-line function <code>d</code> has grown in size to
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">x</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">lastX</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">lastY</span>) <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">lastOp4</span>;  <span style="color:#75715e">// memoization condition
+</span><span style="color:#75715e"></span>...
+<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">op1</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">lastOp1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">lastY</span>) <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">lastOp4</span>;
+</code></pre></div><p>Notice how much has our simple one-line function <code>d</code> has grown in size to
 achieve incrementality. Also unlike memoization it is not clear how precisely
 to mechanically add the if-else checks.</p>
 <p>Next we will try to change the shape of the code. As it turns out the direct
@@ -425,18 +425,18 @@ vs pull is where in the type signature does the core computation type <code>T</c
 <p>Another terminology used is reactive vs interactive, but there is something called
 &lsquo;push-based reactivity&rsquo; so I am going to steer clear of these to avoid confusion.</p>
 <p>In our original example, a push-based version will look something like this:</p>
-<pre><code>// description
-const x = new Input((o) =&gt; op1.set(o));
-const y = new Input((o) =&gt; op2.set(o));
-const op1 = new SingleInputCmp(square, (o) =&gt; op3.set1(o));
-const op2 = new SingleInputCmp(square, (o) =&gt; op3.set2(o));
-const op3 = new DoubleInputCmp(add, (o) =&gt; op4.set(o));
-const op4 = new SingleInputCmp(Math.sqrt, (o) =&gt; console.log(`new output ${o}`));
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#75715e">// description
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Input</span>((<span style="color:#a6e22e">o</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">op1</span>.<span style="color:#a6e22e">set</span>(<span style="color:#a6e22e">o</span>));
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Input</span>((<span style="color:#a6e22e">o</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">op2</span>.<span style="color:#a6e22e">set</span>(<span style="color:#a6e22e">o</span>));
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SingleInputCmp</span>(<span style="color:#a6e22e">square</span>, (<span style="color:#a6e22e">o</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">op3</span>.<span style="color:#a6e22e">set1</span>(<span style="color:#a6e22e">o</span>));
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SingleInputCmp</span>(<span style="color:#a6e22e">square</span>, (<span style="color:#a6e22e">o</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">op3</span>.<span style="color:#a6e22e">set2</span>(<span style="color:#a6e22e">o</span>));
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">DoubleInputCmp</span>(<span style="color:#a6e22e">add</span>, (<span style="color:#a6e22e">o</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">op4</span>.<span style="color:#a6e22e">set</span>(<span style="color:#a6e22e">o</span>));
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op4</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SingleInputCmp</span>(Math.<span style="color:#a6e22e">sqrt</span>, (<span style="color:#a6e22e">o</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`new output </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">o</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>));
 
-// computation
-x.set(1);
-y.set(1);
-</code></pre><p>Notice the key difference is that each object is created with a callback that tells it
+<span style="color:#75715e">// computation
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">set</span>(<span style="color:#ae81ff">1</span>);
+<span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">set</span>(<span style="color:#ae81ff">1</span>);
+</code></pre></div><p>Notice the key difference is that each object is created with a callback that tells it
 whom to notify upon a change in output. Also the direction of the computation is direct
 as it progresses from inputs towards outputs.</p>
 <p>Writing the underlying classes is relatively straight forward:</p>
@@ -475,52 +475,52 @@ as the two input updates can arrive at different times.</p>
 }
 </code></pre></div><p>But once we started adding tracking of state inside the computation nodes, we are
 basically one step away from incrementality. It will look something like this:</p>
-<pre><code>class Input {
-  lastValue?: number;
-  constructor(private readonly update: (x: number) =&gt; void) {}
-  set(x: number) {
-      if (x !== this.lastValue) {
-        this.update(x);
-        this.lastValue = x;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Input</span> {
+  <span style="color:#a6e22e">lastValue?</span>: <span style="color:#66d9ef">number</span>;
+  <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">void</span>) {}
+  <span style="color:#a6e22e">set</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) {
+      <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">x</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastValue</span>) {
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">update</span>(<span style="color:#a6e22e">x</span>);
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastValue</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span>;
       }
   }
 }
 
-class SingleInputCmp {
-  lastValue?: number;
-  constructor(private readonly cmp: (x: number) =&gt; number,
-              private readonly update: (x: number) =&gt; void) {}
-  set(x: number) {
-      if (x !== this.lastValue) {
-        const newVal = this.cmp(x);
-        this.update(newVal);
-        this.lastValue = newVal;
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SingleInputCmp</span> {
+  <span style="color:#a6e22e">lastValue?</span>: <span style="color:#66d9ef">number</span>;
+  <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">cmp</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">number</span>,
+              <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">void</span>) {}
+  <span style="color:#a6e22e">set</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) {
+      <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">x</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastValue</span>) {
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">newVal</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cmp</span>(<span style="color:#a6e22e">x</span>);
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">update</span>(<span style="color:#a6e22e">newVal</span>);
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastValue</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">newVal</span>;
       }
   }
 }
 
-class DoubleInputCmp {
-  lastValue1?: number;
-  lastValue2?: number;
-  constructor(private readonly cmp: (x: number, y: number) =&gt; number,
-              private readonly update: (x: number) =&gt; void) {}
-  set1(x: number) {
-      if (x !== this.lastValue1 &amp;&amp; this.lastValue2 !== undefined) {
-        const newVal = this.cmp(x, this.lastValue2);
-        this.update(newVal);
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DoubleInputCmp</span> {
+  <span style="color:#a6e22e">lastValue1?</span>: <span style="color:#66d9ef">number</span>;
+  <span style="color:#a6e22e">lastValue2?</span>: <span style="color:#66d9ef">number</span>;
+  <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">cmp</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">number</span>,
+              <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">void</span>) {}
+  <span style="color:#a6e22e">set1</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) {
+      <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">x</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastValue1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastValue2</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">undefined</span>) {
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">newVal</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cmp</span>(<span style="color:#a6e22e">x</span>, <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastValue2</span>);
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">update</span>(<span style="color:#a6e22e">newVal</span>);
       }
-      this.lastValue1 = x;
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastValue1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span>;
   }
 
-  set2(y: number) {
-      if (y !== this.lastValue2 &amp;&amp; this.lastValue1 !== undefined) {
-        const newVal = this.cmp(this.lastValue1, y);
-        this.update(newVal);
+  <span style="color:#a6e22e">set2</span>(<span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
+      <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">y</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastValue2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastValue1</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">undefined</span>) {
+        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">newVal</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cmp</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastValue1</span>, <span style="color:#a6e22e">y</span>);
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">update</span>(<span style="color:#a6e22e">newVal</span>);
       }
-      this.lastValue2 = y;
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastValue2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>;
   }
 }
-</code></pre><p>Now a recomputation will look like:</p>
+</code></pre></div><p>Now a recomputation will look like:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">set</span>(<span style="color:#ae81ff">3</span>); 
 <span style="color:#75715e">// 3.1622776601683795 logged
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">set</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
