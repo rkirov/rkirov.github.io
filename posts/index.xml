@@ -6,7 +6,7 @@
     <description>Recent content in Posts on Subtly Different Semantics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 26 Apr 2020 00:00:00 -0700</lastBuildDate>
+    <lastBuildDate>Sun, 03 May 2020 00:00:00 -0700</lastBuildDate>
     
 	<atom:link href="https://rkirov.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Incremental Computation (Draft of part 1)</title>
       <link>https://rkirov.github.io/posts/incremental_computation/</link>
-      <pubDate>Sun, 26 Apr 2020 00:00:00 -0700</pubDate>
+      <pubDate>Sun, 03 May 2020 00:00:00 -0700</pubDate>
       
       <guid>https://rkirov.github.io/posts/incremental_computation/</guid>
       <description>Incremental computation is a way of performing computations, with the expectation of future changes in inputs. When those changes occur the new output can be obtained efficiently, at minimum avoiding redoing the whole computation.

@@ -25,8 +25,8 @@ Many programming environments deal with this problem - UI programming, dataflow,
 Many programming environments deal with this problem - UI programming, dataflow, build systems, etc. Despite its prevalence, I find it is rarely viewer as a unified computational paradigm, as opposed to ad-hoc application of caching. In comparison, other computational paradigms like concurrent or distributed computating have better established nomenclature and techniques." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://rkirov.github.io/posts/incremental_computation/" />
-<meta property="article:published_time" content="2020-04-26T00:00:00-07:00" />
-<meta property="article:modified_time" content="2020-04-26T00:00:00-07:00" />
+<meta property="article:published_time" content="2020-05-03T00:00:00-07:00" />
+<meta property="article:modified_time" content="2020-05-03T00:00:00-07:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Incremental Computation (Draft of part 1)"/>
@@ -79,10 +79,10 @@ Many programming environments deal with this problem - UI programming, dataflow,
     </h4>
     <div id="post-meta">
         <span>
-    <time datetime="2020-04-26 00:00:00 -0700 PDT">2020-04-26</time> |
+    <time datetime="2020-05-03 00:00:00 -0700 PDT">2020-05-03</time> |
 </span>
 <span>
-    <span>2262 words</span> |
+    <span>3067 words</span> |
 </span>
 <span>
     
@@ -131,7 +131,7 @@ do not fully match the old ones, so a simple caching will not work as writen.</p
 <p>However, instead of giving up on caching, I can break down the computation
 down to the basic operations: addition, multiplication and square root.</p>
 <p>There are four core operations performed - two multiplications, one addition
-and one <code>Math.sqrt</code>. I call the basic building blocks of an computation -
+and one <code>Math.sqrt</code>. I call the basic building blocks of a computation -
 operations, but note that this is not standard. To spell it out using temporary
 variables:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span>;
@@ -142,20 +142,22 @@ variables:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span>;
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">3</span>;
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">op2</span>;
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op4</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">sqrt</span>(<span style="color:#a6e22e">op3</span>);
+<span style="color:#a6e22e">c</span> <span style="color:#a6e22e">onst</span> <span style="color:#a6e22e">op4</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">sqrt</span>(<span style="color:#a6e22e">op3</span>);
 </code></pre></div><p>For this toy example, the best incremental computation will reuse or skip <code>1 * 1</code> and then redo the other three operations with the new inputs.</p>
 <p>This can be easily expressed in an abstract directed graph form. The original
 computation is:</p>
 <p><img src="/incr1.png" alt="Computation graph"></p>
-<p>Each node represents a variable and all incoming edges together represent
-the inputs to the function that computes the variable.</p>
+<p>Each node represents a variable along with the computation needed to obtain in
+and all incoming edges together represent the inputs to the function that
+computes the variable.</p>
 <p>The recomputation for <code>d(1, 3)</code> after <code>d(1, 1)</code> will ideally only go through
 the path in red.</p>
 <p><img src="/incr3.png" alt="Recomputation graph 1"></p>
 <p>Meanwhile, the recomputation for <code>d(-1, -1)</code> after <code>d(1, 1)</code> will go start with
 two red paths, but end in the middle (since the output does not change).</p>
 <p><img src="/incr4.png" alt="Recomputation graph 2"></p>
-<p>The basic algorithm over the abstract computation graph is:</p>
+<p>The basic algorithm of incremental computation over the abstract computation
+graph is:</p>
 <p><strong>Basic Algorithm of Incremental Computation</strong></p>
 <ol>
 <li>when at least one of the inputs of an operation has changed, redo the
@@ -181,8 +183,8 @@ computation graph will be:</p>
 <li>who does the recomputation</li>
 <li>can it be parallelized across different processes</li>
 </ul>
-<h2 id="incremental-computation-is-not-just-memoization">Incremental Computation is not &ldquo;just&rdquo; Memoization</h2>
-<p>At this simple form incremental computation seems to be simply solved by
+<h2 id="memoization">Memoization</h2>
+<p>At this simple form incremental computation seems to be connected by
 function memoization. Memoization is comparing the inputs of a function against
 a cache of (inputs,output) pairs. If seen, the function body is skipped and
 output used, otherwise the function body executes and the output is stored in
@@ -192,8 +194,9 @@ single past result, which would make it most fitting to use memoization with
 a cache size of one. I view basic caching considerations - like size of cache,
 least-frequently-used vs other strategies, orthogonal to the core problems
 of incremental computation.</p>
-<p>As previously discussed, we have to first rewrite the function to separate
-the basic operations.</p>
+<p>As previously discussed, we have to first rewrite the function to separate the
+basic operations. This is known as <a href="https://en.wikipedia.org/wiki/A-normal_form" target="_blank">A-normal
+form</a> in the compiler literature.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">d</span>(<span style="color:#a6e22e">x</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>, <span style="color:#a6e22e">y</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>) {
   <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span>;
   <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>;
@@ -217,10 +220,11 @@ the basic operations.</p>
 </code></pre></div><p>However, notice that while each operation is memoized - the computation
 proceeds exactly the same way as before through the</p>
 <p><img src="/incr5.png" alt="Computation Graph"></p>
-<p>We made the cost of each operation (think edge in the graph) as small as
-possible during the evaluation, but the flow is the same.</p>
-<p>We can produce the even more incremental which truly follows a different
-computation path program by adding some &lsquo;check-if-changed-and-skip&rsquo; calls:</p>
+<p>We made the cost of each operation as small as possible during the evaluation,
+but the flow is always the same.</p>
+<h2 id="beyond-memoization">Beyond memoization</h2>
+<p>Let&rsquo;s try to change the computation graph flow during recomputation. We can
+start by manually adding some &lsquo;skip to the end&rsquo; calls:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">lastOp1</span>: <span style="color:#66d9ef">null</span><span style="color:#f92672">|</span><span style="color:#66d9ef">number</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
 <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">lastOp2</span>: <span style="color:#66d9ef">null</span><span style="color:#f92672">|</span><span style="color:#66d9ef">number</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
 <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">lastOp3</span>: <span style="color:#66d9ef">null</span><span style="color:#f92672">|</span><span style="color:#66d9ef">number</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
@@ -248,52 +252,132 @@ computation path program by adding some &lsquo;check-if-changed-and-skip&rsquo; 
 </code></pre></div><p>Notice that the structure of the checks matches the abstract computation graph.
 We can&rsquo;t skip to the end if <code>op1</code> hasn&rsquo;t changed, because potentially <code>op2</code> can
 be different.</p>
-<p>This allows us to achieve the incremental flow depicted here for recomputing
-<code>d(-1,-1)</code> after <code>d(1, 1)</code></p>
+<p>This implementation allows us to achieve the incremental flow depicted here for
+recomputing <code>d(-1,-1)</code> after <code>d(1, 1)</code></p>
 <p><img src="/incr4.png" alt="Recomputation graph 2"></p>
-<p>Hopefully, at this point you are convinced that incremental computation problem
-is not &lsquo;just&rsquo; memoization as we had to add if-else statements too. Next I will
-show that the program above can be made to look like just memoization, but will
-require a bigger program transformation.</p>
-<h2 id="incremental-computation-is-just-memoization">Incremental Computation is &ldquo;just&rdquo; Memoization</h2>
-<p>We need to start with a bit of insight from the lambda calculus. Each variable
-assignment <code>let x = &lt;init&gt;; &lt;rest&gt;</code> can be seen as <code>((x) =&gt; &lt;rest&gt;)(&lt;init&gt;)</code>,
-giving us an opportunity to insert a memoization boundary on some new
-functions that were not previously there.</p>
-<p>It will takes a few attempts to get to the correct form. Let&rsquo;s start naively
-replacing assignments with functions.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">wrongD</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
+<p>But will not as writen help with recomputing <code>d(1, 3)</code> after <code>d(1, 1)</code>.</p>
+<p><img src="/incr3.png" alt="Recomputation graph 1"></p>
+<p>We should begin to see how to achieve &ldquo;full incrementality&rdquo; in the computation
+graph model. At each node if all inputs are unchanged we can skip until the
+next multi-input node or end of the computation if there are none. This is
+simply a restatement of the basic algorithm using the observation that a single
+input computation chain can be skipped to its end upon the first repeated
+output.</p>
+<p>To make the example above fully incremental requires adding <code>lastX</code> and <code>lastY</code>
+and the following checks (at the right places):</p>
+<pre><code>if (x === lastX &amp;&amp; y === lastY) return lastOp4;  // memoization condition
+...
+if (op1 === lastOp1 &amp;&amp; y === lastY) return lastOp4;
+</code></pre><p>Notice how much has our simple one-line function <code>d</code> has grown in size to
+achieve incrementality. Also unlike memoization it is not clear how precisely
+to mechanically add the if-else checks.</p>
+<p>Next we will try to change the shape of the code. As it turns out the direct
+style of computation only one amongst many different ways for computation to
+look like. For each of those we will add incrementality. The hope is that the
+reshaping makes it easier to add incrementality.</p>
+<h2 id="direct-versus-reversed-computation">Direct versus Reversed Computation</h2>
+<p>The program we have had so far was written in direct style. Each operation is
+done in order <code>op1</code>,<code>op2</code>,<code>op3</code>,<code>op4</code> and each reads the variables it needs.</p>
+<p>We can reverse the computation flow by imagining starting with <code>op4</code>, which
+in turn would need to compute <code>op3</code> which will need <code>op1</code> and <code>op2</code>. At the
+end we have <code>x</code> and <code>y</code> which are inputs to the computation.</p>
+<p>Giving simple wrapper classes around these concepts - <code>Input</code>, <code>SingleInputCmp</code>
+and <code>DoubleInputCmp</code>, the computation can look something like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#75715e">// computation description
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Input</span>(<span style="color:#ae81ff">1</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Input</span>(<span style="color:#ae81ff">1</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SingleInputCmp</span>(<span style="color:#a6e22e">square</span>, <span style="color:#a6e22e">x</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SingleInputCmp</span>(<span style="color:#a6e22e">square</span>, <span style="color:#a6e22e">y</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">DoubleInputCmp</span>(<span style="color:#a6e22e">add</span>, <span style="color:#a6e22e">op1</span>, <span style="color:#a6e22e">op2</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op4</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SingleInputCmp</span>(Math.<span style="color:#a6e22e">sqrt</span>, <span style="color:#a6e22e">op3</span>);
+
+<span style="color:#75715e">// computation
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">op4</span>.<span style="color:#a6e22e">get</span>();
+</code></pre></div><p>The arguments to each <code>*Cmp</code> class are a pure function to do the operation
+(like <code>square</code> or <code>add</code>) and one or two inputs depending on what is needed for
+the operation. The interesting part is that now the computation is described in
+code first and only afterwards &ldquo;executed&rdquo; in a reversed &ldquo;output-to-input&rdquo;
+fashion.</p>
+<p>The rest of the code can be simply implemented like (apologies for folks
+that prefer not to use classes in TypeScript):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Var</span> {
+  <span style="color:#a6e22e">get</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">number</span>;
+}
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Input</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">Var</span> {
+  <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">val</span>: <span style="color:#66d9ef">number</span>) {}
+  <span style="color:#a6e22e">set</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) {
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">val</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span>;
+  }
+  <span style="color:#a6e22e">get</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">number</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">val</span>;
+  }
+}
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SingleInputCmp</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">Var</span> {
+  <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">cmp</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">number</span>,
+              <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">input</span>: <span style="color:#66d9ef">Var</span>) {}
+  <span style="color:#a6e22e">get</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">number</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cmp</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">input</span>.<span style="color:#a6e22e">get</span>());
+  }
+}
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DoubleInputCmp</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">Var</span> {
+  <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">cmp</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">number</span>,
+              <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">input1</span>: <span style="color:#66d9ef">Var</span>,
+              <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">input2</span>: <span style="color:#66d9ef">Var</span>) {}
+  <span style="color:#a6e22e">get</span>()<span style="color:#f92672">:</span> <span style="color:#66d9ef">number</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cmp</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">input1</span>.<span style="color:#a6e22e">get</span>(), <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">input2</span>.<span style="color:#a6e22e">get</span>());
+  }
+}
+</code></pre></div><p>To make matters worse, turning the computation of this shape into incremental
+is even more involved. If we notice that <code>op1</code> and <code>op2</code> are the same and want
+to jump to the old output that would require skipping over <code>op3</code> which was on the
+function call stack. We have to keep a custom stack in order to achieve this, so
+I will leave this as an exercise to the reader. Add gist to my solution here.</p>
+<p>Next we will look at another transformation of the computation model -
+continuation passing style.</p>
+<h2 id="incremental-computation-and-continuation-passing-style">Incremental Computation and Continuation Passing Style</h2>
+<p>A classic style of rewriting computations is the (continuation passing
+style)[https://en.wikipedia.org/wiki/Continuation-passing_style].</p>
+<p>If you have never seen it before, it can be easily explained with a bit of
+insight from the lambda calculus on top of our previous rewriting into basic
+operations. Each variable assignment <code>let x = &lt;init&gt;; &lt;rest&gt;</code> can be writen as
+<code>((x) =&gt; &lt;rest&gt;)(&lt;init&gt;)</code>. The <code>(x) =&gt; &lt;rest&gt;</code> function is called <strong>the
+continuation</strong>.</p>
+<p>We will do this transformation step-by-step:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">cspD</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
   <span style="color:#66d9ef">return</span> ((<span style="color:#a6e22e">op1</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> 
     ...
-  )(<span style="color:#a6e22e">memoSquare</span>(<span style="color:#a6e22e">x</span>));
+  )(<span style="color:#a6e22e">square</span>(<span style="color:#a6e22e">x</span>));
 }
 </code></pre></div><p>then add <code>op2</code>,</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">wrongD</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">cspD</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
   <span style="color:#66d9ef">return</span> ((<span style="color:#a6e22e">op1</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> 
     ((<span style="color:#a6e22e">op2</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span>
       ...
-    )(<span style="color:#a6e22e">memoSquare</span>(<span style="color:#a6e22e">y</span>))
-  )(<span style="color:#a6e22e">memoSquare</span>(<span style="color:#a6e22e">x</span>));
+    )(<span style="color:#a6e22e">square</span>(<span style="color:#a6e22e">y</span>))
+  )(<span style="color:#a6e22e">square</span>(<span style="color:#a6e22e">x</span>));
 }
 </code></pre></div><p>and eventually get to</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">wrongD</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">cspD</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
   <span style="color:#66d9ef">return</span> ((<span style="color:#a6e22e">op1</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> 
     ((<span style="color:#a6e22e">op2</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span>
       ((<span style="color:#a6e22e">op3</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span>
         ((<span style="color:#a6e22e">op4</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span>
           <span style="color:#a6e22e">op4</span> 
-        )(<span style="color:#a6e22e">memoSqrt</span>(<span style="color:#a6e22e">op3</span>))
-      )(<span style="color:#a6e22e">memoAdd</span>(<span style="color:#a6e22e">op1</span>, <span style="color:#a6e22e">op2</span>))
-    )(<span style="color:#a6e22e">memoSquare</span>(<span style="color:#a6e22e">y</span>))
-  )(<span style="color:#a6e22e">memoSquare</span>(<span style="color:#a6e22e">x</span>))
+        )(Math.<span style="color:#a6e22e">sqrt</span>(<span style="color:#a6e22e">op3</span>))
+      )(<span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">op1</span>, <span style="color:#a6e22e">op2</span>))
+    )(<span style="color:#a6e22e">square</span>(<span style="color:#a6e22e">y</span>))
+  )(<span style="color:#a6e22e">square</span>(<span style="color:#a6e22e">x</span>))
 }
-</code></pre></div><p>Now imagine that all four inner functions are also memoized. While
-it will give us the correct recomputation of <code>d(-1,-1)</code> after <code>d(1,1)</code>
-it will be wrong for <code>d(1, 3)</code> after <code>d(1, 1)</code>. This is because
-as soon as <code>op1</code> is the same as before we will skip to the end, ignoring
-any change to <code>op2</code>.</p>
-<p>The correct rewriting for memoization is below, reflecting the fact that
-<code>op3</code> has two inputs over which we have to memoize together.</p>
+</code></pre></div><p>Now let&rsquo;s try to add incrementality. Given than we see a four new functions
+imagine memoizing them.</p>
+<p>While it will give us the correct recomputation of <code>d(-1,-1)</code> after <code>d(1,1)</code> it
+will be wrong for <code>d(1, 3)</code> after <code>d(1, 1)</code>. This is because as soon as <code>op1</code>
+is the same as before we will skip to the end, ignoring any change to <code>op2</code>.</p>
+<p>The correct rewriting for memoization requires to perserve the fact <code>op3</code> has
+two inputs over which we have to memoize together. This looks like:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">insideOutD</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
   <span style="color:#66d9ef">return</span> ((<span style="color:#a6e22e">op1</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">op2</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> 
     ((<span style="color:#a6e22e">op3</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span>
@@ -319,106 +403,142 @@ manually inserting if-else statements.</p>
 <p>Also having so many memoization calls is certainly an overkill in any practical
 problem &ndash; we are memoizing an identity function at some point, which would be
 faster to run &ndash; but the point of pushing a simple example to the extreme is to
-see all the opportunities for incrementality. In practice, the incrementality
-solution is often manually, inserted into an non-incremental program. Exploring
-maximal incrementality over tiny program, shows all the techniques and ways in
-which incrementality can be inserted.</p>
-<p>Also, notice that we still do not have incrementality for this flow:</p>
+see all the opportunities for incrementality.</p>
+<p>However, notice that we still do not have incrementality for this flow:</p>
 <p><img src="/incr3.png" alt="Recomputation graph 1"></p>
 <p>While we can &ldquo;skip to the end&rdquo; of the computation, we cannot skip over the
 purely <code>x</code> part of the computation graph, if we know <code>x</code> hasn&rsquo;t changed.</p>
 <p>While it is likely achievable with more fancy program rewriting, we will get
-there  by using a different technique - push-based incremental computation.</p>
+there by using a different technique - push-based incremental computation.</p>
 <h2 id="push-vs-pull-in-incremental-computation">Push vs Pull in Incremental Computation</h2>
-<p>The memoization solution above has a nice similarity with the original
-computation, it followed roughly same path as the original computation.</p>
-<p>While very natural, there is an alternative approach. The new updates can themselves
-trigger a recomputation. This is known as <em>push-based</em> computation, because the
-new values of inputs, push themselves into the computaiton.</p>
-<p>The classical approach is knowns as <em>pull-based</em>, as to recompute <code>d(1,3)</code> we
-have to pull the new inputs <code>1</code> and <code>3</code>. Similarly, <code>op3 = add(op1, op2)</code> is
-seen as pulling <code>op1</code> and <code>op2</code> to compute <code>op3</code>.</p>
+<p>In the computations we have seen so far the numbers were either directly read
+through variables <code>x</code>, <code>op1</code>, or we used a <code>.get(): number</code> method. These
+are examples of <strong>pull</strong>-based computation, because the code that needs to do
+something with the numbers pulls them.</p>
+<p>There is a dual approach known as <em>push-based</em> computation, because the new
+values of inputs, push themselves into the computation. A telltale sign of push
+vs pull is where in the type signature does the core computation type <code>T</code> appear:</p>
+<ul>
+<li>pull - the methods look like <code>(...): T</code>.</li>
+<li>push - the methods looks like <code>((x: T) =&gt; ...): ...</code>.</li>
+</ul>
 <p>Another terminology used is reactive vs interactive, but there is something called
 &lsquo;push-based reactivity&rsquo; so I am going to steer clear of these to avoid confusion.</p>
-<p>To summarize:</p>
-<ul>
-<li>classic computation (pull) - computation <em>pulls</em> the updated inputs to
-produce the desired outputs.</li>
-<li>push-based incremental computation - the updated inputs <em>push</em> themselves
-into the computation to produce the desired outputs.</li>
-</ul>
 <p>In our original example, a push-based version will look something like this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> {
+<pre><code>// description
+const x = new Input((o) =&gt; op1.set(o));
+const y = new Input((o) =&gt; op2.set(o));
+const op1 = new SingleInputCmp(square, (o) =&gt; op3.set1(o));
+const op2 = new SingleInputCmp(square, (o) =&gt; op3.set2(o));
+const op3 = new DoubleInputCmp(add, (o) =&gt; op4.set(o));
+const op4 = new SingleInputCmp(Math.sqrt, (o) =&gt; console.log(`new output ${o}`));
+
+// computation
+x.set(1);
+y.set(1);
+</code></pre><p>Notice the key difference is that each object is created with a callback that tells it
+whom to notify upon a change in output. Also the direction of the computation is direct
+as it progresses from inputs towards outputs.</p>
+<p>Writing the underlying classes is relatively straight forward:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Input</span> {
+  <span style="color:#66d9ef">constructor</span>(<span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">set</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">void</span>) {}
+}
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SingleInputCmp</span> {
+  <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">cmp</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">number</span>,
+              <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">void</span>) {}
   <span style="color:#a6e22e">set</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) {
-    <span style="color:#a6e22e">op1</span>.<span style="color:#a6e22e">update</span>(<span style="color:#a6e22e">x</span>);
+     <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">update</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cmp</span>(<span style="color:#a6e22e">x</span>));
   }
-};
+}
+</code></pre></div><p>until we get to the <code>DoubleInputCmp</code> which is required to store some state
+as the two input updates can arrive at different times.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DoubleInputCmp</span> {
+  <span style="color:#a6e22e">lastArg1?</span>: <span style="color:#66d9ef">number</span>;
+  <span style="color:#a6e22e">lastArg2?</span>: <span style="color:#66d9ef">number</span>;
 
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">set</span>(<span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
-    <span style="color:#a6e22e">op2</span>.<span style="color:#a6e22e">update</span>(<span style="color:#a6e22e">y</span>);
+  <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">cmp</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">number</span>,
+              <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">void</span>) {}
+  <span style="color:#a6e22e">set1</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) {
+      <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastArg2</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">update</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cmp</span>(<span style="color:#a6e22e">x</span>, <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastArg2</span>));
+      }
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastArg1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span>;
   }
-};
 
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">last</span>: <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">number</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>,
-  <span style="color:#a6e22e">update</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) {
-    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">x</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">last</span>) {
-      <span style="color:#a6e22e">op3</span>.<span style="color:#a6e22e">updateArg1</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span>);
-    }
+  <span style="color:#a6e22e">set2</span>(<span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
+      <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastArg1</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">update</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cmp</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastArg1</span>, <span style="color:#a6e22e">y</span>)); 
+      }
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">lastArg2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>;
+  }
+}
+</code></pre></div><p>But once we started adding tracking of state inside the computation nodes, we are
+basically one step away from incrementality. It will look something like this:</p>
+<pre><code>class Input {
+  lastValue?: number;
+  constructor(private readonly update: (x: number) =&gt; void) {}
+  set(x: number) {
+      if (x !== this.lastValue) {
+        this.update(x);
+        this.lastValue = x;
+      }
   }
 }
 
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">last</span>: <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">number</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>,
-  <span style="color:#a6e22e">update</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) {
-    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">x</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">last</span>) {
-      <span style="color:#a6e22e">op3</span>.<span style="color:#a6e22e">updateArg2</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span>);
-    }
+class SingleInputCmp {
+  lastValue?: number;
+  constructor(private readonly cmp: (x: number) =&gt; number,
+              private readonly update: (x: number) =&gt; void) {}
+  set(x: number) {
+      if (x !== this.lastValue) {
+        const newVal = this.cmp(x);
+        this.update(newVal);
+        this.lastValue = newVal;
+      }
   }
 }
 
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">arg1</span>: <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">number</span><span style="color:#f92672">|</span><span style="color:#66d9ef">null</span>,
-  <span style="color:#a6e22e">arg2</span>: <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">number</span><span style="color:#f92672">|</span><span style="color:#66d9ef">null</span>,
+class DoubleInputCmp {
+  lastValue1?: number;
+  lastValue2?: number;
+  constructor(private readonly cmp: (x: number, y: number) =&gt; number,
+              private readonly update: (x: number) =&gt; void) {}
+  set1(x: number) {
+      if (x !== this.lastValue1 &amp;&amp; this.lastValue2 !== undefined) {
+        const newVal = this.cmp(x, this.lastValue2);
+        this.update(newVal);
+      }
+      this.lastValue1 = x;
+  }
 
-  <span style="color:#a6e22e">updateArg1</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) {
-    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">x</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">arg1</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">arg2</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) <span style="color:#a6e22e">op4</span>.<span style="color:#a6e22e">update</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">arg1</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">arg2</span>);
-    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">arg1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span>;
-  },
-
-  <span style="color:#a6e22e">updateArg2</span>(<span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
-    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">y</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">arg2</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">arg1</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) <span style="color:#a6e22e">op4</span>.<span style="color:#a6e22e">update</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">arg1</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">arg2</span>);
-    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">arg2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>;
-  },
-}
-
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op4</span> <span style="color:#f92672">=</span> {
-  <span style="color:#a6e22e">last</span>: <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">number</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>,
-  <span style="color:#a6e22e">update</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) {
-    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">x</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">last</span>) {
-      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">sqrt</span>(<span style="color:#a6e22e">x</span>);
-      <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;filal result:&#39;</span>, <span style="color:#a6e22e">result</span>);
-    }
+  set2(y: number) {
+      if (y !== this.lastValue2 &amp;&amp; this.lastValue1 !== undefined) {
+        const newVal = this.cmp(this.lastValue1, y);
+        this.update(newVal);
+      }
+      this.lastValue2 = y;
   }
 }
-
-<span style="color:#75715e">// computation
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">set</span>(<span style="color:#ae81ff">1</span>);
-<span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">set</span>(<span style="color:#ae81ff">1</span>);
-
-<span style="color:#75715e">// re-computation
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">set</span>(<span style="color:#ae81ff">2</span>);
-</code></pre></div><p>This solution lets us achieve the desired recomputation flow.</p>
-<p><img src="/incr3.png" alt="Recomputation graph 1"></p>
-<p>When is a push-based vs pull-based incremental solution better? To be honest I
-am not sure yet, would like to hear what do you think.</p>
+</code></pre><p>Now a recomputation will look like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">set</span>(<span style="color:#ae81ff">3</span>); 
+<span style="color:#75715e">// 3.1622776601683795 logged
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">set</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+<span style="color:#75715e">// 1.4142135623730951 logged
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">set</span>(<span style="color:#ae81ff">1</span>);
+<span style="color:#75715e">// nothing logged, no change.
+</span></code></pre></div><p>And by the magic of update callbacks and lastValue checks the computation does
+the minimum needed work. The downside of this approach is that batch updates,
+meaning change a number of inputs and then recompute are harder to implement.</p>
+<p>Push-based computations appears naturally easier for incrementality. If you are
+wondering if there is such thing as a reversed push-based computation, indeed
+I have an example of it here (add gist here).</p>
 <h2 id="connection-with-reactive--streaming-frameworks">Connection with Reactive / Streaming frameworks</h2>
 <p>If you are familiar with reactive primitives like - streams, observables, etc,
-you might have observed that the &lsquo;push-based&rsquo; solution, can be much simpler
-using them. For example, here is the same solution, using rxjs observables.
-To be fully equivalent it will need to add caching along each observable,
-so that it doesn&rsquo;t reemit when the new value equals the previous one.</p>
+you might have observed that the &lsquo;push-based&rsquo; solution, can be much simpler by
+using them. For example, here is the same computation, using rxjs observables.
+To be fully equivalent it will need to add caching along each observable, so
+that it doesn&rsquo;t reemit when the new value equals the previous one.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">of</span>, <span style="color:#a6e22e">combineLatest</span>, <span style="color:#a6e22e">Subject</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;rxjs&#39;</span>;
 <span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">map</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;rxjs/operators&#39;</span>;
 
@@ -493,8 +613,10 @@ monadic&rsquo; build systems.</p>
     <nav id="TableOfContents">
   <ul>
     <li><a href="#motivation">Motivation</a></li>
-    <li><a href="#incremental-computation-is-not-just-memoization">Incremental Computation is not &ldquo;just&rdquo; Memoization</a></li>
-    <li><a href="#incremental-computation-is-just-memoization">Incremental Computation is &ldquo;just&rdquo; Memoization</a></li>
+    <li><a href="#memoization">Memoization</a></li>
+    <li><a href="#beyond-memoization">Beyond memoization</a></li>
+    <li><a href="#direct-versus-reversed-computation">Direct versus Reversed Computation</a></li>
+    <li><a href="#incremental-computation-and-continuation-passing-style">Incremental Computation and Continuation Passing Style</a></li>
     <li><a href="#push-vs-pull-in-incremental-computation">Push vs Pull in Incremental Computation</a></li>
     <li><a href="#connection-with-reactive--streaming-frameworks">Connection with Reactive / Streaming frameworks</a></li>
     <li><a href="#incremental-computation-and-control-flow">Incremental computation and control flow</a></li>
