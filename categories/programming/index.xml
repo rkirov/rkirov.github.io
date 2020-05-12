@@ -6,10 +6,22 @@
     <description>Recent content in programming on Subtly Different Semantics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 May 2020 00:00:00 -0700</lastBuildDate>
+    <lastBuildDate>Sun, 10 May 2020 00:00:00 -0700</lastBuildDate>
     
 	<atom:link href="https://rkirov.github.io/categories/programming/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Incremental Computation (Draft of part 2)</title>
+      <link>https://rkirov.github.io/posts/incremental_computation_2/</link>
+      <pubDate>Sun, 10 May 2020 00:00:00 -0700</pubDate>
+      
+      <guid>https://rkirov.github.io/posts/incremental_computation_2/</guid>
+      <description>Incremental computation (part 2) We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
+We will slowly add more language primitives and see how to still have incrementality of the computation. First is conditional statements.
+Conditional statements Let&amp;rsquo;s add a single conditional statement first.
+function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } What does it mean to make cond incremental?</description>
+    </item>
     
     <item>
       <title>Incremental Computation (Draft of part 1)</title>

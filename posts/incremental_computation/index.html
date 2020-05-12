@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.69.2" />
+<meta name="generator" content="Hugo 0.70.0" />
 
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/poal-jsdelivr/amzrk2/favicons/favicon.ico" />
 
@@ -82,7 +82,7 @@ Many programming environments deal with this problem - UI programming, dataflow,
     <time datetime="2020-05-03 00:00:00 -0700 PDT">2020-05-03</time> |
 </span>
 <span>
-    <span>3067 words</span> |
+    <span>3295 words</span> |
 </span>
 <span>
     
@@ -167,9 +167,6 @@ operation to get new outputs.</li>
 <p>This algorithm has no name as it is so simple. The complexity comes in how to
 best build the computation graph, especially on top of general programming
 languages which have no incremental primitives.</p>
-<p>Also at this level you can already start to see the similarity with build
-systems like &lsquo;make&rsquo;. In a way build systems are the simplest instances of
-incremental computation.</p>
 <p>The key questions around incremental computation at the abstract level of the
 computation graph will be:</p>
 <ul>
@@ -530,9 +527,12 @@ basically one step away from incrementality. It will look something like this:</
 </span></code></pre></div><p>And by the magic of update callbacks and lastValue checks the computation does
 the minimum needed work. The downside of this approach is that batch updates,
 meaning change a number of inputs and then recompute are harder to implement.</p>
-<p>Push-based computations appears naturally easier for incrementality. If you are
-wondering if there is such thing as a reversed push-based computation, indeed
-I have an example of it here (add gist here).</p>
+<p>Push-based computations appears naturally easier for incrementality. The same
+observation was made by Yaron Minksy in his excellent blog on the Incremental
+library in OCaml
+<a href="https://blog.janestreet.com/introducing-incremental/" target="_blank">https://blog.janestreet.com/introducing-incremental/.</a></p>
+<p>If you are wondering if there is such thing as a reversed push-based
+computation, indeed I have an example of it here (add gist here).</p>
 <h2 id="connection-with-reactive--streaming-frameworks">Connection with Reactive / Streaming frameworks</h2>
 <p>If you are familiar with reactive primitives like - streams, observables, etc,
 you might have observed that the &lsquo;push-based&rsquo; solution, can be much simpler by
@@ -544,14 +544,6 @@ that it doesn&rsquo;t reemit when the new value equals the previous one.</p>
 
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">number</span><span style="color:#f92672">&gt;</span>();
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">number</span><span style="color:#f92672">&gt;</span>();
-
-<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">square</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>) {
-  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span>;
-}
-
-<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
-  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>;
-}
 
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>));
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>));
@@ -569,28 +561,66 @@ that it doesn&rsquo;t reemit when the new value equals the previous one.</p>
 
 <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;re-computation of with new x&#39;</span>);
 <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">next</span>(<span style="color:#ae81ff">3</span>);
-</code></pre></div><p>The next challenge is to extend the toy computation model to a full blown
-language that includes control flow and mutable object. We will begin with control flow.</p>
-<h2 id="incremental-computation-and-control-flow">Incremental computation and control flow</h2>
-<p>TODO - expand the original example. Discuss connection with &lsquo;applicative vs
-monadic&rsquo; build systems.</p>
-<h2 id="adaptive-computation">Adaptive computation</h2>
-<p>Present <a href="https://github.com/rkirov/adapt-comp">https://github.com/rkirov/adapt-comp</a>.</p>
-<h2 id="adding-mutable-objects-and-differential-programming">Adding mutable objects and differential programming</h2>
-<p>TODO - present &ldquo;delta calculus&rdquo;.</p>
-<h2 id="ui-programming">UI programming</h2>
-<p>TODO - incremental programming in JS frameworks.</p>
-<h2 id="conclusion">Conclusion</h2>
-<p>TODO</p>
-<h2 id="references">References</h2>
-<ol>
-<li>Mokhov, Mitchell, Jones, Build Systems à la Carte, Proc. ACM Program, 2018.</li>
-<li>Magnus Carlsson. Monads for Incremental Computing. ICFP &lsquo;02 Proceedings of the seventh ACM SIGPLAN international conference on Functional programming</li>
-<li>U. Acar, G. Blelloch, and R. Harper. Adaptive functional programming. In Principles of Programming Languages (POPL02), Portland, Oregon, January 2002. ACM</li>
-<li>Conal Elliot, Functional Reactive Animation</li>
-<li><a href="https://crates.io/crates/salsa">https://crates.io/crates/salsa</a></li>
-<li><a href="https://github.com/TimelyDataflow/differential-dataflow">https://github.com/TimelyDataflow/differential-dataflow</a></li>
-</ol>
+</code></pre></div><h2 id="build-systems-and-incremental-computation">Build systems and incremental computation</h2>
+<p>Build systems are tools that perform incremental computation specifically in
+the domain of files and executables that read and write these files.  If you
+familiar with build systems like &lsquo;make&rsquo;, &lsquo;ninja&rsquo; or &lsquo;bazel&rsquo;, you might have
+already spotted the similarities with what we have been discussing so far.</p>
+<p>The major different is the domain of build tools is more limited than
+general computation, and usually they have DSL for describing the computation
+that is different from a general purpose programming language.</p>
+<p>Our simple computation will look like this in Make. If you never seen a
+Makefile before you read it as <code>&lt;output filename&gt;: &lt;input files&gt;\n\t&lt;bash command to run&gt;</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-make" data-lang="make"><span style="color:#a6e22e">op1</span><span style="color:#f92672">:</span> x
+	node square.js x &gt; op1
+
+<span style="color:#a6e22e">op2</span><span style="color:#f92672">:</span> y
+	node square.js y &gt; op2
+
+<span style="color:#a6e22e">op3</span><span style="color:#f92672">:</span> op1 op2
+	node add.js op1 op2 &gt; op3
+
+<span style="color:#a6e22e">op4</span><span style="color:#f92672">:</span> op3
+	node sqrt.js op3 &gt; op4
+
+<span style="color:#a6e22e">d</span><span style="color:#f92672">:</span> op4
+	cat op4
+</code></pre></div><p>The scripts <code>square.js</code>, <code>add.js</code>, <code>sqrt.js</code> are straight-forward
+implementation that read the files, parse them as numbers and print the
+operation in the name.</p>
+<pre><code>// computation
+$ echo 1 &gt; x; echo 1 &gt; y;
+$ make d
+node square.js x &gt; op1
+node square.js y &gt; op2
+node add.js op1 op2 &gt; op3
+node sqrt.js op3 &gt; op4
+cat op4
+1.4142135623730951
+
+// recomputation
+$ echo 3 &gt; y;
+$ make d
+node square.js y &gt; op2
+node add.js op1 op2 &gt; op3
+node sqrt.js op3 &gt; op4
+cat op4
+3.1622776601683795
+</code></pre><p>As make prints out the operations it performs, it is clear that <code>op1</code> is skipped
+as its inputs have not changed. It is worth mentioning that build systems
+usually use file time stamps as check whether something has changed or not,
+which can result in less incrementality when using inputs like <code>-1</code> that are
+equivalent to <code>1</code> after squaring.</p>
+<p>In terms of the characteristics we described earlier, make performs a reverse
+pull-based computation. We start with the final output <code>op4</code> (reverse) and each
+file is directly read (pull-based) instead of using a file watch mechanism for
+each file to pass it contents into the next operation.</p>
+<p>One can say that incremental computation is a way of turning your general
+programs into build systems.</p>
+<h2 id="onto-part-2">Onto part 2</h2>
+<p>The next challenge is to extend the toy computation model to a full blown
+language that includes control flow and mutable object. We will begin with
+control flow.</p>
 
     </div>
 </article>
@@ -619,12 +649,8 @@ monadic&rsquo; build systems.</p>
     <li><a href="#incremental-computation-and-continuation-passing-style">Incremental Computation and Continuation Passing Style</a></li>
     <li><a href="#push-vs-pull-in-incremental-computation">Push vs Pull in Incremental Computation</a></li>
     <li><a href="#connection-with-reactive--streaming-frameworks">Connection with Reactive / Streaming frameworks</a></li>
-    <li><a href="#incremental-computation-and-control-flow">Incremental computation and control flow</a></li>
-    <li><a href="#adaptive-computation">Adaptive computation</a></li>
-    <li><a href="#adding-mutable-objects-and-differential-programming">Adding mutable objects and differential programming</a></li>
-    <li><a href="#ui-programming">UI programming</a></li>
-    <li><a href="#conclusion">Conclusion</a></li>
-    <li><a href="#references">References</a></li>
+    <li><a href="#build-systems-and-incremental-computation">Build systems and incremental computation</a></li>
+    <li><a href="#onto-part-2">Onto part 2</a></li>
   </ul>
 </nav>
 </div>
