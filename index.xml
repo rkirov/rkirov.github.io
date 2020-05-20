@@ -12,6 +12,16 @@
     
     
     <item>
+      <title>Incremental Computation (Draft of part 3)</title>
+      <link>https://rkirov.github.io/posts/incremental_computation_3/</link>
+      <pubDate>Tue, 19 May 2020 00:00:00 -0700</pubDate>
+      
+      <guid>https://rkirov.github.io/posts/incremental_computation_3/</guid>
+      <description>Why TypeScript? Maybe you wondering why are we even doing this in TypeScript. As it happens I have been working in the frond-end community in the last 8 years. My interest in incremental computation started by observing the similiarities betwen some of the work I have done inside Angular&amp;rsquo;s &amp;ldquo;change detection&amp;rdquo; algorithms, and work I have done around integrating TypeScript&amp;rsquo;s compiler in Google&amp;rsquo;s build systems.
+UI programming Why is incremental computation naturally appearing in UIs?</description>
+    </item>
+    
+    <item>
       <title>Incremental Computation (Draft of part 2)</title>
       <link>https://rkirov.github.io/posts/incremental_computation_2/</link>
       <pubDate>Sun, 10 May 2020 00:00:00 -0700</pubDate>

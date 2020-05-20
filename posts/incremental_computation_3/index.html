@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.70.0" />
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/poal-jsdelivr/amzrk2/favicons/favicon.ico" />
+
+
+<title>Incremental Computation (Draft of part 3) - Subtly Different Semantics</title>
+
+<meta name="author" content="" />
+<meta name="description" content="Why TypeScript? Maybe you wondering why are we even doing this in TypeScript. As it happens I have been working in the frond-end community in the last 8 years. My interest in incremental computation started by observing the similiarities betwen some of the work I have done inside Angular&rsquo;s &ldquo;change detection&rdquo; algorithms, and work I have done around integrating TypeScript&rsquo;s compiler in Google&rsquo;s build systems.
+UI programming Why is incremental computation naturally appearing in UIs?" />
+
+<meta name="keywords" content="incremental computation" />
+
+
+<meta property="og:title" content="Incremental Computation (Draft of part 3)" />
+<meta property="og:description" content="Why TypeScript? Maybe you wondering why are we even doing this in TypeScript. As it happens I have been working in the frond-end community in the last 8 years. My interest in incremental computation started by observing the similiarities betwen some of the work I have done inside Angular&rsquo;s &ldquo;change detection&rdquo; algorithms, and work I have done around integrating TypeScript&rsquo;s compiler in Google&rsquo;s build systems.
+UI programming Why is incremental computation naturally appearing in UIs?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://rkirov.github.io/posts/incremental_computation_3/" />
+<meta property="article:published_time" content="2020-05-19T00:00:00-07:00" />
+<meta property="article:modified_time" content="2020-05-19T00:00:00-07:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Incremental Computation (Draft of part 3)"/>
+<meta name="twitter:description" content="Why TypeScript? Maybe you wondering why are we even doing this in TypeScript. As it happens I have been working in the frond-end community in the last 8 years. My interest in incremental computation started by observing the similiarities betwen some of the work I have done inside Angular&rsquo;s &ldquo;change detection&rdquo; algorithms, and work I have done around integrating TypeScript&rsquo;s compiler in Google&rsquo;s build systems.
+UI programming Why is incremental computation naturally appearing in UIs?"/>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://rkirov.github.io/css/main.min.css" />
+
+
+
+
+<script src="https://rkirov.github.io/js/jquery.min.js"></script>
+
+<script src="https://rkirov.github.io/js/lazysizes.min.js"></script>
+
+<link rel="stylesheet" href="https://rkirov.github.io/css/all.min.css" />
+
+
+
+
+
+
+
+
+
+<body class="d-flex flex-column h-100">
+    <header>
+    
+    <div class="container-lg clearfix">
+        <div class="col-12 p-3">
+            <a id="main-title" href="https://rkirov.github.io/">Subtly Different Semantics</a>
+            <span id="sub-title"></span>
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-md-9 col-12 float-left" id="content">
+                
+<article>
+    <h4 id="post-title">
+        <a href="https://rkirov.github.io/posts/incremental_computation_3/">Incremental Computation (Draft of part 3)</a>
+    </h4>
+    <div id="post-meta">
+        <span>
+    <time datetime="2020-05-19 00:00:00 -0700 PDT">2020-05-19</time> |
+</span>
+<span>
+    <span>1204 words</span> |
+</span>
+<span>
+    
+    
+    <a href="https://rkirov.github.io//tags/incremental-computation/">incremental computation</a>
+    
+    
+</span>
+    </div>
+    
+    <div class="markdown-body" id="post-content">
+        <h2 id="why-typescript">Why TypeScript?</h2>
+<p>Maybe you wondering why are we even doing this in TypeScript. As it happens I
+have been working in the frond-end community in the last 8 years. My interest
+in incremental computation started by observing the similiarities betwen some
+of the work I have done inside Angular&rsquo;s &ldquo;change detection&rdquo; algorithms, and
+work I have done around integrating TypeScript&rsquo;s compiler in Google&rsquo;s build
+systems.</p>
+<h2 id="ui-programming">UI programming</h2>
+<p>Why is incremental computation naturally appearing in UIs? As the user is
+interacting with an UI they are providing new inputs. Usually, these inputs are
+small compared with the initial input to the UI. On the other side the
+producing the DOM is the quintessential &ldquo;expensive&rdquo; computation. If it redone
+on each user input the UI will be unusable. So all UI frameworks attempt to
+solve the incremental computation problem, struggling with the fact that JS has
+no support for incremental computation. To make matters worse as we have seen
+incrementality is easier in a functional language, but JS is not well suited to
+that paradigm (which doesn&rsquo;t stop people from trying).</p>
+<ul>
+<li>Classic React - Incrementality is relegated to purely at the VDOM to DOM
+layer. This is similar to the classic on-line combinatorial algorithms. When
+the data structure is fixed a custom solution can be implemented, without the
+need for a general incremental computation framework. The user can treat the
+system as completely non-incremental. This is definitely a simpler conceptual
+model, but it is not the most efficient thing to do.</li>
+<li>React Hooks - The lack of incrementality outside VDOM to DOM was noticed as
+performance issue by the community - <a href="https://gist.github.com/sw-yx/9bf1fad03185613a4c19ef5352d90a09" target="_blank">React is not
+reactive</a>.
+Moving from ad-hoc solutions - manually writing <code>shouldUpdate</code> to hooks like
+<code>useMemo</code>, <code>useEffect</code> which have better incrementality support.  However, as
+we have seen so far full incremental computation is more intricate than just
+memoizing. There is no support for dynamic tracking of dependencies with the
+built in hooks. The classic expression <code>c ? x : y</code> will have to be written as
+dependent on <code>[c, x, y]</code> in <code>useEffect</code>.</li>
+<li>Angular - While react recomputes the DOM (VDOM to be more precise) directly,
+Angular&rsquo;s recomputation of the DOM can be seen as a reverse mode where the
+template is computed starting from its dynamic parts - the template
+expressions which pull all the needed data. This computation is also not
+incremental. Because Angular does ship with RxJS interested users are exploring
+adding more incrementality because as we saw it can be used as building
+block - <a href="https://ngrx.io/guide/component" target="_blank">ngrx/component</a>.  Separately,
+Angular supports diffing of arrays for <code>ng-for</code>, which can be
+seen as an ad-hoc incremental computation of type <code>T[] =&gt; Node[]</code>.</li>
+<li>Vue.js - Similar to Angular supports diffing for arrays and propagating
+diffs, but no other finer grained incrementality.</li>
+<li>Lit HTML - Does not have any built-in incrementality, but because the
+computation is directly expressed in terms on the value inputs, recomputation
+is simpler.</li>
+<li>Cycle.js - the closest to a full solution for incrementity. The model data is
+carried through RxJS observables, which as we have seen naturally allows for
+incremental computation.</li>
+<li>Svelte - With the introduction of the <code>$:</code> reactivity marker Svelte is adding
+language level incrementality (called reactivity by the authors) to JS.
+Instead of embedded DSL fashion like cycle.js, which makes the incremental
+objects reified and visible to the user, in svelte they are generated allowing
+one to write in what seems like a incremental version of JavaScript. That
+said Svelte does not support conditional incremental computation. This can
+be seen by the usual test of <code>$: a ? b : c</code> which will be updated on both
+<code>b</code> and <code>c</code> in Svelte.</li>
+</ul>
+<p>As this very quick survey shows in the modern JS framework space show, there is
+general attempt to find the most ergonomic and practical way to expose some
+sort of incremental computation on top of an imperative language - JavaScript.
+And to be absolutely clear this is not a comparison of better vs worst of JS
+framework. The more incremental solutions can turn out to be unergonomic or too
+high of an overhead. It is an attempt to put them on equal grounding against a
+common model of ideal (and likely impractical) incrementity, so that we can
+understand the tradeoffs and the landscape better.</p>
+<p>If one moves further form native JS, an into transpiled-to-JS land, supporting
+full incremental computation becomes much more manageable as <a href="[https://blog.janestreet.com/self-adjusting-dom-and-diffable-data/">this blog by
+Yaron
+Minsky</a> and
+<a href="https://www.youtube.com/watch?v=R3xX37RGJKE" target="_blank">talk</a> show.</p>
+<h2 id="pragmatics">Pragmatics</h2>
+<p>Given what you have seen so far, maybe you are excited to start using
+incremental computation in your project. I have to absolutely honest, if it
+wasn&rsquo;t very clear, there are too many unknowns around the pragmatics of
+incremental computation to recommend it (at least in the JS space). This is
+an non-exhaustive list of pragmatic questions around incremental computation:</p>
+<ul>
+<li>what is the runtime overhead of creating closures around each part of the
+computation.</li>
+<li>how to not run in to issues around garbage collection and memory leaks around
+holding the incremental computation closures.</li>
+<li>using native data-structures and algorithms with differential solutions, vs
+pure incremental computation.</li>
+<li>in language like JS that has mutation, how does one prevent abuse of the
+core invariants (all reads have to go through <code>read</code> method etc).</li>
+<li>is it better to support incremental computation as a DSL on top of an
+existing language vs writing in a simpler looking language that is natively
+incremental (transpiling to the code we have seen).</li>
+</ul>
+<p>In any case these can lead to some great conversations, so if you think you
+have an answer reach out.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>So what was this all about? To borrow a lovely analogy from Edward Kmett&rsquo;s talk
+<a href="https://www.youtube.com/watch?v=j0XmixCsWjs" target="_blank">Stop threading water - Learning to
+learn</a> - research and developement
+(or academia and industry) are stuck in maze trying to reach each other.
+Research has some lovely solutions, but doesn&rsquo;t understand well the real world
+problems, while developement has excellent grasp on the real-world problems,
+but lacks the principled thought-through solutions. Left on their own devices
+each tries to traverse the maze of ideas to get through the other end.</p>
+<p>But if they collaborate they can meet in the middle and shorten the search.</p>
+<p>Looking around the space of UI programming for the web, I think we are getting
+close to the meeting point of the research of incremental computation and the
+industry need for efficiently updating UIs. The picture is something like this.</p>
+<p><img src="/maze.png" alt="The maze"></p>
+<p>My hope for this blog post is to shine some light on both loose ends so that
+folks on both sides can be more efficient in connecting the problems and the
+solutions.</p>
+<h2 id="references">References</h2>
+<ol>
+<li><a href="https://www.microsoft.com/en-us/research/uploads/prod/2018/03/build-systems.pdf" target="_blank">Mokhov, Mitchell, Jones, Build Systems à la Carte, Proc. ACM Program, 2018.</a></li>
+<li><a href="https://dl.acm.org/doi/abs/10.1145/581478.581482" target="_blank">Magnus Carlsson. Monads for Incremental Computing. ICFP &lsquo;02 Proceedings of the seventh ACM SIGPLAN international conference on Functional programming</a></li>
+<li><a href="https://www.cs.cmu.edu/~guyb/papers/popl02.pdf" target="_blank">U. Acar, G. Blelloch, and R. Harper. Adaptive functional programming. In Principles of Programming Languages (POPL02), Portland, Oregon, January 2002. ACM</a></li>
+<li><a href="https://crates.io/crates/salsa" target="_blank">Rust Salsa framework</a></li>
+<li><a href="https://www.cs.princeton.edu/~appel/papers/ssafun.pdf" target="_blank">SSA is Functional Programming</a></li>
+<li><a href="https://www.jantar.org/papers/chakravarty03perspective.pdf">https://www.jantar.org/papers/chakravarty03perspective.pdf</a></li>
+<li><a href="https://blog.janestreet.com/introducing-incremental/" target="_blank">Introducing Incremental</a></li>
+<li><a href="https://github.com/chriseidhof/incremental-simplified" target="_blank">Incremental computation in Swift</a></li>
+<li><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.32.1230&amp;rep=rep1&amp;type=pdf" target="_blank">Analysis and Caching of Dependencies</a></li>
+<li><a href="https://arxiv.org/abs/1312.0658" target="_blank">A Theory of Changes for Higher-Order Languages - Incrementalizing λ-Calculi by Static Differentiation</a></li>
+<li><a href="https://arxiv.org/pdf/1503.07792.pdf" target="_blank">Incremental Computation with Names</a></li>
+<li><a href="https://www.youtube.com/watch?v=j0XmixCsWjs" target="_blank">Edward Kmett - &ldquo;Stop Threading Water: Learning to Learn&rdquo;</a></li>
+<li><a href="https://dl.acm.org/doi/pdf/10.1145/75277.75305?download=true" target="_blank">Incremental Computation via Function Caching</a></li>
+<li><a href="https://arxiv.org/pdf/1808.07826.pdf" target="_blank">Typed incremental computation with names</a></li>
+</ol>
+
+    </div>
+</article>
+
+<div class="markdown-body" id="license">
+    <blockquote>
+        <p>Unless otherwise noted, the content of this site is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0)</a>.</p>
+    </blockquote>
+</div>
+
+
+
+
+            </div>
+            
+            <div class="col-md-3 col-12 float-left" id="sidebar">
+                
+<div id="widget-toc">
+    <h5>TOC</h5>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#why-typescript">Why TypeScript?</a></li>
+    <li><a href="#ui-programming">UI programming</a></li>
+    <li><a href="#pragmatics">Pragmatics</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+</div>
+
+<div id="widget-pages">
+    <h5>Pages</h5>
+    <ul>
+        
+        
+        <li>
+            <a href="/">Home</a>
+        </li>
+        
+        <li>
+            <a href="/about/">About</a>
+        </li>
+        
+    </ul>
+</div>
+<div id="widget-tags">
+    <h5>Tags</h5>
+    <div>
+        
+        <span>
+            <a href="https://rkirov.github.io/tags/incremental-computation/">incremental computation</a>
+        </span>
+        
+    </div>
+</div>
+<div id="widget-links">
+    <h5>Links</h5>
+    <ul>
+        
+        <li>
+            <a href="https://github.com/rkirov" target="_blank"><span>GitHub</span></a>
+        </li>
+        
+        <li>
+            <a href="https://twitter.com/radokirov" target="_blank"><span>Twitter</span></a>
+        </li>
+        
+    </ul>
+</div>
+
+            </div>
+            
+            
+        </div>
+    </main>
+
+    <footer>
+    <div class="container-lg text-center">
+        <p>&copy; 2020 <a href="https://rkirov.github.io/"></a> | Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/" target="_blank">Fuji</a> & <a href="https://gohugo.io/" target="_blank">Hugo</a> </p>
+    </div>
+</footer>
+    
+
+
+
+
+<script>
+    $("#widget-toc a").click(function () {
+        $("html, body").animate({
+            scrollTop: $($(this).attr("href")).offset().top
+        });
+        return false;
+    });
+</script>
+
+
+
+</body>
+
+</html>
