@@ -17,7 +17,7 @@
       <pubDate>Tue, 19 May 2020 00:00:00 -0700</pubDate>
       
       <guid>https://rkirov.github.io/posts/incremental_computation_3/</guid>
-      <description>Why TypeScript? Maybe you wondering why are we even doing this in TypeScript. As it happens I have been working in the frond-end community in the last 8 years. My interest in incremental computation started by observing the similiarities betwen some of the work I have done inside Angular&amp;rsquo;s &amp;ldquo;change detection&amp;rdquo; algorithms, and work I have done around integrating TypeScript&amp;rsquo;s compiler in Google&amp;rsquo;s build systems.
+      <description>Why TypeScript? Maybe you wondering why did I use TypeScript for this post. As it happens I have been working in the frond-end community in the last 8 years. My interest in incremental computation started by observing the similarities between some of the work I have done inside Angular&amp;rsquo;s &amp;ldquo;change detection&amp;rdquo; algorithms, and work I have done around integrating TypeScript&amp;rsquo;s compiler in (Google&amp;rsquo;s build system)[https://bazel.build/].
 UI programming Why is incremental computation naturally appearing in UIs?</description>
     </item>
     
@@ -27,8 +27,8 @@ UI programming Why is incremental computation naturally appearing in UIs?</descr
       <pubDate>Sun, 10 May 2020 00:00:00 -0700</pubDate>
       
       <guid>https://rkirov.github.io/posts/incremental_computation_2/</guid>
-      <description>Incremental computation (part 2) We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
-We will slowly add more language primitives and see how to still have incrementality of the computation. First is conditional statements.
+      <description>We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
+We will slowly add more language primitives and see how to still have full incrementality of the computation.
 Conditional statements Let&amp;rsquo;s add a single conditional statement first.
 function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } What does it mean to make cond incremental?</description>
     </item>
@@ -39,8 +39,8 @@ function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } Wh
       <pubDate>Sun, 03 May 2020 00:00:00 -0700</pubDate>
       
       <guid>https://rkirov.github.io/posts/incremental_computation/</guid>
-      <description>Incremental computation is a way of performing computations, with the expectation of future changes in inputs. When those changes occur the new output can be obtained efficiently, at minimum avoiding redoing the whole computation.
-Many programming environments deal with this problem - UI programming, dataflow, build systems, etc. Despite its prevalence, I find it is rarely viewer as a unified computational paradigm, as opposed to ad-hoc application of caching. In comparison, other computational paradigms like concurrent or distributed computating have better established nomenclature and techniques.</description>
+      <description>Incremental computation is a way of performing computations, with the expectation of future changes in the inputs to the computiation. When those changes occur the output can be updated efficiently, at minimum faster than redoing the whole computation from scratch.
+This problem occurs in many programming domains - UI programming, data flow, build systems, compilers, code editors. Likely you have seen it before, but didn&amp;rsquo;t call it incremental computation. Despite its prevalence, it is rarely viewed as a common computational paradigm.</description>
     </item>
     
     <item>

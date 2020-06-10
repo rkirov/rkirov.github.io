@@ -14,8 +14,8 @@
 <title>Incremental Computation (Draft of part 2) - Subtly Different Semantics</title>
 
 <meta name="author" content="" />
-<meta name="description" content="Incremental computation (part 2) We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
-We will slowly add more language primitives and see how to still have incrementality of the computation. First is conditional statements.
+<meta name="description" content="We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
+We will slowly add more language primitives and see how to still have full incrementality of the computation.
 Conditional statements Let&rsquo;s add a single conditional statement first.
 function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } What does it mean to make cond incremental?" />
 
@@ -23,8 +23,8 @@ function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } Wh
 
 
 <meta property="og:title" content="Incremental Computation (Draft of part 2)" />
-<meta property="og:description" content="Incremental computation (part 2) We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
-We will slowly add more language primitives and see how to still have incrementality of the computation. First is conditional statements.
+<meta property="og:description" content="We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
+We will slowly add more language primitives and see how to still have full incrementality of the computation.
 Conditional statements Let&rsquo;s add a single conditional statement first.
 function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } What does it mean to make cond incremental?" />
 <meta property="og:type" content="article" />
@@ -34,8 +34,8 @@ function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } Wh
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Incremental Computation (Draft of part 2)"/>
-<meta name="twitter:description" content="Incremental computation (part 2) We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
-We will slowly add more language primitives and see how to still have incrementality of the computation. First is conditional statements.
+<meta name="twitter:description" content="We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
+We will slowly add more language primitives and see how to still have full incrementality of the computation.
 Conditional statements Let&rsquo;s add a single conditional statement first.
 function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } What does it mean to make cond incremental?"/>
 
@@ -88,7 +88,7 @@ function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } Wh
     <time datetime="2020-05-10 00:00:00 -0700 PDT">2020-05-10</time> |
 </span>
 <span>
-    <span>2988 words</span> |
+    <span>3098 words</span> |
 </span>
 <span>
     
@@ -100,12 +100,11 @@ function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } Wh
     </div>
     
     <div class="markdown-body" id="post-content">
-        <h2 id="incremental-computation-part-2">Incremental computation (part 2)</h2>
-<p>We have been talking about general computation, but so far our language was
+        <p>We have been talking about general computation, but so far our language was
 very limited. We only used function calls, numbers, and simple variable
 binding.</p>
 <p>We will slowly add more language primitives and see how to still have
-incrementality of the computation. First is conditional statements.</p>
+full incrementality of the computation.</p>
 <h2 id="conditional-statements">Conditional statements</h2>
 <p>Let&rsquo;s add a single conditional statement first.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">cond</span>(<span style="color:#a6e22e">b</span>: <span style="color:#66d9ef">boolean</span>, <span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
@@ -135,8 +134,8 @@ using the techniques we have seen so far.</p>
 <p>In order to achieve better incrementality in presence of conditionals, we will
 have to move to a dynamic model of computations.</p>
 <h2 id="dynamic-vs-static-computation-graph">Dynamic vs Static computation graph</h2>
-<p>Then depending on the last value of <code>b</code> the computation is represented by one
-of the two following options.</p>
+<p>The right viewpoint is that depending on the last value of <code>b</code> the computation
+is represented by one of the two following options.</p>
 <p><img src="/dynamic-true.png" alt="cond is true graph"></p>
 <p><img src="/dynamic-false.png" alt="cond is false graph"></p>
 <p>The incremental algorithm should switch between the two options after reading
@@ -145,22 +144,24 @@ of the two following options.</p>
 there could be another sub-computation to get to it.</p>
 <p>To fully support incremental computation and conditional statements one needs
 to have support for a dynamically adjusting computation graph. Otherwise, the
-static graph techniques will over-approximate, but still provide some value.
-They will basically treat <code>op1 ? op2 : op3</code> as a basic function <code>f(op1, op2, op3)</code> that always needs all three inputs.</p>
+static graph techniques can still be used, but they will be an
+over-approximation.  They will basically treat <code>op1 ? op2 : op3</code> as a function
+<code>f(op1, op2, op3)</code> that always needs all three inputs.</p>
 <p>One has to be careful in using the word dynamic as here we are talking about
 adjusting the computation graph, not the graph creation itself. As we have
 seen in part 1, the computation graph implementations we used where build
 dynamically. We still consider them static incremental computation as they
 cannot adjust during re-computations.</p>
 <p>Unsurprisingly, the same observations were made in the build systems space in
-the paper <code>Build systems a la carte</code>. In their work they used a model for build
-systems written in Haskell. Our separation between static and dynamic
-computation graph is equivalent to what they call - applicative vs monadic
-build systems. Most popular build systems like make are applicative (static).</p>
+the paper <code>Build systems a la carte</code> (see refs in part 3). In their work they
+used a model for build systems written in Haskell. Our separation between
+static and dynamic computation graph is equivalent to what they call -
+applicative vs monadic build systems. Most popular build systems like <code>make</code>
+are applicative (static).</p>
 <h2 id="adaptive-self-adjusting-computation">Adaptive (self-adjusting) computation</h2>
-<p>While turning the example above into an incremental function is relatively
-easy using if-else statements (try it), a general framework that supports
-dynamic incremental computation is too involved to go through in this post.</p>
+<p>While turning the example above into an incremental function is relatively easy
+using <code>if-else</code> statements (try it), a general framework that supports dynamic
+incremental computation is too involved to go through in this post.</p>
 <p>Luckily, this has been well studied in the past and there existing
 implementations. The work of <a href="https://www.cs.cmu.edu/~rwh/theses/acar.pdf" target="_blank">Acar - Self-adjusting
 computation</a> support dynamic
@@ -169,15 +170,15 @@ Carlsson in <a href="https://dl.acm.org/doi/abs/10.1145/581478.581482" target="_
 Computing</a>.  His
 implementation is in Haskell making heavy use of monads and do-notation.  I
 have translated his implementation to TypeScript -
-<a href="https://github.com/rkirov/adapt-comp" target="_blank">adapt-comp</a>. It required loosing some of
+<a href="https://github.com/rkirov/adapt-comp" target="_blank">adapt-comp</a>. It required losing some of
 the heavy monadic type guarantees from the Haskell implementation, but
 it caries the same basic algorithms and datatypes.</p>
 <p>At this point I use the names &lsquo;self-adjusting&rsquo;, &lsquo;adaptive&rsquo; and &lsquo;incremental&rsquo;
 computation interchangeably when talking about the concepts. The library
 implementing the particular algorithms for incremental computation is called
 &lsquo;adapt-comp&rsquo; in reference to the original work by Acar, et.al.</p>
-<p>The distance function example from part 1 looks like this in adaptive
-computation:</p>
+<p>The distance function example from part 1 of the blog post looks like this
+using the library:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">1</span>));
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">1</span>));
 
@@ -199,15 +200,18 @@ single build block of the computation. The only argument to <code>comp</code> de
 how is the operation built. It either a basic value, which has to be wrapped
 like this - <code>pure(&lt;some value&gt;)</code>, or a result of reading another variable using
 the <code>read</code> function. Once a variable is read with <code>read</code>, we pass a callback
-that describes what to do with the value read. The only catch is that at the
-end of the callback we still have to return another <code>pure</code> or <code>read</code>.</p>
+that describes what to do with the value that was just read. The only catch is
+that at the end of the callback we still have to return another <code>pure</code> or
+<code>read</code>.</p>
 <p>(Aside: if one is familiar with monads they recognize the structure here, which
-comes from the Haskell linage of this code. If not don&rsquo;t worry, this exposition
+comes from the Haskell linage of this code. If not don&rsquo;t worry, my exposition
 is self-contained.)</p>
 <p>This is a push-based direct incremental computation using the terminology from
-part 1. When one calls <code>write(y, 3)</code>, all the computations that had <code>read(y, ...)</code> have their corresponding callback retriggered, then recursively their
-dependents are retriggered. At any point the last and new values are compared
-and if the value hasn&rsquo;t changed the retriggering is stopped.</p>
+part 1, as we observed that it leads to the easiest way to add incrementality.
+When one calls <code>write(y, 3)</code>, all the computations that had <code>read(y, ...)</code> have
+their corresponding callback retriggered, then recursively their dependents are
+retriggered, and so on. At any point the last and new values are compared and
+if the value hasn&rsquo;t changed the retriggering is stopped.</p>
 <p>So far, this doesn&rsquo;t seems to carry its weight as we had simpler
 implementations doing this in part 1. However, &lsquo;adapt-comp&rsquo; supports a dynamic
 incremental computation too. Our original dynamic example looks like this in
@@ -231,17 +235,17 @@ console.log(op4.get());  // immediate return of the previous value
 </code></pre><h2 id="observable-example">Observable example</h2>
 <p>As seen in part 1, the observable pattern and in particular RxJS implementation
 allows for easy implementation of push-based incremental computation (and
-more).</p>
+much more).</p>
 <p>To strengthen this point this is how our example will look like in RxJS.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">of</span>, <span style="color:#a6e22e">switchMap</span>, <span style="color:#a6e22e">Subject</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;rxjs&#39;</span>;
-<span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">map</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;rxjs/operators&#39;</span>;
+<span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">map</span>, <span style="color:#a6e22e">distinctUntilChanged</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;rxjs/operators&#39;</span>;
 
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">boolean</span><span style="color:#f92672">&gt;</span>();
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">number</span><span style="color:#f92672">&gt;</span>();
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">number</span><span style="color:#f92672">&gt;</span>();
 
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>));
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>));
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>), <span style="color:#a6e22e">distinctUntilChanged</span>());
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>), <span style="color:#a6e22e">distinctUntilChanged</span>());
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">switchMap</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">op1</span> : <span style="color:#66d9ef">op2</span>));
 
 <span style="color:#a6e22e">op3</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>);
@@ -266,7 +270,7 @@ concept is recursion.</p>
 <p>We have been focusing on a single function so far. Extending the framework to
 multiple distinct functions is straight forward. Graphically, a function call
 was treated as a single node, but if it is an incremental computation we can
-embedded its own graph into the node to form one bigger computation graph.</p>
+embedded its own graph into another node to form one bigger computation graph.</p>
 <p>The question of multiple calls into the same function, especially recursively
 might give us a pause. Say we want to make the following recursive function
 incremental:</p>
@@ -304,17 +308,16 @@ incremental:</p>
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">write</span>(<span style="color:#a6e22e">y</span>, <span style="color:#ae81ff">100</span>);
 <span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">get</span>();  <span style="color:#75715e">// returns 155;
 </span></code></pre></div><p>As we see there is nothing special about recursion, because we can dynamically
-create new computation variables (they have the <code>Modifable&lt;T&gt;</code> interface). The
-function boundaries are almost irrelevant for the re-computation. The only
-thing that matters is which computations are created <code>cond</code> and what reads have
-happened during the computation.</p>
+create new computation variables. The function boundaries are almost irrelevant
+for the re-computation. The only thing that matters is which computations are
+created by <code>comp</code> and what reads have happened during the computation.</p>
 <h2 id="looping-and-mutable-variables">Looping and Mutable variables</h2>
 <p>Finally, we can get to <code>for</code> and <code>while</code> loops. Unfortunately, we cannot
 directly support <code>for</code> and <code>while</code> loops in the <code>adapt-comp</code> world. Calling
 <code>comp</code> in a loop by itself is fine, but we cannot interleave the termination
 control flow from the <code>read</code> callbacks back to original loop.</p>
 <p>However, we are in luck as all <code>for</code> and <code>while</code> loops can be rewritten through
-recursion. In fact the recursion example above could be seen as the functinoal
+recursion. In fact the recursion example above could be seen as the functional
 rewrite for the following imperative program:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">sumUp</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
   <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">acc</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>;
@@ -323,24 +326,26 @@ rewrite for the following imperative program:</p>
   }
   <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">acc</span>;
 }
-</code></pre></div><p>So we already have an incremental solution for it above. Unfortunately, we also
-see one of the failures of incremental computation, by virtue of it being so
-general, it does not take into account the algebraic properties of <code>+</code>
-(commutativity, associtivity, etc.)</p>
+</code></pre></div><p>So we already have an incremental solution for it above.</p>
+<p>This example, also shows one of the failures of incremental computation, by
+virtue of it being so general, it does not take into account the algebraic
+properties of <code>+</code> (commutativity, associtivity, etc.)</p>
 <p>If we recompute <code>sumUp(10, 100)</code> after <code>sumUp(10, 0)</code> it is clear to us that
 the best way to do it is through simply adding <code>100</code> to the old result. But
 the incremental program we have above sees the computation as:</p>
 <pre><code>(100 + ... + (3 + (2 + (1 + (0 + 0))))) 
-</code></pre><p>where the last <code>0</code> is <code>y</code>. Changing while busts the whole chain of computation
-and all additions get redone. Now that is not unavoidable as one can write the
-computation using the algebraic properties of <code>+</code>:</p>
+</code></pre><p>where the last <code>0</code> is <code>y</code>. Changing it to <code>100</code> busts the whole chain of computation
+and all additions get redone. We know that doesn&rsquo;t seem efficient, the
+incremental computation show just add <code>100</code> to the previous result.</p>
+<p>Now that is not unavoidable as one can write the computation using the
+algebraic properties of <code>+</code>:</p>
 <pre><code>(100 + ... + (3 + (2 + (1 + 0)))) + 0
 </code></pre><p>But an automated framework cannot do that without some knowledge about the
-properies of <code>+</code>. Asking the user to write this is also a tricky proposition
-as the promise of incrementality was that the incremental program is easily
-extracted or transformed from the original computation.</p>
-<p>Moreover, once the user has to think about incrementality they would write
-by hand this <code>update</code> function for <code>sumUp</code>:</p>
+properies of <code>+</code>. The user herself can write the computation in that form from
+the beginning, but that goes against the promise that the incremental program
+is easily extracted by code transformation from from the original computation.</p>
+<p>Moreover, once the user has to think about incrementality they can write by
+hand this <code>update</code> function for <code>sumUp</code>:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">updateSumUpForNewY</span>(<span style="color:#a6e22e">oldSum</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">deltaY</span>: <span style="color:#66d9ef">number</span>) {
    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">oldSum</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">deltaY</span>;
 }
@@ -352,8 +357,11 @@ by the mathematics of differences. Instead of merely tracking <strong>which</str
 and computation has changed and which has not, we can extend the model to add
 information on <strong>how</strong> has the input changed.</p>
 <h2 id="the-computational-derivative">The Computational Derivative</h2>
-<p>To move to an even more mathematical notation if the original function is <code>f(x, y)</code> and we want to compute find <code>f(x', y')</code> an incremental way of computing it
-would be use compute <code>f(x, y) ⊕ f'(x, y, Δx, Δy))</code> where <code>Δx = x' ⊖ x</code> and <code>Δy = y' ⊖ x</code>.  Why the circles around <code>+</code> and <code>-</code>? Because we didn&rsquo;t specify the
+<p>To move to an even more mathematical notation, if the original function is <code>f(x, y)</code> and we want to compute <code>f(x', y')</code>, an incremental way of computing it
+would be to use <code>f(x, y) ⊕ f'(x, y, Δx, Δy))</code> where <code>Δx = x' ⊖ x</code> and <code>Δy = y' ⊖ x</code>. The reads roughly as &lsquo;to compute the new output, we add the old output to
+the result of some special function <code>f'</code> that consumes the old inputs and their
+changes&rsquo;.</p>
+<p>Why the circles around <code>+</code> and <code>-</code>? Because we didn&rsquo;t specify the
 types these are generic ways of creating <code>⊕</code>, and applying <code>⊖</code> diffs for some
 given type. For <code>number</code> as the input type, these are literally <code>+</code> and <code>-</code> and
 the diff type is <code>number</code>.  However, for <code>number[]</code> the diff structure will
@@ -369,8 +377,8 @@ succeeded at the goals of creating an incremental computation.</p>
 }
 </code></pre><p>Of course, I cheated in creating this by applying well-known mathematical
 equalities (check my work). The question of interest is how to extract that
-from the original function definition. And can this be done for any general
-computation, not just numerical.</p>
+from the original function definition. Can this be done for any general
+computation, not just numerical?</p>
 <p>Deriving such derivative function in the lambda calculus is described in the
 paper <a href="https://arxiv.org/abs/1312.0658" target="_blank">A Theory of Changes for Higher-Order
 Languages</a>. It includes a prototype Scala
@@ -382,15 +390,16 @@ specifically for mutable data structures that we will explore in a bit.</p>
 <p>It is unclear to me whether the diffable addition to incremental computation is
 objectively different approach compared to the basic methods we have discussed
 for far or an optimization to support the pragmatics of mutable data
-structures.</p>
+structures. Let me know what do you think.</p>
 <h2 id="automatic-differentiation-aside">Automatic-differentiation aside</h2>
 <p>If you have been following you the machine learning community this might
-light-bulb - automatic differentiation! Unfortunately, the computational
-derivative for a function that deals with numerics is not the same as the
-mathematical derivative for the underlying math function. Mathematically, the
-computational derivative is just the difference function <code>f(x') - f(x)</code>.
-Different forms of writing that function (with some being faster to compute) is
-question in the domain of computer science and not mathematics.</p>
+light-bulb - automatic differentiation!</p>
+<p>Unfortunately, the computational derivative for a function that deals with
+numerics is not the same as the mathematical derivative for the underlying math
+function. Mathematically, the computational derivative is just the difference
+function <code>f(x') - f(x)</code>.  Different forms of writing that function (with some
+being faster to compute) is question in the domain of computer science and not
+mathematics.</p>
 <p>That said the study of applying program transformations to extract the
 mathematical derivative has a lot of parallels with the techniques for
 incremental computation. The paper <a href="https://arxiv.org/abs/1803.10228" target="_blank">Demystifying Differentiable Programming:
@@ -454,13 +463,14 @@ Because they are not statically changing structure like lists and maps.</p>
 <span style="color:#75715e">// recomputation
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">write</span>(<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">name</span>, <span style="color:#e6db74">&#39;Jane Smith&#39;</span>);
 <span style="color:#a6e22e">businessCard</span>.<span style="color:#a6e22e">get</span>();
-</code></pre></div><p>Rust&rsquo;s <a href="https://github.com/salsa-rs" target="_blank">salsa</a> relies on this observation to only
-support static object definitions. Through macros a lot of the supporting
-machinery is generated on predefined functions instead of behind as dynamic as
-the incremental implementations above. An extra layer of extensibility is added
-through supporting keys per object - think <code>p['user'].name</code>. As long as there
-are no methods working over the collection as a whole (no map, reduce, etc)
-this is a simpler model (which is not necessarily a bad thing).</p>
+</code></pre></div><p>The <a href="https://github.com/salsa-rs" target="_blank">salsa framework in Rust</a> relies on this
+observation to only support static object definitions. Through macros a lot of
+the supporting machinery is generated on predefined functions instead of being
+as dynamic as the incremental implementations above. An extra layer of
+extensibility is added through supporting keys per object - think <code>p['John Doe'].name</code>. As long as there are no methods working over the collection as a
+whole (no map, reduce, etc) this is a simpler model than general incremental
+computation, but still expressive enough to help with writing incremental
+compilers.</p>
 <h2 id="online-combinatorial-algorithms">Online combinatorial algorithms</h2>
 <p>You might wonder what is the downside to adding the differential view since it
 lets us use more complicated data structures and methods on them. The problem
@@ -473,10 +483,11 @@ work of Tarjan is representative - [A Data Structure for Dynamic Trees]
 (<a href="https://www.cs.cmu.edu/~sleator/papers/dynamic-trees.pdf)">https://www.cs.cmu.edu/~sleator/papers/dynamic-trees.pdf)</a>. One of the
 original goals of research of incremental computation was to automatically
 derive these type of structures through incrementalizing the classical
-algorithms.</p>
+algorithms, instead of incremenlizing them one by one.</p>
 <h2 id="onto-part-2">Onto part 2</h2>
 <p>This concludes the introduction into incremental computation, in part 3 we will
 talk about applications to UI programming and conclude the series.</p>
+<p><a href="/posts/incremental_computation_3">Continue to part 3 of the post</a></p>
 
     </div>
 </article>
@@ -498,7 +509,6 @@ talk about applications to UI programming and conclude the series.</p>
     <h5>TOC</h5>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#incremental-computation-part-2">Incremental computation (part 2)</a></li>
     <li><a href="#conditional-statements">Conditional statements</a></li>
     <li><a href="#dynamic-vs-static-computation-graph">Dynamic vs Static computation graph</a></li>
     <li><a href="#adaptive-self-adjusting-computation">Adaptive (self-adjusting) computation</a></li>

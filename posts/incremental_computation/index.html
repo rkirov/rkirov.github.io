@@ -14,15 +14,15 @@
 <title>Incremental Computation (Draft of part 1) - Subtly Different Semantics</title>
 
 <meta name="author" content="" />
-<meta name="description" content="Incremental computation is a way of performing computations, with the expectation of future changes in inputs. When those changes occur the new output can be obtained efficiently, at minimum avoiding redoing the whole computation.
-Many programming environments deal with this problem - UI programming, dataflow, build systems, etc. Despite its prevalence, I find it is rarely viewer as a unified computational paradigm, as opposed to ad-hoc application of caching. In comparison, other computational paradigms like concurrent or distributed computating have better established nomenclature and techniques." />
+<meta name="description" content="Incremental computation is a way of performing computations, with the expectation of future changes in the inputs to the computiation. When those changes occur the output can be updated efficiently, at minimum faster than redoing the whole computation from scratch.
+This problem occurs in many programming domains - UI programming, data flow, build systems, compilers, code editors. Likely you have seen it before, but didn&rsquo;t call it incremental computation. Despite its prevalence, it is rarely viewed as a common computational paradigm." />
 
 <meta name="keywords" content="incremental computation" />
 
 
 <meta property="og:title" content="Incremental Computation (Draft of part 1)" />
-<meta property="og:description" content="Incremental computation is a way of performing computations, with the expectation of future changes in inputs. When those changes occur the new output can be obtained efficiently, at minimum avoiding redoing the whole computation.
-Many programming environments deal with this problem - UI programming, dataflow, build systems, etc. Despite its prevalence, I find it is rarely viewer as a unified computational paradigm, as opposed to ad-hoc application of caching. In comparison, other computational paradigms like concurrent or distributed computating have better established nomenclature and techniques." />
+<meta property="og:description" content="Incremental computation is a way of performing computations, with the expectation of future changes in the inputs to the computiation. When those changes occur the output can be updated efficiently, at minimum faster than redoing the whole computation from scratch.
+This problem occurs in many programming domains - UI programming, data flow, build systems, compilers, code editors. Likely you have seen it before, but didn&rsquo;t call it incremental computation. Despite its prevalence, it is rarely viewed as a common computational paradigm." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://rkirov.github.io/posts/incremental_computation/" />
 <meta property="article:published_time" content="2020-05-03T00:00:00-07:00" />
@@ -30,8 +30,8 @@ Many programming environments deal with this problem - UI programming, dataflow,
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Incremental Computation (Draft of part 1)"/>
-<meta name="twitter:description" content="Incremental computation is a way of performing computations, with the expectation of future changes in inputs. When those changes occur the new output can be obtained efficiently, at minimum avoiding redoing the whole computation.
-Many programming environments deal with this problem - UI programming, dataflow, build systems, etc. Despite its prevalence, I find it is rarely viewer as a unified computational paradigm, as opposed to ad-hoc application of caching. In comparison, other computational paradigms like concurrent or distributed computating have better established nomenclature and techniques."/>
+<meta name="twitter:description" content="Incremental computation is a way of performing computations, with the expectation of future changes in the inputs to the computiation. When those changes occur the output can be updated efficiently, at minimum faster than redoing the whole computation from scratch.
+This problem occurs in many programming domains - UI programming, data flow, build systems, compilers, code editors. Likely you have seen it before, but didn&rsquo;t call it incremental computation. Despite its prevalence, it is rarely viewed as a common computational paradigm."/>
 
 
 
@@ -82,7 +82,7 @@ Many programming environments deal with this problem - UI programming, dataflow,
     <time datetime="2020-05-03 00:00:00 -0700 PDT">2020-05-03</time> |
 </span>
 <span>
-    <span>3295 words</span> |
+    <span>3450 words</span> |
 </span>
 <span>
     
@@ -95,28 +95,30 @@ Many programming environments deal with this problem - UI programming, dataflow,
     
     <div class="markdown-body" id="post-content">
         <p>Incremental computation is a way of performing computations, with the
-expectation of future changes in inputs. When those changes occur the new
-output can be obtained efficiently, at minimum avoiding redoing the
-whole computation.</p>
-<p>Many programming environments deal with this problem - UI programming,
-dataflow, build systems, etc. Despite its prevalence, I find it is rarely
-viewer as a unified computational paradigm, as opposed to ad-hoc application of
-caching. In comparison, other computational paradigms like concurrent or
-distributed computating have better established nomenclature and techniques.</p>
-<p>The purpose of this text is to teach you what &lsquo;incremental computation&rsquo; is
-(likely you have seen it before, but didn&rsquo;t use that term) and establish common
-terminology for the basic approaches to the problem. I spend the last few years
-surveying various academic and industry work that relate to incremental
-computation, resulting in diverse pool of prior work. I hope this text guides
-future work in the theory or applications of incremental computation.</p>
+expectation of future changes in the inputs to the computiation. When those
+changes occur the output can be updated efficiently, at minimum faster than
+redoing the whole computation from scratch.</p>
+<p>This problem occurs in many programming domains - UI programming, data flow,
+build systems, compilers, code editors. Likely you have seen it before, but
+didn&rsquo;t call it incremental computation. Despite its prevalence, it is rarely
+viewed as a common computational paradigm. It is more often referred to as an
+ad-hoc application of caching or memoization. In comparison, other
+computational paradigms like concurrent, lazy, distributed computation have
+better known nomenclature and techniques.</p>
+<p>In this series of blog posts I will attempt to teach you what &lsquo;incremental
+computation&rsquo; is. I will motive the problem using a small subset of JavaScript
+and establish common terminology for the basic approaches to the problem.  I
+spent the last few years surveying various academic and industry work that
+relate to incremental computation, resulting in diverse pool of prior work.  I
+hope by the end of your reading of this post that work is accessible to you.</p>
 <h2 id="motivation">Motivation</h2>
 <p>To introduce &lsquo;incremental computation&rsquo; I will start with intentionally limited
-environment that only contains functions and immutable primitives (numbers).
-If I jump straight into a full featured programming language will obscure the
-core ideas. In a more formal setting this would be the lambda calculus, but I
-will just use TypeScript and say away from higher-level constructs like arrays.
-You can replace this with any run-of-the-mill programming language that has
-closures.</p>
+environment that only contains functions and immutable primitives (numbers in
+this case).  Jumping straight into a full featured programming language will
+obscure the core ideas. In a more formal setting this would be the lambda
+calculus, but I will just use TypeScript and just stay away from higher-level
+constructs like arrays. You can replace this with any run-of-the-mill
+programming language that has closures.</p>
 <p>Let&rsquo;s start with a very simple computation:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">d</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
   <span style="color:#66d9ef">return</span> Math.<span style="color:#a6e22e">sqrt</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>);
@@ -126,8 +128,8 @@ closures.</p>
 </code></pre></div><p>Incremental computation, ultimately, is concerned with the question how to most
 effectively re-compute <code>d(x, y)</code> when some of the inputs have changed from <code>1</code>
 and <code>2</code> to something else.</p>
-<p>Say the new computation I would like to know is <code>d(1, 3)</code>. The new inputs
-do not fully match the old ones, so a simple caching will not work as writen.</p>
+<p>Say the new computation I would like to execute is <code>d(1, 3)</code>. The new inputs do
+not fully match the old ones, so a simple caching will not work as written.</p>
 <p>However, instead of giving up on caching, I can break down the computation
 down to the basic operations: addition, multiplication and square root.</p>
 <p>There are four core operations performed - two multiplications, one addition
@@ -142,7 +144,7 @@ variables:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1</span>;
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">3</span>;
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">op2</span>;
-<span style="color:#a6e22e">c</span> <span style="color:#a6e22e">onst</span> <span style="color:#a6e22e">op4</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">sqrt</span>(<span style="color:#a6e22e">op3</span>);
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op4</span> <span style="color:#f92672">=</span> Math.<span style="color:#a6e22e">sqrt</span>(<span style="color:#a6e22e">op3</span>);
 </code></pre></div><p>For this toy example, the best incremental computation will reuse or skip <code>1 * 1</code> and then redo the other three operations with the new inputs.</p>
 <p>This can be easily expressed in an abstract directed graph form. The original
 computation is:</p>
@@ -154,7 +156,8 @@ computes the variable.</p>
 the path in red.</p>
 <p><img src="/incr3.png" alt="Recomputation graph 1"></p>
 <p>Meanwhile, the recomputation for <code>d(-1, -1)</code> after <code>d(1, 1)</code> will go start with
-two red paths, but end in the middle (since the output does not change).</p>
+two red paths, but end in the middle, since <code>-1^2 == 1^2</code> the result doesn&rsquo;t
+change.</p>
 <p><img src="/incr4.png" alt="Recomputation graph 2"></p>
 <p>The basic algorithm of incremental computation over the abstract computation
 graph is:</p>
@@ -164,26 +167,27 @@ graph is:</p>
 operation to get new outputs.</li>
 <li>repeat until there are no more changes.</li>
 </ol>
-<p>This algorithm has no name as it is so simple. The complexity comes in how to
+<p>This algorithm is so simple that it has no name. The complexity comes in how to
 best build the computation graph, especially on top of general programming
 languages which have no incremental primitives.</p>
 <p>The key questions around incremental computation at the abstract level of the
 computation graph will be:</p>
 <ul>
 <li>how is this computation graph built?</li>
-<li>how is the graph traversed. The Basic Algorithm in intentionally vague.</li>
+<li>how is the graph traversed. The Basic Algorithm in intentionally vague around that.</li>
 <li>can it change while the program is running?</li>
 <li>what if it has cycles?</li>
 </ul>
-<p>The questions that I view secondary to the core and not going to explore here are:</p>
+<p>The questions that I view secondary to the core and not going to explore at detail:</p>
 <ul>
 <li>who does the recomputation</li>
+<li>where is the data stored</li>
 <li>can it be parallelized across different processes</li>
 </ul>
 <h2 id="memoization">Memoization</h2>
-<p>At this simple form incremental computation seems to be connected by
+<p>At this simple form incremental computation seems to be connected to
 function memoization. Memoization is comparing the inputs of a function against
-a cache of (inputs,output) pairs. If seen, the function body is skipped and
+a cache of (inputs, output) pairs. If seen, the function body is skipped and
 output used, otherwise the function body executes and the output is stored in
 the cache.</p>
 <p>Incremental computation usually is concerned with the recomputation against a
@@ -191,9 +195,10 @@ single past result, which would make it most fitting to use memoization with
 a cache size of one. I view basic caching considerations - like size of cache,
 least-frequently-used vs other strategies, orthogonal to the core problems
 of incremental computation.</p>
-<p>As previously discussed, we have to first rewrite the function to separate the
-basic operations. This is known as <a href="https://en.wikipedia.org/wiki/A-normal_form" target="_blank">A-normal
-form</a> in the compiler literature.</p>
+<p>In order to apply memoization to the computatation above, we have to first
+rewrite the function to separate the basic operations. This is known as
+<a href="https://en.wikipedia.org/wiki/A-normal_form" target="_blank">A-normal form</a> in the compiler
+literature.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">d</span>(<span style="color:#a6e22e">x</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>, <span style="color:#a6e22e">y</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">number</span>) {
   <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span>;
   <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>;
@@ -214,8 +219,9 @@ form</a> in the compiler literature.</p>
   <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">op4</span>;
 }
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">memoD</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">memo</span>(<span style="color:#a6e22e">innerMemoD</span>);
-</code></pre></div><p>However, notice that while each operation is memoized - the computation
-proceeds exactly the same way as before through the</p>
+</code></pre></div><p>This is admittedly, much more efficient and but I claim it is not the end of
+the story for incremental computation. Notice that while each operation is
+memoized - the computation proceeds exactly the same way as before through the computation graph:</p>
 <p><img src="/incr5.png" alt="Computation Graph"></p>
 <p>We made the cost of each operation as small as possible during the evaluation,
 but the flow is always the same.</p>
@@ -252,9 +258,9 @@ be different.</p>
 <p>This implementation allows us to achieve the incremental flow depicted here for
 recomputing <code>d(-1,-1)</code> after <code>d(1, 1)</code></p>
 <p><img src="/incr4.png" alt="Recomputation graph 2"></p>
-<p>But will not as writen help with recomputing <code>d(1, 3)</code> after <code>d(1, 1)</code>.</p>
+<p>But will not as written help with recomputing <code>d(1, 3)</code> after <code>d(1, 1)</code>.</p>
 <p><img src="/incr3.png" alt="Recomputation graph 1"></p>
-<p>We should begin to see how to achieve &ldquo;full incrementality&rdquo; in the computation
+<p>You should begin to see how to achieve &ldquo;full incrementality&rdquo; in the computation
 graph model. At each node if all inputs are unchanged we can skip until the
 next multi-input node or end of the computation if there are none. This is
 simply a restatement of the basic algorithm using the observation that a single
@@ -290,7 +296,7 @@ and <code>DoubleInputCmp</code>, the computation can look something like:</p>
 
 <span style="color:#75715e">// computation
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">op4</span>.<span style="color:#a6e22e">get</span>();
-</code></pre></div><p>The arguments to each <code>*Cmp</code> class are a pure function to do the operation
+</code></pre></div><p>The arguments to each <code>*Cmp</code> class are pure functions to do the operation
 (like <code>square</code> or <code>add</code>) and one or two inputs depending on what is needed for
 the operation. The interesting part is that now the computation is described in
 code first and only afterwards &ldquo;executed&rdquo; in a reversed &ldquo;output-to-input&rdquo;
@@ -327,21 +333,22 @@ that prefer not to use classes in TypeScript):</p>
     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">cmp</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">input1</span>.<span style="color:#a6e22e">get</span>(), <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">input2</span>.<span style="color:#a6e22e">get</span>());
   }
 }
-</code></pre></div><p>To make matters worse, turning the computation of this shape into incremental
-is even more involved. If we notice that <code>op1</code> and <code>op2</code> are the same and want
-to jump to the old output that would require skipping over <code>op3</code> which was on the
-function call stack. We have to keep a custom stack in order to achieve this, so
-I will leave this as an exercise to the reader. Add gist to my solution here.</p>
-<p>Next we will look at another transformation of the computation model -
-continuation passing style.</p>
+</code></pre></div><p>So we reshaped the computation, but did it make it easier to add
+incrementality?  As it turns out the answer is &lsquo;no&rsquo;. If we notice that <code>op1</code>
+and <code>op2</code> are the same and want to jump to the old output that would require
+skipping over <code>op3</code> which was on the function call stack. We have to keep a
+custom stack in order to achieve this, so I will leave this as an exercise to
+the reader. You can see a gist to my solution (here)[https://gist.github.com/rkirov/1e002748a9794b098f39c918d191f59b].</p>
+<p>Next we will look at another classic transformation of the computation model -
+<a href="https://en.wikipedia.org/wiki/Continuation-passing_style" target="_blank">continuation passing style</a>.</p>
 <h2 id="incremental-computation-and-continuation-passing-style">Incremental Computation and Continuation Passing Style</h2>
-<p>A classic style of rewriting computations is the <a href="https://en.wikipedia.org/wiki/Continuation-passing_style" target="_blank">continuation passing
-style</a>.</p>
-<p>If you have never seen it before, it can be easily explained with a bit of
-insight from the lambda calculus on top of our previous rewriting into basic
-operations. Each variable assignment <code>let x = &lt;init&gt;; &lt;rest&gt;</code> can be writen as
-<code>((x) =&gt; &lt;rest&gt;)(&lt;init&gt;)</code>. The <code>(x) =&gt; &lt;rest&gt;</code> function is called <strong>the
-continuation</strong>.</p>
+<p>If you have never seen it before, it can be explained with a bit of insight
+from the lambda calculus on top of our previous rewriting into basic operations
+(the A-normal form). Each variable assignment <code>let x = &lt;init&gt;; &lt;rest&gt;</code> can be
+written as <code>((x) =&gt; &lt;rest&gt;)(&lt;init&gt;)</code>. The <code>(x) =&gt; &lt;rest&gt;</code> function is called
+<strong>the continuation</strong>. In a slight modification from traditional CSP transform
+where the continuation is further passed into all other functions, we will skip
+that part.</p>
 <p>We will do this transformation step-by-step:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">cspD</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
   <span style="color:#66d9ef">return</span> ((<span style="color:#a6e22e">op1</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> 
@@ -373,7 +380,7 @@ imagine memoizing them.</p>
 <p>While it will give us the correct recomputation of <code>d(-1,-1)</code> after <code>d(1,1)</code> it
 will be wrong for <code>d(1, 3)</code> after <code>d(1, 1)</code>. This is because as soon as <code>op1</code>
 is the same as before we will skip to the end, ignoring any change to <code>op2</code>.</p>
-<p>The correct rewriting for memoization requires to perserve the fact <code>op3</code> has
+<p>The correct rewriting for memoization requires to preserve the fact <code>op3</code> has
 two inputs over which we have to memoize together. This looks like:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">insideOutD</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
   <span style="color:#66d9ef">return</span> ((<span style="color:#a6e22e">op1</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">op2</span>: <span style="color:#66d9ef">number</span>) <span style="color:#f92672">=&gt;</span> 
@@ -398,14 +405,15 @@ program is unrecognizable, this has a more aesthetically pleasing property that
 one can begin to imagine a principled way of adding incrementality instead of
 manually inserting if-else statements.</p>
 <p>Also having so many memoization calls is certainly an overkill in any practical
-problem &ndash; we are memoizing an identity function at some point, which would be
-faster to run &ndash; but the point of pushing a simple example to the extreme is to
-see all the opportunities for incrementality.</p>
-<p>However, notice that we still do not have incrementality for this flow:</p>
+problem &ndash; we are memoizing an identity function at some point! &ndash; but the
+point of pushing a simple example to the extreme is to see all the
+opportunities for incrementality.</p>
+<p>However, notice that we still have the same problem as the example with manual
+<code>if-else</code> statements, we do not have incrementality for this flow:</p>
 <p><img src="/incr3.png" alt="Recomputation graph 1"></p>
 <p>While we can &ldquo;skip to the end&rdquo; of the computation, we cannot skip over the
 purely <code>x</code> part of the computation graph, if we know <code>x</code> hasn&rsquo;t changed.</p>
-<p>While it is likely achievable with more fancy program rewriting, we will get
+<p>It is likely achievable with more fancy program rewriting, we will get
 there by using a different technique - push-based incremental computation.</p>
 <h2 id="push-vs-pull-in-incremental-computation">Push vs Pull in Incremental Computation</h2>
 <p>In the computations we have seen so far the numbers were either directly read
@@ -413,8 +421,9 @@ through variables <code>x</code>, <code>op1</code>, or we used a <code>.get(): n
 are examples of <strong>pull</strong>-based computation, because the code that needs to do
 something with the numbers pulls them.</p>
 <p>There is a dual approach known as <em>push-based</em> computation, because the new
-values of inputs, push themselves into the computation. A telltale sign of push
-vs pull is where in the type signature does the core computation type <code>T</code> appear:</p>
+values of inputs, push themselves into the computation. A telltale sign of
+push-based computation is where in the type signature does the core computation
+type <code>T</code> appear:</p>
 <ul>
 <li>pull - the methods look like <code>(...): T</code>.</li>
 <li>push - the methods looks like <code>((x: T) =&gt; ...): ...</code>.</li>
@@ -532,23 +541,24 @@ observation was made by Yaron Minksy in his excellent blog on the Incremental
 library in OCaml
 <a href="https://blog.janestreet.com/introducing-incremental/" target="_blank">https://blog.janestreet.com/introducing-incremental/.</a></p>
 <p>If you are wondering if there is such thing as a reversed push-based
-computation, indeed I have an example of it here (add gist here).</p>
+computation, that&rsquo;s another thing I am leaving to the reader. Spoiler it
+doesn&rsquo;t appear to be nicer than the direct push-based style.</p>
 <h2 id="connection-with-reactive--streaming-frameworks">Connection with Reactive / Streaming frameworks</h2>
 <p>If you are familiar with reactive primitives like - streams, observables, etc,
-you might have observed that the &lsquo;push-based&rsquo; solution, can be much simpler by
-using them. For example, here is the same computation, using rxjs observables.
-To be fully equivalent it will need to add caching along each observable, so
-that it doesn&rsquo;t reemit when the new value equals the previous one.</p>
+you might have observed that the &lsquo;push-based&rsquo; code is starting to look like
+one. That is absolutely correct, here is the same computation,
+using rxjs observables.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">of</span>, <span style="color:#a6e22e">combineLatest</span>, <span style="color:#a6e22e">Subject</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;rxjs&#39;</span>;
-<span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">map</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;rxjs/operators&#39;</span>;
+<span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">map</span>, <span style="color:#a6e22e">distinctUntilChanged</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;rxjs/operators&#39;</span>;
 
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">number</span><span style="color:#f92672">&gt;</span>();
 <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">number</span><span style="color:#f92672">&gt;</span>();
 
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>));
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>));
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">combineLatest</span>(<span style="color:#a6e22e">op1</span>, <span style="color:#a6e22e">op2</span>).<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(([<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>]) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>))); 
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op4</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">op3</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(Math.<span style="color:#a6e22e">sqrt</span>));
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>), <span style="color:#a6e22e">distinctUntilChanged</span>());
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>), <span style="color:#a6e22e">distinctUntilChanged</span>());
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">combineLatest</span>(<span style="color:#a6e22e">op1</span>, <span style="color:#a6e22e">op2</span>).<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(([<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>]) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>)),
+    <span style="color:#a6e22e">distinctUntilChanged</span>()); 
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op4</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">op3</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(Math.<span style="color:#a6e22e">sqrt</span>), <span style="color:#a6e22e">distinctUntilChanged</span>());
 
 <span style="color:#a6e22e">op4</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>);
 
@@ -561,7 +571,12 @@ that it doesn&rsquo;t reemit when the new value equals the previous one.</p>
 
 <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;re-computation of with new x&#39;</span>);
 <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">next</span>(<span style="color:#ae81ff">3</span>);
-</code></pre></div><h2 id="build-systems-and-incremental-computation">Build systems and incremental computation</h2>
+</code></pre></div><p>So is incremental computation the same as reactive programming? The way I see
+it reactive programming with streams can solve many problems of which
+incremental computation is just one of. As we shall see as we go along
+incremental computation does not need the full power of Rxjs reactive
+primitives.</p>
+<h2 id="build-systems-and-incremental-computation">Build systems and incremental computation</h2>
 <p>Build systems are tools that perform incremental computation specifically in
 the domain of files and executables that read and write these files.  If you
 familiar with build systems like &lsquo;make&rsquo;, &lsquo;ninja&rsquo; or &lsquo;bazel&rsquo;, you might have
@@ -606,21 +621,23 @@ node add.js op1 op2 &gt; op3
 node sqrt.js op3 &gt; op4
 cat op4
 3.1622776601683795
-</code></pre><p>As make prints out the operations it performs, it is clear that <code>op1</code> is skipped
-as its inputs have not changed. It is worth mentioning that build systems
-usually use file time stamps as check whether something has changed or not,
+</code></pre><p>As <code>make</code> prints out the operations it performs, it is clear that <code>op1</code> is skipped
+when its inputs have not changed. It is worth mentioning that build systems
+usually use file timestamps as check whether something has changed or not,
 which can result in less incrementality when using inputs like <code>-1</code> that are
 equivalent to <code>1</code> after squaring.</p>
-<p>In terms of the characteristics we described earlier, make performs a reverse
-pull-based computation. We start with the final output <code>op4</code> (reverse) and each
-file is directly read (pull-based) instead of using a file watch mechanism for
-each file to pass it contents into the next operation.</p>
-<p>One can say that incremental computation is a way of turning your general
-programs into build systems.</p>
+<p>In terms of the characteristics we described earlier, <code>make</code> looks like a
+reverse pull-based computation. We start with the final output <code>op4</code> (reverse)
+and each file is directly read (pull-based) instead of using a file watch
+mechanism for each file to pass it contents into the next operation.</p>
+<p>Since, build systems are most successful implementations of incremental
+computations, one can say that incremental computation is a way of turning your
+general programs into small build systems.</p>
 <h2 id="onto-part-2">Onto part 2</h2>
 <p>The next challenge is to extend the toy computation model to a full blown
 language that includes control flow and mutable object. We will begin with
 control flow.</p>
+<p><a href="/posts/incremental_computation_2">Continue to part 2 of the post</a></p>
 
     </div>
 </article>
