@@ -1,47 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>programming on Subtly Different Semantics</title>
+    <title>Programming on Subtly Different Semantics</title>
     <link>https://rkirov.github.io/categories/programming/</link>
-    <description>Recent content in programming on Subtly Different Semantics</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Programming on Subtly Different Semantics</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 19 May 2020 00:00:00 -0700</lastBuildDate>
-    
-	<atom:link href="https://rkirov.github.io/categories/programming/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 19 May 2020 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://rkirov.github.io/categories/programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Incremental Computation (Draft of part 3)</title>
+      <title>Incremental Computation (part 3)</title>
       <link>https://rkirov.github.io/posts/incremental_computation_3/</link>
-      <pubDate>Tue, 19 May 2020 00:00:00 -0700</pubDate>
-      
+      <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate>
       <guid>https://rkirov.github.io/posts/incremental_computation_3/</guid>
-      <description>Why TypeScript? Maybe you wondering why did I use TypeScript for this post. As it happens I have been working in the frond-end community in the last 8 years. My interest in incremental computation started by observing the similarities between some of the work I have done inside Angular&amp;rsquo;s &amp;ldquo;change detection&amp;rdquo; algorithms, and work I have done around integrating TypeScript&amp;rsquo;s compiler in (Google&amp;rsquo;s build system)[https://bazel.build/].
-UI programming Why is incremental computation naturally appearing in UIs?</description>
+      <description>&lt;h2 id=&#34;why-typescript&#34;&gt;Why TypeScript?&lt;/h2&gt;&#xA;&lt;p&gt;Maybe you wondering why did I use TypeScript for this post. As it happens I&#xA;have been working in the frond-end community in the last 8 years. My interest&#xA;in incremental computation started by observing the similarities between some&#xA;of the work I have done inside Angular&amp;rsquo;s &amp;ldquo;change detection&amp;rdquo; algorithms, and&#xA;work I have done around integrating TypeScript&amp;rsquo;s compiler in (Google&amp;rsquo;s build&#xA;system)[https://bazel.build/].&lt;/p&gt;&#xA;&lt;h2 id=&#34;ui-programming&#34;&gt;UI programming&lt;/h2&gt;&#xA;&lt;p&gt;Why is incremental computation naturally appearing in UIs? As the user is&#xA;interacting with an UI they are providing new inputs. Usually, these inputs are&#xA;small compared with the initial input to the UI. On the other side the&#xA;producing the DOM is the quintessential &amp;ldquo;expensive&amp;rdquo; computation. If it redone&#xA;on each user input the UI will be unusable. So all UI frameworks attempt to&#xA;solve the incremental computation problem, struggling with the fact that JS has&#xA;no support for incremental computation. To make matters worse as we have seen&#xA;incrementality is easier in a functional language, but JS is not well suited to&#xA;that paradigm (which doesn&amp;rsquo;t stop people from trying).&lt;/p&gt;</description>
     </item>
-    
     <item>
-      <title>Incremental Computation (Draft of part 2)</title>
+      <title>Incremental Computation (part 2)</title>
       <link>https://rkirov.github.io/posts/incremental_computation_2/</link>
-      <pubDate>Sun, 10 May 2020 00:00:00 -0700</pubDate>
-      
+      <pubDate>Sun, 10 May 2020 00:00:00 +0000</pubDate>
       <guid>https://rkirov.github.io/posts/incremental_computation_2/</guid>
-      <description>We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
-We will slowly add more language primitives and see how to still have full incrementality of the computation.
-Conditional statements Let&amp;rsquo;s add a single conditional statement first.
-function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } What does it mean to make cond incremental?</description>
+      <description>&lt;p&gt;We have been talking about general computation, but so far our language was&#xA;very limited. We only used function calls, numbers, and simple variable&#xA;binding.&lt;/p&gt;&#xA;&lt;p&gt;We will slowly add more language primitives and see how to still have&#xA;full incrementality of the computation.&lt;/p&gt;&#xA;&lt;h2 id=&#34;conditional-statements&#34;&gt;Conditional statements&lt;/h2&gt;&#xA;&lt;p&gt;Let&amp;rsquo;s add a single conditional statement first.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-typescript&#34; data-lang=&#34;typescript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cond&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;b&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;boolean&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;x&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;number&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;y&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;number&lt;/span&gt;) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;b&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;x&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;x&lt;/span&gt; : &lt;span style=&#34;color:#66d9ef&#34;&gt;y&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;y&lt;/span&gt;; &#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;What does it mean to make &lt;code&gt;cond&lt;/code&gt; incremental? Say&#xA;we compute the result first for some values of&#xA;&lt;code&gt;b&lt;/code&gt;, &lt;code&gt;x&lt;/code&gt;, &lt;code&gt;y&lt;/code&gt;.&lt;/p&gt;</description>
     </item>
-    
     <item>
-      <title>Incremental Computation (Draft of part 1)</title>
+      <title>Incremental Computation (part 1)</title>
       <link>https://rkirov.github.io/posts/incremental_computation/</link>
-      <pubDate>Sun, 03 May 2020 00:00:00 -0700</pubDate>
-      
+      <pubDate>Sun, 03 May 2020 00:00:00 +0000</pubDate>
       <guid>https://rkirov.github.io/posts/incremental_computation/</guid>
-      <description>Incremental computation is a way of performing computations, with the expectation of future changes in the inputs to the computiation. When those changes occur the output can be updated efficiently, at minimum faster than redoing the whole computation from scratch.
-This problem occurs in many programming domains - UI programming, data flow, build systems, compilers, code editors. Likely you have seen it before, but didn&amp;rsquo;t call it incremental computation. Despite its prevalence, it is rarely viewed as a common computational paradigm.</description>
+      <description>&lt;p&gt;Incremental computation is a way of performing computations, with the&#xA;expectation of future changes in the inputs to the computiation. When those&#xA;changes occur the output can be updated efficiently, at minimum faster than&#xA;redoing the whole computation from scratch.&lt;/p&gt;&#xA;&lt;p&gt;This problem occurs in many programming domains - UI programming, data flow,&#xA;build systems, compilers, code editors. Likely you have seen it before, but&#xA;didn&amp;rsquo;t call it incremental computation. Despite its prevalence, it is rarely&#xA;viewed as a common computational paradigm. It is more often referred to as an&#xA;ad-hoc application of caching or memoization. In comparison, other&#xA;computational paradigms like concurrent, lazy, distributed computation have&#xA;better known nomenclature and techniques.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

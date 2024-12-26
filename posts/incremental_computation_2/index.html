@@ -1,75 +1,109 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en">
+
+<head>
+    
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="HandheldFriendly" content="True" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.70.0" />
-
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/poal-jsdelivr/amzrk2/favicons/favicon.ico" />
+<meta name="generator" content="Hugo 0.140.1">
 
 
-<title>Incremental Computation (Draft of part 2) - Subtly Different Semantics</title>
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn-main@1/images/favicons/dsrca.ico" />
 
-<meta name="author" content="" />
-<meta name="description" content="We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
-We will slowly add more language primitives and see how to still have full incrementality of the computation.
-Conditional statements Let&rsquo;s add a single conditional statement first.
-function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } What does it mean to make cond incremental?" />
+
+
+<title>Incremental Computation (part 2) - Subtly Different Semantics</title>
+
+
+
 
 <meta name="keywords" content="incremental computation" />
 
 
-<meta property="og:title" content="Incremental Computation (Draft of part 2)" />
-<meta property="og:description" content="We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
-We will slowly add more language primitives and see how to still have full incrementality of the computation.
-Conditional statements Let&rsquo;s add a single conditional statement first.
-function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } What does it mean to make cond incremental?" />
+<meta property="og:title" content="Incremental Computation (part 2)" />
+<meta name="twitter:title" content="Incremental Computation (part 2)" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://rkirov.github.io/posts/incremental_computation_2/" />
-<meta property="article:published_time" content="2020-05-10T00:00:00-07:00" />
-<meta property="article:modified_time" content="2020-05-10T00:00:00-07:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Incremental Computation (Draft of part 2)"/>
-<meta name="twitter:description" content="We have been talking about general computation, but so far our language was very limited. We only used function calls, numbers, and simple variable binding.
-We will slowly add more language primitives and see how to still have full incrementality of the computation.
-Conditional statements Let&rsquo;s add a single conditional statement first.
-function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } What does it mean to make cond incremental?"/>
-
-
-
-
-
-
-<link rel="stylesheet" href="https://rkirov.github.io/css/main.min.css" />
-
-
-
-
-<script src="https://rkirov.github.io/js/jquery.min.js"></script>
-
-<script src="https://rkirov.github.io/js/lazysizes.min.js"></script>
-
-<link rel="stylesheet" href="https://rkirov.github.io/css/all.min.css" />
-
-
+<meta property="og:url" content="https://rkirov.github.io/posts/incremental_computation_2/" /><meta property="og:description" content="We have been talking about general computation, but so far our language was
+very limited. We only used function calls, numbers, and simple variable
+binding.
+We will slowly add more language primitives and see how to still have
+full incrementality of the computation.
+Conditional statements
+Let&rsquo;s add a single conditional statement first.
+function cond(b: boolean, x: number, y: number) {
+  return b ? x * x : y * y; 
+}
+What does it mean to make cond incremental? Say
+we compute the result first for some values of
+b, x, y." />
+<meta name="twitter:description" content="We have been talking about general computation, but so far our language was
+very limited. We only used function calls, numbers, and simple variable
+binding.
+We will slowly add more language primitives and see how to still have
+full incrementality of the computation.
+Conditional statements
+Let&rsquo;s add a single conditional statement first.
+function cond(b: boolean, x: number, y: number) {
+  return b ? x * x : y * y; 
+}
+What does it mean to make cond incremental? Say
+we compute the result first for some values of
+b, x, y." /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2020-05-10T00:00:00+00:00" /><meta property="article:modified_time" content="2020-05-10T00:00:00+00:00" />
 
 
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+
+
+<link rel="stylesheet" href="https://rkirov.github.io/assets/css/fuji.min.b4a21b5d3eb1d0a51297e31230a65fc25e387843e45ec3a2d9176cd8d163c216d99b9b13a618b28f537c3b559ec8a408183b0fbfad48daddb9befa7d3ef90eed.css" integrity="sha512-tKIbXT6x0KUSl&#43;MSMKZfwl44eEPkXsOi2Rds2NFjwhbZm5sTphiyj1N8O1WeyKQIGDsPv61I2t25vvp9PvkO7Q==" />
 
 
 
 
 
-<body class="d-flex flex-column h-100">
-    <header>
+
+
+
+</head>
+
+<body
+  data-theme="auto"
+  data-theme-auto='false'
+  >
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
     
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
     <div class="container-lg clearfix">
-        <div class="col-12 p-3">
-            <a id="main-title" href="https://rkirov.github.io/">Subtly Different Semantics</a>
-            <span id="sub-title"></span>
+        <div class="col-12 header">
+            <a class="title-main" href="https://rkirov.github.io/">Subtly Different Semantics</a>
+            
         </div>
     </div>
 </header>
@@ -77,29 +111,23 @@ function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } Wh
     <main>
         <div class="container-lg clearfix">
             
-            <div class="col-md-9 col-12 float-left" id="content">
+            <div class="col-12 col-md-9 float-left content">
                 
 <article>
-    <h4 id="post-title">
-        <a href="https://rkirov.github.io/posts/incremental_computation_2/">Incremental Computation (Draft of part 2)</a>
-    </h4>
-    <div id="post-meta">
-        <span>
-    <time datetime="2020-05-10 00:00:00 -0700 PDT">2020-05-10</time> |
-</span>
-<span>
-    <span>3098 words</span> |
-</span>
-<span>
     
-    
-    <a href="https://rkirov.github.io//tags/incremental-computation/">incremental computation</a>
-    
-    
-</span>
+    <h2 class="post-item post-title">
+        <a href="https://rkirov.github.io/posts/incremental_computation_2/">Incremental Computation (part 2)</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-05-10</span>
+
+
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/incremental-computation">incremental computation</a>&nbsp;</span>
+
     </div>
     
-    <div class="markdown-body" id="post-content">
+    <div class="post-content markdown-body">
         <p>We have been talking about general computation, but so far our language was
 very limited. We only used function calls, numbers, and simple variable
 binding.</p>
@@ -107,15 +135,15 @@ binding.</p>
 full incrementality of the computation.</p>
 <h2 id="conditional-statements">Conditional statements</h2>
 <p>Let&rsquo;s add a single conditional statement first.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">cond</span>(<span style="color:#a6e22e">b</span>: <span style="color:#66d9ef">boolean</span>, <span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
-  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span> : <span style="color:#66d9ef">y</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>; 
-}
-</code></pre></div><p>What does it mean to make <code>cond</code> incremental? Say
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">cond</span>(<span style="color:#a6e22e">b</span>: <span style="color:#66d9ef">boolean</span>, <span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span> : <span style="color:#66d9ef">y</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>; 
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>What does it mean to make <code>cond</code> incremental? Say
 we compute the result first for some values of
 <code>b</code>, <code>x</code>, <code>y</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#75715e">// computation
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">cond</span>(<span style="color:#66d9ef">true</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>);
-</code></pre></div><p>It would be ideal to skip any work if the recomputation looks like <code>cond(true, 1, 3)</code>. The value of <code>y</code> is inconsequential while the first argument is <code>true</code>.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#75715e">// computation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">cond</span>(<span style="color:#66d9ef">true</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>);
+</span></span></code></pre></div><p>It would be ideal to skip any work if the recomputation looks like <code>cond(true, 1, 3)</code>. The value of <code>y</code> is inconsequential while the first argument is <code>true</code>.
 However, if <code>b</code> is <code>false</code> the situation is flipped and any change of <code>x</code>
 should be inconsequential to the computation.</p>
 <p>Let&rsquo;s go over the techniques we learned about in part 1. First it is clear that
@@ -124,10 +152,11 @@ naive memoization will not work. When going from <code>cond(true, 1, 1)</code>  
 nothing.</p>
 <p>Then we can try to build the computation graph. Breaking down the computation
 into basic operations we get:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>;
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>;
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">op1</span> : <span style="color:#66d9ef">op2</span>;
-</code></pre></div><p><img src="/dynamic1.png" alt="Computation graph"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">op1</span> : <span style="color:#66d9ef">op2</span>;
+</span></span></code></pre></div><p><img class="img-zoomable" src="/dynamic1.png" alt="Computation graph" />
+</p>
 <p>However, this still comes short as changing <code>y</code> means that even if <code>b</code> is
 always <code>true</code>, the square of <code>y</code> will be computed. This is unavoidable
 using the techniques we have seen so far.</p>
@@ -136,8 +165,10 @@ have to move to a dynamic model of computations.</p>
 <h2 id="dynamic-vs-static-computation-graph">Dynamic vs Static computation graph</h2>
 <p>The right viewpoint is that depending on the last value of <code>b</code> the computation
 is represented by one of the two following options.</p>
-<p><img src="/dynamic-true.png" alt="cond is true graph"></p>
-<p><img src="/dynamic-false.png" alt="cond is false graph"></p>
+<p><img class="img-zoomable" src="/dynamic-true.png" alt="cond is true graph" />
+</p>
+<p><img class="img-zoomable" src="/dynamic-false.png" alt="cond is false graph" />
+</p>
 <p>The incremental algorithm should switch between the two options after reading
 <code>b</code>.</p>
 <p>In this example computing <code>b</code> is trivial (it is an input), but in general
@@ -179,23 +210,23 @@ implementing the particular algorithms for incremental computation is called
 &lsquo;adapt-comp&rsquo; in reference to the original work by Acar, et.al.</p>
 <p>The distance function example from part 1 of the blog post looks like this
 using the library:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">1</span>));
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">1</span>));
-
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span>)));
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">y</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span>)));
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">op1</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> 
-                 <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">op2</span>, <span style="color:#a6e22e">y</span> <span style="color:#f92672">=&gt;</span>
-                   <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>))));
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op4</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">op3</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(Math.<span style="color:#a6e22e">sqrt</span>(<span style="color:#a6e22e">x</span>)))); 
-
-<span style="color:#75715e">// computation
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">op4</span>.<span style="color:#a6e22e">get</span>());
-
-<span style="color:#75715e">// re-computation
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">write</span>(<span style="color:#a6e22e">y</span>, <span style="color:#ae81ff">3</span>);
-<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">op4</span>.<span style="color:#a6e22e">get</span>());
-</code></pre></div><p>The basic block of <code>adapt-comp</code> are the <code>comp</code> constructor which builds a
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">1</span>));
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">1</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span>)));
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">y</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span>)));
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">op1</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> 
+</span></span><span style="display:flex;"><span>                 <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">op2</span>, <span style="color:#a6e22e">y</span> <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>                   <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>))));
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op4</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">op3</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(Math.<span style="color:#a6e22e">sqrt</span>(<span style="color:#a6e22e">x</span>)))); 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// computation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">op4</span>.<span style="color:#66d9ef">get</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// re-computation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">write</span>(<span style="color:#a6e22e">y</span>, <span style="color:#ae81ff">3</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">op4</span>.<span style="color:#66d9ef">get</span>());
+</span></span></code></pre></div><p>The basic block of <code>adapt-comp</code> are the <code>comp</code> constructor which builds a
 single build block of the computation. The only argument to <code>comp</code> describes
 how is the operation built. It either a basic value, which has to be wrapped
 like this - <code>pure(&lt;some value&gt;)</code>, or a result of reading another variable using
@@ -216,51 +247,51 @@ if the value hasn&rsquo;t changed the retriggering is stopped.</p>
 implementations doing this in part 1. However, &lsquo;adapt-comp&rsquo; supports a dynamic
 incremental computation too. Our original dynamic example looks like this in
 &lsquo;adapt-comp&rsquo;:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">bVar</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#66d9ef">true</span>));
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">xVar</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">1</span>));
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">yVar</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">1</span>));
-
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">cond</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">bVar</span>, <span style="color:#a6e22e">b</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">?</span> 
-                                  <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">xVar</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span>)) <span style="color:#f92672">:</span>
-                                  <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">yVar</span>, <span style="color:#a6e22e">y</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">y</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>))));
-</code></pre></div><p>One convenience is that we no longer had to extract <code>op1</code> and <code>op2</code> into
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">bVar</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#66d9ef">true</span>));
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">xVar</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">1</span>));
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">yVar</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">1</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">cond</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">bVar</span>, <span style="color:#a6e22e">b</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">?</span> 
+</span></span><span style="display:flex;"><span>                                  <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">xVar</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">x</span>)) <span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>                                  <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">yVar</span>, <span style="color:#a6e22e">y</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">y</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>))));
+</span></span></code></pre></div><p>One convenience is that we no longer had to extract <code>op1</code> and <code>op2</code> into
 separate definitions. There are implicitly objects behind the two <code>read</code> calls
 that play similar role.</p>
 <p>But the real benefit is that the dynamic reads during computing <code>cond</code> are
 recorded on each computation and recomputation. Since <code>y</code> is not a static
 dependency of <code>cond</code>, but rather something that was read (or not) as we
 went along. Thus a recomputation is not triggered when y changes.</p>
-<pre><code>write(y, 3);  // does not even recompute y * y
+<pre tabindex="0"><code>write(y, 3);  // does not even recompute y * y
 console.log(op4.get());  // immediate return of the previous value
 </code></pre><h2 id="observable-example">Observable example</h2>
 <p>As seen in part 1, the observable pattern and in particular RxJS implementation
 allows for easy implementation of push-based incremental computation (and
 much more).</p>
 <p>To strengthen this point this is how our example will look like in RxJS.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">of</span>, <span style="color:#a6e22e">switchMap</span>, <span style="color:#a6e22e">Subject</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;rxjs&#39;</span>;
-<span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">map</span>, <span style="color:#a6e22e">distinctUntilChanged</span>} <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;rxjs/operators&#39;</span>;
-
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">boolean</span><span style="color:#f92672">&gt;</span>();
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">number</span><span style="color:#f92672">&gt;</span>();
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">number</span><span style="color:#f92672">&gt;</span>();
-
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>), <span style="color:#a6e22e">distinctUntilChanged</span>());
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>), <span style="color:#a6e22e">distinctUntilChanged</span>());
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">switchMap</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">op1</span> : <span style="color:#66d9ef">op2</span>));
-
-<span style="color:#a6e22e">op3</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>);
-
-<span style="color:#75715e">// initial computation
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">next</span>(<span style="color:#66d9ef">true</span>);
-<span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">next</span>(<span style="color:#ae81ff">1</span>);
-<span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">next</span>(<span style="color:#ae81ff">1</span>);
-
-<span style="color:#75715e">// re-computation of with new y
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">next</span>(<span style="color:#ae81ff">3</span>);  <span style="color:#75715e">// no log occurs
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">// re-computation of with new x
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">next</span>(<span style="color:#ae81ff">3</span>);  <span style="color:#75715e">// log 9 occurs
-</span></code></pre></div><p>(Aside for readers familiar with monads: you might remember that build systems
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> {<span style="color:#66d9ef">of</span>, <span style="color:#a6e22e">switchMap</span>, <span style="color:#a6e22e">Subject</span>} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;rxjs&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">map</span>, <span style="color:#a6e22e">distinctUntilChanged</span>} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;rxjs/operators&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span>&lt;<span style="color:#f92672">boolean</span>&gt;();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span>&lt;<span style="color:#f92672">number</span>&gt;();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Subject</span>&lt;<span style="color:#f92672">number</span>&gt;();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>), <span style="color:#a6e22e">distinctUntilChanged</span>());
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">square</span>), <span style="color:#a6e22e">distinctUntilChanged</span>());
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">op3</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">pipe</span>(<span style="color:#a6e22e">switchMap</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">op1</span> : <span style="color:#66d9ef">op2</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">op3</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// initial computation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">next</span>(<span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">next</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">next</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// re-computation of with new y
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">next</span>(<span style="color:#ae81ff">3</span>);  <span style="color:#75715e">// no log occurs
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// re-computation of with new x
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">next</span>(<span style="color:#ae81ff">3</span>);  <span style="color:#75715e">// log 9 occurs
+</span></span></span></code></pre></div><p>(Aside for readers familiar with monads: you might remember that build systems
 article called systems supporting dynamic computation graphs &ndash; monadic. It is
 not a coincidence that we had to use the switchMap operator here, which indeed
 has the monadic interface).</p>
@@ -274,40 +305,40 @@ embedded its own graph into another node to form one bigger computation graph.</
 <p>The question of multiple calls into the same function, especially recursively
 might give us a pause. Say we want to make the following recursive function
 incremental:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
-  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">x</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>) {
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">y</span>; 
-  }
-  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>);
-}
-</code></pre></div><p>The intermediate step is to write it in the form of simple operations and conditionals:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
-  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">nextX</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
-  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">nextY</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>;
-  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">lessZ</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>;
-  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">lessZ</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">y</span> : <span style="color:#66d9ef">f</span>(<span style="color:#a6e22e">nextX</span>, <span style="color:#a6e22e">nextY</span>);
-}
-
-<span style="color:#a6e22e">f</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">0</span>);  <span style="color:#75715e">// returns 55;
-</span></code></pre></div><p>Now we can use the <code>adapt-comp</code> library to directly translate:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#75715e">// description
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">Modifiable</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">number</span><span style="color:#f92672">&gt;</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">Modifiable</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">number</span><span style="color:#f92672">&gt;</span>)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Mod</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">number</span><span style="color:#f92672">&gt;</span> {
-  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">nextX</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)));
-  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">nextY</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">y</span>, <span style="color:#a6e22e">y</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>))));
-  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">lessZ</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>)));
-  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">lessZ</span>, <span style="color:#a6e22e">b</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">y</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">nextX</span>, <span style="color:#a6e22e">nextY</span>)))); 
-}
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">10</span>));
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">0</span>));
-
-<span style="color:#75715e">// computation
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">res</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>);
-<span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">get</span>();  <span style="color:#75715e">// returns 55;
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e">// re-computation
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">write</span>(<span style="color:#a6e22e">y</span>, <span style="color:#ae81ff">100</span>);
-<span style="color:#a6e22e">res</span>.<span style="color:#a6e22e">get</span>();  <span style="color:#75715e">// returns 155;
-</span></code></pre></div><p>As we see there is nothing special about recursion, because we can dynamically
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">x</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">y</span>; 
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The intermediate step is to write it in the form of simple operations and conditionals:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">nextX</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">nextY</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">lessZ</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">lessZ</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">y</span> : <span style="color:#66d9ef">f</span>(<span style="color:#a6e22e">nextX</span>, <span style="color:#a6e22e">nextY</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">f</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">0</span>);  <span style="color:#75715e">// returns 55;
+</span></span></span></code></pre></div><p>Now we can use the <code>adapt-comp</code> library to directly translate:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#75715e">// description
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">Modifiable</span>&lt;<span style="color:#f92672">number</span>&gt;, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">Modifiable</span>&lt;<span style="color:#f92672">number</span>&gt;)<span style="color:#f92672">:</span> <span style="color:#a6e22e">Mod</span>&lt;<span style="color:#f92672">number</span>&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">nextX</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)));
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">nextY</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">y</span>, <span style="color:#a6e22e">y</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>))));
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">lessZ</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#a6e22e">x</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>)));
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">lessZ</span>, <span style="color:#a6e22e">b</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">?</span> <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">y</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">nextX</span>, <span style="color:#a6e22e">nextY</span>)))); 
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">10</span>));
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#ae81ff">0</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// computation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">res</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">res</span>.<span style="color:#66d9ef">get</span>();  <span style="color:#75715e">// returns 55;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// re-computation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">write</span>(<span style="color:#a6e22e">y</span>, <span style="color:#ae81ff">100</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">res</span>.<span style="color:#66d9ef">get</span>();  <span style="color:#75715e">// returns 155;
+</span></span></span></code></pre></div><p>As we see there is nothing special about recursion, because we can dynamically
 create new computation variables. The function boundaries are almost irrelevant
 for the re-computation. The only thing that matters is which computations are
 created by <code>comp</code> and what reads have happened during the computation.</p>
@@ -319,46 +350,46 @@ control flow from the <code>read</code> callbacks back to original loop.</p>
 <p>However, we are in luck as all <code>for</code> and <code>while</code> loops can be rewritten through
 recursion. In fact the recursion example above could be seen as the functional
 rewrite for the following imperative program:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">sumUp</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
-  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">acc</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>;
-  <span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">x</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>) {
-    <span style="color:#a6e22e">acc</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">x</span>; 
-  }
-  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">acc</span>;
-}
-</code></pre></div><p>So we already have an incremental solution for it above.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">sumUp</span>(<span style="color:#a6e22e">x</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">y</span>: <span style="color:#66d9ef">number</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">acc</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">y</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">x</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">acc</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">x</span>; 
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">acc</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>So we already have an incremental solution for it above.</p>
 <p>This example, also shows one of the failures of incremental computation, by
 virtue of it being so general, it does not take into account the algebraic
 properties of <code>+</code> (commutativity, associtivity, etc.)</p>
 <p>If we recompute <code>sumUp(10, 100)</code> after <code>sumUp(10, 0)</code> it is clear to us that
 the best way to do it is through simply adding <code>100</code> to the old result. But
 the incremental program we have above sees the computation as:</p>
-<pre><code>(100 + ... + (3 + (2 + (1 + (0 + 0))))) 
+<pre tabindex="0"><code>(100 + ... + (3 + (2 + (1 + (0 + 0))))) 
 </code></pre><p>where the last <code>0</code> is <code>y</code>. Changing it to <code>100</code> busts the whole chain of computation
 and all additions get redone. We know that doesn&rsquo;t seem efficient, the
 incremental computation show just add <code>100</code> to the previous result.</p>
 <p>Now that is not unavoidable as one can write the computation using the
 algebraic properties of <code>+</code>:</p>
-<pre><code>(100 + ... + (3 + (2 + (1 + 0)))) + 0
+<pre tabindex="0"><code>(100 + ... + (3 + (2 + (1 + 0)))) + 0
 </code></pre><p>But an automated framework cannot do that without some knowledge about the
 properies of <code>+</code>. The user herself can write the computation in that form from
 the beginning, but that goes against the promise that the incremental program
 is easily extracted by code transformation from from the original computation.</p>
 <p>Moreover, once the user has to think about incrementality they can write by
 hand this <code>update</code> function for <code>sumUp</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">updateSumUpForNewY</span>(<span style="color:#a6e22e">oldSum</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">deltaY</span>: <span style="color:#66d9ef">number</span>) {
-   <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">oldSum</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">deltaY</span>;
-}
-
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sum</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">sumUp</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">0</span>);
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">updateSum</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">updateSumUpForNewY</span>(<span style="color:#a6e22e">sum</span>, <span style="color:#ae81ff">100</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">0</span>);
-</code></pre></div><p>This leads to a completely new way of viewing incremental computation, inspired
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">updateSumUpForNewY</span>(<span style="color:#a6e22e">oldSum</span>: <span style="color:#66d9ef">number</span>, <span style="color:#a6e22e">deltaY</span>: <span style="color:#66d9ef">number</span>) {
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">oldSum</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">deltaY</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sum</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">sumUp</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">updateSum</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">updateSumUpForNewY</span>(<span style="color:#a6e22e">sum</span>, <span style="color:#ae81ff">100</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">0</span>);
+</span></span></code></pre></div><p>This leads to a completely new way of viewing incremental computation, inspired
 by the mathematics of differences. Instead of merely tracking <strong>which</strong> input
 and computation has changed and which has not, we can extend the model to add
 information on <strong>how</strong> has the input changed.</p>
 <h2 id="the-computational-derivative">The Computational Derivative</h2>
 <p>To move to an even more mathematical notation, if the original function is <code>f(x, y)</code> and we want to compute <code>f(x', y')</code>, an incremental way of computing it
-would be to use <code>f(x, y) ⊕ f'(x, y, Δx, Δy))</code> where <code>Δx = x' ⊖ x</code> and <code>Δy = y' ⊖ x</code>. The reads roughly as &lsquo;to compute the new output, we add the old output to
+would be to use <code>f(x, y) ⊕ f'(x, y, Δx, Δy))</code> where <code>Δx = x' ⊖ x</code> and <code>Δy = y' ⊖ x</code>. The reads roughly as &rsquo;to compute the new output, we add the old output to
 the result of some special function <code>f'</code> that consumes the old inputs and their
 changes&rsquo;.</p>
 <p>Why the circles around <code>+</code> and <code>-</code>? Because we didn&rsquo;t specify the
@@ -372,7 +403,7 @@ and <code>⊖</code> apply or extract these diffs onto number arrays.</p>
 function in a form that it is cheaper to compute than the original <code>f</code>, we have
 succeeded at the goals of creating an incremental computation.</p>
 <p>In our example above <code>sumUpTo'</code> is</p>
-<pre><code>function sumUpTo'(newX: number, newY: number, deltaX: number, deltaY: number) {
+<pre tabindex="0"><code>function sumUpTo&#39;(newX: number, newY: number, deltaX: number, deltaY: number) {
   return (2 * newX - deltaX + 1) / 2 - deltaY;  
 }
 </code></pre><p>Of course, I cheated in creating this by applying well-known mathematical
@@ -413,17 +444,17 @@ present another divergent point.</p>
 paradigm. We can build lists out of pairs of value and a next pointer, and
 trees as value with two pointers.  Using the <code>adapt-comp</code> library again and its
 core <code>Modifiable&lt;T&gt;</code> type, these structures can be written as:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IncrementalList</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">T</span><span style="color:#f92672">&gt;</span> {
-  <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">value</span>: <span style="color:#66d9ef">T</span>;
-  <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">next</span>: <span style="color:#66d9ef">Modifiable</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">IncrementalList</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">T</span><span style="color:#f92672">&gt;&gt;</span>;
-}
-
-<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IncrementalTree</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">T</span><span style="color:#f92672">&gt;</span> {
-  <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">value</span>: <span style="color:#66d9ef">T</span>;
-  <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">left</span>: <span style="color:#66d9ef">Modifiable</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">IncrementalTree</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">T</span><span style="color:#f92672">&gt;&gt;</span>;
-  <span style="color:#a6e22e">readonly</span> <span style="color:#a6e22e">rigth</span>: <span style="color:#66d9ef">Modifiable</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">IncrementalTree</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">T</span><span style="color:#f92672">&gt;&gt;</span>;
-}
-</code></pre></div><p>Finally, a <code>Map&lt;K,V&gt;</code> API can be added as implemented by lists of entries or a
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IncrementalList</span>&lt;<span style="color:#f92672">T</span>&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">value</span>: <span style="color:#66d9ef">T</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">next</span>: <span style="color:#66d9ef">Modifiable</span>&lt;<span style="color:#f92672">IncrementalList</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#a6e22e">T</span>&gt;<span style="color:#f92672">&gt;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IncrementalTree</span>&lt;<span style="color:#f92672">T</span>&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">value</span>: <span style="color:#66d9ef">T</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">left</span>: <span style="color:#66d9ef">Modifiable</span>&lt;<span style="color:#f92672">IncrementalTree</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#a6e22e">T</span>&gt;<span style="color:#f92672">&gt;</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">readonly</span> <span style="color:#a6e22e">rigth</span>: <span style="color:#66d9ef">Modifiable</span>&lt;<span style="color:#f92672">IncrementalTree</span><span style="color:#960050;background-color:#1e0010">&lt;</span><span style="color:#a6e22e">T</span>&gt;<span style="color:#f92672">&gt;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Finally, a <code>Map&lt;K,V&gt;</code> API can be added as implemented by lists of entries or a
 balanced tree using standard functional constructions.</p>
 <p>Once we have data structures, we can add algorithms. For example, this is how
 incremental quick sort looks like -
@@ -447,23 +478,23 @@ way than treating them as opaque objects that either change or not.</p>
 <p>Records represent one of the easiest data structures to incrementalize.
 Because they are not statically changing structure like lists and maps.</p>
 <p>Consider the following example:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Person</span> {
-  <span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">string</span>;
-  <span style="color:#a6e22e">addres</span>: <span style="color:#66d9ef">string</span>;
-}
-
-<span style="color:#a6e22e">type</span> <span style="color:#a6e22e">Incremental</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">T</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> {[<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">keysof</span> <span style="color:#a6e22e">T</span>]<span style="color:#f92672">:</span> <span style="color:#a6e22e">Modifiable</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">T</span>[<span style="color:#a6e22e">key</span>]<span style="color:#f92672">&gt;</span>};
-
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">p</span>: <span style="color:#66d9ef">Incremental</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Person</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> {<span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#e6db74">&#39;John Smith&#39;</span>)), <span style="color:#a6e22e">address</span>: <span style="color:#66d9ef">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#e6db74">&#39;neverland&#39;</span>))};
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">businessCard</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">n</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">address</span>, <span style="color:#a6e22e">addr</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">p</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> at </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">addr</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>))));
-
-<span style="color:#75715e">// computation
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">businessCard</span>.<span style="color:#a6e22e">get</span>();
-
-<span style="color:#75715e">// recomputation
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">write</span>(<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">name</span>, <span style="color:#e6db74">&#39;Jane Smith&#39;</span>);
-<span style="color:#a6e22e">businessCard</span>.<span style="color:#a6e22e">get</span>();
-</code></pre></div><p>The <a href="https://github.com/salsa-rs" target="_blank">salsa framework in Rust</a> relies on this
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Person</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">addres</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Incremental</span>&lt;<span style="color:#f92672">T</span>&gt; <span style="color:#f92672">=</span> {[<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">keysof</span> <span style="color:#a6e22e">T</span>]<span style="color:#f92672">:</span> <span style="color:#a6e22e">Modifiable</span>&lt;<span style="color:#f92672">T</span><span style="color:#960050;background-color:#1e0010">[</span><span style="color:#a6e22e">key</span><span style="color:#960050;background-color:#1e0010">]</span>&gt;};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">p</span>: <span style="color:#66d9ef">Incremental</span>&lt;<span style="color:#f92672">Person</span>&gt; <span style="color:#f92672">=</span> {<span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#e6db74">&#39;John Smith&#39;</span>)), <span style="color:#a6e22e">address</span>: <span style="color:#66d9ef">comp</span>(<span style="color:#a6e22e">pure</span>(<span style="color:#e6db74">&#39;neverland&#39;</span>))};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">businessCard</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">comp</span>(<span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">n</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">address</span>, <span style="color:#a6e22e">addr</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">pure</span>(<span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">p</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> at </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">addr</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>))));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// computation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">businessCard</span>.<span style="color:#66d9ef">get</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// recomputation
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">write</span>(<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">name</span>, <span style="color:#e6db74">&#39;Jane Smith&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">businessCard</span>.<span style="color:#66d9ef">get</span>();
+</span></span></code></pre></div><p>The <a href="https://github.com/salsa-rs" target="_blank">salsa framework in Rust</a> relies on this
 observation to only support static object definitions. Through macros a lot of
 the supporting machinery is generated on predefined functions instead of being
 as dynamic as the incremental implementations above. An extra layer of
@@ -480,7 +511,7 @@ and methods that have to be supported.</p>
 <p>At the extreme there are fully custom data structures that support very
 efficient results to a fixed set of computations, after small changes. This
 work of Tarjan is representative - [A Data Structure for Dynamic Trees]
-(<a href="https://www.cs.cmu.edu/~sleator/papers/dynamic-trees.pdf)">https://www.cs.cmu.edu/~sleator/papers/dynamic-trees.pdf)</a>. One of the
+(<a href="https://www.cs.cmu.edu/~sleator/papers/dynamic-trees.pdf%29" target="_blank">https://www.cs.cmu.edu/~sleator/papers/dynamic-trees.pdf)</a>. One of the
 original goals of research of incremental computation was to automatically
 derive these type of structures through incrementalizing the classical
 algorithms, instead of incremenlizing them one by one.</p>
@@ -492,22 +523,54 @@ talk about applications to UI programming and conclude the series.</p>
     </div>
 </article>
 
-<div class="markdown-body" id="license">
-    <blockquote>
-        <p>Unless otherwise noted, the content of this site is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0)</a>.</p>
-    </blockquote>
-</div>
-
 
 
 
             </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>Pages</h3>
+        <ul>
             
-            <div class="col-md-3 col-12 float-left" id="sidebar">
-                
-<div id="widget-toc">
-    <h5>TOC</h5>
-    <nav id="TableOfContents">
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+            <li>
+                <a href="/about/">About</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-links">
+        <h3>Links</h3>
+        <ul>
+            
+            <li>
+                <a href="https://github.com/rkirov" target="_blank"><span>GitHub</span></a>
+            </li>
+            
+            <li>
+                <a href="https://twitter.com/radokirov" target="_blank"><span>Twitter</span></a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-tags">
+        <h3>Tags</h3>
+        <div>
+            
+            <span>
+                <a href="/tags/incremental-computation/">Incremental Computation</a>
+            </span>
+            
+        </div>
+    </div>
+    <div class="sidebar-item sidebar-toc">
+        <h3>Table of Contents</h3><nav id="TableOfContents">
   <ul>
     <li><a href="#conditional-statements">Conditional statements</a></li>
     <li><a href="#dynamic-vs-static-computation-graph">Dynamic vs Static computation graph</a></li>
@@ -522,73 +585,96 @@ talk about applications to UI programming and conclude the series.</p>
     <li><a href="#online-combinatorial-algorithms">Online combinatorial algorithms</a></li>
     <li><a href="#onto-part-2">Onto part 2</a></li>
   </ul>
-</nav>
-</div>
+</nav></div>
+</aside>
 
-<div id="widget-pages">
-    <h5>Pages</h5>
-    <ul>
-        
-        
-        <li>
-            <a href="/">Home</a>
-        </li>
-        
-        <li>
-            <a href="/about/">About</a>
-        </li>
-        
-    </ul>
-</div>
-<div id="widget-tags">
-    <h5>Tags</h5>
-    <div>
-        
-        <span>
-            <a href="https://rkirov.github.io/tags/incremental-computation/">incremental computation</a>
-        </span>
-        
+        </div>
+        <div class="btn">
+    <div class="btn-menu" id="btn-menu">
+        <i class="iconfont icon-grid-sharp"></i>
+    </div>
+    <div class="btn-toggle-mode">
+        <i class="iconfont icon-contrast-sharp"></i>
+    </div>
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
     </div>
 </div>
-<div id="widget-links">
-    <h5>Links</h5>
-    <ul>
-        
-        <li>
-            <a href="https://github.com/rkirov" target="_blank"><span>GitHub</span></a>
-        </li>
-        
-        <li>
-            <a href="https://twitter.com/radokirov" target="_blank"><span>Twitter</span></a>
-        </li>
-        
-    </ul>
-</div>
-
-            </div>
+<aside class="sidebar-mobile" style="display: none;">
+  <div class="sidebar-wrapper">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>Pages</h3>
+        <ul>
             
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+            <li>
+                <a href="/about/">About</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-links">
+        <h3>Links</h3>
+        <ul>
+            
+            <li>
+                <a href="https://github.com/rkirov" target="_blank"><span>GitHub</span></a>
+            </li>
+            
+            <li>
+                <a href="https://twitter.com/radokirov" target="_blank"><span>Twitter</span></a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-tags">
+        <h3>Tags</h3>
+        <div>
+            
+            <span>
+                <a href="/tags/incremental-computation/">Incremental Computation</a>
+            </span>
             
         </div>
+    </div>
+    
+    
+    
+    
+  </div>
+</aside>
     </main>
 
     <footer>
-    <div class="container-lg text-center">
-        <p>&copy; 2020 <a href="https://rkirov.github.io/"></a> | Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/" target="_blank">Fuji</a> & <a href="https://gohugo.io/" target="_blank">Hugo</a> </p>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            
+            <span>&copy; 2024
+                <a href="https://rkirov.github.io/"></a>
+                
+                | Powered by <a href="https://github.com/dsrkafuu/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> &amp; <a href="https://gohugo.io/"
+                                                    target="_blank">Hugo</a> 
+            </span>
+        </div>
     </div>
 </footer>
+
     
+<script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha512-N9IJRoc3LaP3NDoiGkcPa4gG94kapGpaA5Zq9/Dr04uf5TbLFU5q0o8AbRhLKUUlp8QFS2u7S+Yti0U7QtuZvQ==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" integrity="sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-core.min.js" integrity="sha512-LCKPTo0gtJ74zCNMbWw04ltmujpzSR4oW+fgN+Y1YclhM5ZrHCZQAJE4quEodcI/G122sRhSGU2BsSRUZ2Gu3w==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-GP4x8UWxWyh4BMbyJGOGneiTbkrWEF5izsVJByzVLodP8CuJH/n936+yQDMJJrOPUHLgyPbLiGw2rXmdvGdXHA==" crossorigin="anonymous"></script>
 
 
 
-
-<script>
-    $("#widget-toc a").click(function () {
-        $("html, body").animate({
-            scrollTop: $($(this).attr("href")).offset().top
-        });
-        return false;
-    });
-</script>
+<script defer src="/assets/js/fuji.min.645f1123be695831f419ab54c1bcba327325895c740014006e57070d4f3e5d6b553e929c4b46f40ea707249e9c7f7c2a446d32a39ce7319f80a34525586a8e0f.js" integrity="sha512-ZF8RI75pWDH0GatUwby6MnMliVx0ABQAblcHDU8&#43;XWtVPpKcS0b0DqcHJJ6cf3wqRG0yo5znMZ&#43;Ao0UlWGqODw=="></script>
 
 
 

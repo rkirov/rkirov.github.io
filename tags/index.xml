@@ -4,21 +4,16 @@
     <title>Tags on Subtly Different Semantics</title>
     <link>https://rkirov.github.io/tags/</link>
     <description>Recent content in Tags on Subtly Different Semantics</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 19 May 2020 00:00:00 -0700</lastBuildDate>
-    
-	<atom:link href="https://rkirov.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 19 May 2020 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://rkirov.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>incremental computation</title>
+      <title>Incremental Computation</title>
       <link>https://rkirov.github.io/tags/incremental-computation/</link>
-      <pubDate>Tue, 19 May 2020 00:00:00 -0700</pubDate>
-      
+      <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate>
       <guid>https://rkirov.github.io/tags/incremental-computation/</guid>
       <description></description>
     </item>
-    
   </channel>
 </rss>
