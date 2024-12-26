@@ -36,7 +36,7 @@
       <link>https://rkirov.github.io/about/</link>
       <pubDate>Sun, 26 Apr 2020 23:05:21 -0700</pubDate><author>rkirov@gmail.com</author>
       <guid>https://rkirov.github.io/about/</guid>
-      <description>&lt;p&gt;Hello! I am Rado Kirov. I work in front-end engineering, currently at Stripe maintaining &lt;a href=&#34;https://docs.stripe.com/js&#34;&gt;stripe.js&lt;/a&gt; and previous on front-end infrastructure at Google including - Angular, TypeScript and the&#xA;Closure Compiler. In the past, I have tried to be a professional mathematician,&#xA;but left academia after a one year stint as a postdoc.&lt;/p&gt;</description>
+      <description>&lt;p&gt;Hello! I&amp;rsquo;m Rado Kirov, a front-end engineer at Stripe where I maintain &lt;a href=&#34;https://docs.stripe.com/js&#34;&gt;stripe.js&lt;/a&gt;. Before this, I worked at Google on front-end infrastructure, helping build core technologies like Angular, TypeScript tooling, and the Closure Compiler. I started my career in academia as a mathematician, completing a postdoc before transitioning to software engineering.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
