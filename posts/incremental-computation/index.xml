@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Rado&#39;s Radical Reflections</title>
-    <link>https://rkirov.github.io/</link>
-    <description>Recent content on Rado&#39;s Radical Reflections</description>
+    <title>Incremental Computation on Rado&#39;s Radical Reflections</title>
+    <link>https://rkirov.github.io/posts/incremental-computation/</link>
+    <description>Recent content in Incremental Computation on Rado&#39;s Radical Reflections</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
     <lastBuildDate>Tue, 19 May 2020 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://rkirov.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://rkirov.github.io/posts/incremental-computation/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Incremental Computation (part 3)</title>
       <link>https://rkirov.github.io/posts/incremental_computation_3/</link>
@@ -30,13 +30,6 @@
       <pubDate>Sun, 03 May 2020 00:00:00 +0000</pubDate><author>rkirov@gmail.com</author>
       <guid>https://rkirov.github.io/posts/incremental_computation/</guid>
       <description>&lt;p&gt;Incremental computation is a way of performing computations, with the&#xA;expectation of future changes in the inputs to the computiation. When those&#xA;changes occur the output can be updated efficiently, at minimum faster than&#xA;redoing the whole computation from scratch.&lt;/p&gt;&#xA;&lt;p&gt;This problem occurs in many programming domains - UI programming, data flow,&#xA;build systems, compilers, code editors. Likely you have seen it before, but&#xA;didn&amp;rsquo;t call it incremental computation. Despite its prevalence, it is rarely&#xA;viewed as a common computational paradigm. It is more often referred to as an&#xA;ad-hoc application of caching or memoization. In comparison, other&#xA;computational paradigms like concurrent, lazy, distributed computation have&#xA;better known nomenclature and techniques.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>About</title>
-      <link>https://rkirov.github.io/about/</link>
-      <pubDate>Sun, 26 Apr 2020 23:05:21 -0700</pubDate><author>rkirov@gmail.com</author>
-      <guid>https://rkirov.github.io/about/</guid>
-      <description>&lt;p&gt;Hello! I am Rado Kirov. I work in front-end engineering, currently at Stripe maintaining &lt;a href=&#34;https://docs.stripe.com/js&#34;&gt;stripe.js&lt;/a&gt; and previous on front-end infrastructure at Google including - Angular, TypeScript and the&#xA;Closure Compiler. In the past, I have tried to be a professional mathematician,&#xA;but left academia after a one year stint as a postdoc.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

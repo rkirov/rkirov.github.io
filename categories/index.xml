@@ -2,17 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Subtly Different Semantics</title>
-    <link>https://rkirov.github.io/categories/</link>
+    <link>http://localhost:1313/categories/</link>
     <description>Recent content in Categories on Subtly Different Semantics</description>
     <generator>Hugo</generator>
     <language>en-us</language>
+    <managingEditor>rkirov@gmail.com</managingEditor>
+    <webMaster>rkirov@gmail.com</webMaster>
     <lastBuildDate>Tue, 19 May 2020 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://rkirov.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Programming</title>
-      <link>https://rkirov.github.io/categories/programming/</link>
-      <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate>
-      <guid>https://rkirov.github.io/categories/programming/</guid>
+      <link>http://localhost:1313/categories/programming/</link>
+      <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate><author>rkirov@gmail.com</author>
+      <guid>http://localhost:1313/categories/programming/</guid>
       <description></description>
     </item>
   </channel>

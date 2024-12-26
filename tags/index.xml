@@ -2,17 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Subtly Different Semantics</title>
-    <link>https://rkirov.github.io/tags/</link>
+    <link>http://localhost:1313/tags/</link>
     <description>Recent content in Tags on Subtly Different Semantics</description>
     <generator>Hugo</generator>
     <language>en-us</language>
+    <managingEditor>rkirov@gmail.com</managingEditor>
+    <webMaster>rkirov@gmail.com</webMaster>
     <lastBuildDate>Tue, 19 May 2020 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://rkirov.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Incremental Computation</title>
-      <link>https://rkirov.github.io/tags/incremental-computation/</link>
-      <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate>
-      <guid>https://rkirov.github.io/tags/incremental-computation/</guid>
+      <link>http://localhost:1313/tags/incremental-computation/</link>
+      <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate><author>rkirov@gmail.com</author>
+      <guid>http://localhost:1313/tags/incremental-computation/</guid>
       <description></description>
     </item>
   </channel>
