@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Aoc on Rado&#39;s Radical Reflections</title>
-    <link>http://localhost:1313/posts/aoc/</link>
+    <link>https://rkirov.github.io/posts/aoc/</link>
     <description>Recent content in Aoc on Rado&#39;s Radical Reflections</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
     <lastBuildDate>Wed, 25 Dec 2024 21:40:07 -0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/posts/aoc/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://rkirov.github.io/posts/aoc/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Aoc2024</title>
-      <link>http://localhost:1313/posts/aoc2024/</link>
+      <link>https://rkirov.github.io/posts/aoc2024/</link>
       <pubDate>Wed, 25 Dec 2024 21:40:07 -0800</pubDate><author>rkirov@gmail.com</author>
-      <guid>http://localhost:1313/posts/aoc2024/</guid>
-      <description>&lt;h1 id=&#34;advent-of-code-2024&#34;&gt;Advent of Code 2024&lt;/h1&gt;</description>
+      <guid>https://rkirov.github.io/posts/aoc2024/</guid>
+      <description>&lt;h1 id=&#34;advent-of-code-2024-retro&#34;&gt;Advent of Code 2024 Retro&lt;/h1&gt;&#xA;&lt;p&gt;Advent of Code &lt;a href=&#34;https://adventofcode.com/&#34;&gt;AoC&lt;/a&gt; is an annual programming&#xA;competition that releases daily coding puzzles throughout December. For the past&#xA;four years, I&amp;rsquo;ve tackled these challenges from the West Coast, where the 9 PM&#xA;PST release time perfectly suits my schedule. While I compete for points on the&#xA;global leaderboard (with modest success), the real joy comes from the community&#xA;around it. Through Stripe&amp;rsquo;s solution-sharing Slack group, and the active&#xA;&lt;a href=&#34;https://www.reddit.com/r/adventofcode/&#34;&gt;r/adventofcode&lt;/a&gt; community, discussing&#xA;creative approaches to challenging problems adds an new dimension to my favorite&#xA;pastime - solving puzzles.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
