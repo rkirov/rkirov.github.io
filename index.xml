@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Wed, 25 Dec 2024 21:40:07 -0800</lastBuildDate>
+    <lastBuildDate>Tue, 31 Dec 2024 11:42:13 -0800</lastBuildDate>
     <atom:link href="https://rkirov.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Puzzles2024</title>
+      <link>https://rkirov.github.io/posts/puzzles2024/</link>
+      <pubDate>Tue, 31 Dec 2024 11:42:13 -0800</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/puzzles2024/</guid>
+      <description>&lt;h1 id=&#34;puzzle-games-of-2024&#34;&gt;Puzzle games of 2024&lt;/h1&gt;&#xA;&lt;p&gt;As the year draws to a close, I want to share my favorite puzzle games from 2024. This isn&amp;rsquo;t meant to be an exhaustive review or ranking of all puzzle games released this year, but rather a personal reflection on the games that captured my attention. If you&amp;rsquo;re new to the puzzle genre, I recommend starting with the &lt;a href=&#34;https://thinkygames.com/games/?query=&amp;amp;released=true&amp;amp;essential=true&amp;amp;sortBy=-releaseDate&#34;&gt;essential thinky games list&lt;/a&gt; - all of those titles are excellent.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Aoc2024</title>
       <link>https://rkirov.github.io/posts/aoc2024/</link>
