@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Tue, 31 Dec 2024 11:42:13 -0800</lastBuildDate>
+    <lastBuildDate>Sat, 18 Jan 2025 11:52:17 -0800</lastBuildDate>
     <atom:link href="https://rkirov.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ticket to Ride: First Journey simulation authored with AI</title>
+      <link>https://rkirov.github.io/posts/ticket/</link>
+      <pubDate>Sat, 18 Jan 2025 11:52:17 -0800</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/ticket/</guid>
+      <description>&lt;h2 id=&#34;ticket-to-ride-first-journey-simulation-authored-with-ai&#34;&gt;Ticket to Ride: First Journey simulation authored with AI&lt;/h2&gt;&#xA;&lt;p&gt;After playing &lt;a href=&#34;https://www.daysofwonder.com/ticket-to-ride/kids/first-journey/&#34;&gt;Ticket to Ride: First Journey&lt;/a&gt;&#xA;with my family recently, I got the urge&#xA;to analyze some statistical properties of the game.&#xA;This seemed like an excellent opportunity to experiment with Cursor AI and explore more automated approaches to coding. Here&amp;rsquo;s what I discovered.&lt;/p&gt;&#xA;&lt;h2 id=&#34;results&#34;&gt;Results&lt;/h2&gt;&#xA;&lt;p&gt;After a couple of hours the AI and I produced the following analyses:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;The 32 tickets in the game can be categorized by their optimal paths:&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;3 tickets (best) requiring 3 trains and 1 intermediate city&lt;/li&gt;&#xA;&lt;li&gt;11 tickets requiring 4 trains and 1 intermediate city&lt;/li&gt;&#xA;&lt;li&gt;5 tickets requiring 4 trains and 2 intermediate cities&lt;/li&gt;&#xA;&lt;li&gt;6 tickets requiring 5 trains and 1 intermediate city&lt;/li&gt;&#xA;&lt;li&gt;7 tickets (worst) requiring 5 trains and 2 intermediate cities&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;The probability distribution for game completion time in single-player mode (assuming reasonably good strategy) is roughly:&#xA;&lt;ul&gt;&#xA;&lt;li&gt;13% of games finish &amp;lt; 21 turns&lt;/li&gt;&#xA;&lt;li&gt;15% in 21 turns&lt;/li&gt;&#xA;&lt;li&gt;27% in 22 turns&lt;/li&gt;&#xA;&lt;li&gt;27% in 23 turns&lt;/li&gt;&#xA;&lt;li&gt;13% in 24 turns&lt;/li&gt;&#xA;&lt;li&gt;5% in &amp;gt; 24 turns&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;The code for this can be found &lt;a href=&#34;https://github.com/rkirov/ticket_to_ride&#34;&gt;in my github repo&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Puzzles2024</title>
       <link>https://rkirov.github.io/posts/puzzles2024/</link>
