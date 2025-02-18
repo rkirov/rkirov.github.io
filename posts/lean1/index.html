@@ -45,7 +45,7 @@ For those unfamiliar with this revolution, I highly recommend watching Kevin Buz
 The immediate benefits of formalization are well-documented: it helps catch errors in proofs and reduces the need for trust between collaborators since every step is mechanically verified. However, I believe there’s another compelling advantage that’s less frequently discussed: formalization enables a better separation of concerns in mathematical writing.">
   <meta itemprop="datePublished" content="2025-02-11T22:26:55-08:00">
   <meta itemprop="dateModified" content="2025-02-11T22:26:55-08:00">
-  <meta itemprop="wordCount" content="2067">
+  <meta itemprop="wordCount" content="2075">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
   <style>
@@ -252,12 +252,12 @@ The immediate benefits of formalization are well-documented: it helps catch erro
 <p>As such, this post will be most useful for people with a similar background as mine. A quick summary of where I am as I begin this journey:</p>
 <ul>
 <li>formally trained as a mathematician up to the PhD level. I successfully passed my qual exams and defended my PhD. I am most familiar with algebra, number theory, and combinatorics subfields.</li>
-<li>failed to become a research mathematician after one year of postdoc, and in the last 15 years, I have worked as a software engineer.</li>
+<li>failed to become a research mathematician after one year of postdoc. In the last 15 years, I have worked as a software engineer, mostly in web front-end.</li>
 <li>a deep interest in programming languages and worked briefly with compilers and PL tools - specifically in JavaScript and TypeScript and toyed around with 20+ languages.</li>
 <li>not studied PL theory, type theory, logic, or mathematical foundations (though have read bits and pieces.)</li>
 </ul>
 <p>One curious consequence of formalization is that most mathematicians do not care about foundations and the fuzziness of informal mathematics lets them get away with it. But when working on the formalization of mathematics, one has to deal a bit more seriously with foundations basically from day one. So my lack of formal CS Type Theory/Mathematics Foundations knowledge is slowing down my learning of Lean somewhat, but then again a good way to learn more about those.</p>
-<p>Kind of ironically, math and programming do meet eventually and become the &ldquo;same thing&rdquo; (Curry-Howard isomorphism), but the level at which they meet goes through less popular areas each. For math, it is axiomatic foundations and for programming it is FP and dependent type theory. So despite spending 20+ years combined on math and programming, I still only have roughly ~70% of the prerequisites needed to even begin understanding the formalization of mathematics.</p>
+<p>Math and programming do meet eventually and become the &ldquo;same thing&rdquo; (Curry-Howard isomorphism), but ironically the level at which they meet goes through less popular areas each. For math, it is axiomatic foundations and for programming it is FP and dependent type theory. So despite spending 20+ years combined on math and programming, I still only have roughly ~70% of the prerequisites needed to even begin understanding formalization of mathematics.</p>
 <p>An analogy I was toying with in my head is if I want to engage with a classic foreign language book like <a href="https://en.wikipedia.org/wiki/I_Ching">I_Ching</a> one needs to know:</p>
 <ul>
 <li>classical Chinese language</li>
@@ -304,7 +304,7 @@ we can expand (vacuously) the definition in two different ways:</p>
 <p>So depending on the syntactic position <code>a</code> could stand for <code>(a: \alpha)</code> or <code>(aa: a)</code> which can be very confusing to the novice when <code>a</code> is some generic parameter.</p>
 <h2 id="numeric-literals-and-type-classes">Numeric Literals and Type Classes</h2>
 <p>My first interaction with Lean was broken for a bit due to numeric literals being objects in type classes. Reminded me of my first experience with Haskell close to 20 years ago, which involved typing <code>let x = 1</code> and getting an inscrutable error. Much later, I learned it has to do with the same design decision.</p>
-<p>While it is very defensible and beautiful to be able to use a general solution like type classes for literals, to a newcomer it feels inverted - literals feel simple, while type classes are fancy. For example, I started experimenting with numbers after reading chapter 2, while type classes are explained in chapter 10, so I got type class errors before technically I knew anything about type classes.</p>
+<p>While it is very defensible and beautiful to be able to use a general solution like type classes for literals, to a newcomer it feels inverted - literals feel simple, while type classes are fancy. For example, I started experimenting with numbers after reading chapter 2, while type classes are explained only in chapter 10. So I got some literal type class errors, before technically I knew anything about type classes.</p>
 <p>My past experience with Haskell helped, but I wonder how many newcomers (say mathematicians that have written a bit of numeric python) get lost around this.</p>
 <h2 id="observation-on-curry-howard">Observation on Curry-Howard</h2>
 <p>As the saying goes - in theory there is no difference between theory and practice, while in practice there is. Similarly, by Curry-Howard programs and proofs are the same thing, and Lean puts them as close as possible on equal footing. But in practice, they are still separated into two big universes <code>Prop</code> and <code>Type</code> (from what I gather it has to do with impredicative). In practice, &ldquo;theorem proving programs&rdquo; also end up looking quite different from computation programs and the language has many constructs to improve the experience of writing proofs like tactics, implicit arguments, etc, that are not needed when writing computational programs.</p>
@@ -312,13 +312,13 @@ we can expand (vacuously) the definition in two different ways:</p>
 <h2 id="my-remaining-questions">My remaining questions</h2>
 <ul>
 <li>when are two things definitionally equal vs I have to write a proof. Basically, I just try <code>rfl</code> and if it doesn&rsquo;t work get to proving, but I wonder if experts have an intuitive understanding of what should work before trying.</li>
-<li>Prop vs Decidable - vaguely understand the distinction but can use more examples. Also how this relates to the <code>noncomputable</code> property.</li>
+<li>Prop vs Decidable - I vaguely understand the distinction, but can use more examples. Also would like to know does this relate to the <code>noncomputable</code> property.</li>
 <li>#eval vs #reduce - what&rsquo;s the difference? Feels like two different evaluation models.</li>
 <li>relative power of Lean proof-based simplifications (using <code>simp</code>) compared to CAS like Mathematica and SymPy that also have <code>simplify</code> but as a black box procedure.</li>
 </ul>
 <p>These will likely become clearer as I continue to experiment with Lean.</p>
 <h2 id="final-words">Final words</h2>
-<p>As said in the beginning <a href="https://Leanprover.github.io/theorem_proving_in_Lean4/structures_and_records.html">chapter 8</a></p>
+<p>As stated in the beginning <a href="https://Leanprover.github.io/theorem_proving_in_Lean4/structures_and_records.html">chapter 8</a></p>
 <blockquote>
 <p>We have, moreover, noted that it is a remarkable fact that it is possible to construct a substantial edifice of mathematics based on nothing more than the type universes, dependent arrow types, and inductive types; everything else follows from those.</p>
 </blockquote>
