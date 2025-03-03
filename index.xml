@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Tue, 11 Feb 2025 22:26:55 -0800</lastBuildDate>
+    <lastBuildDate>Sun, 02 Mar 2025 07:14:48 -0800</lastBuildDate>
     <atom:link href="https://rkirov.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Learning Lean: Part 2</title>
+      <link>https://rkirov.github.io/posts/lean2/</link>
+      <pubDate>Sun, 02 Mar 2025 07:14:48 -0800</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/lean2/</guid>
+      <description>&lt;p&gt;I am continuing to learn Lean (see &lt;a href=&#34;https://rkirov.github.io/lean1&#34;&gt;part 1&lt;/a&gt;) by going through&#xA;&lt;a href=&#34;https://leanprover-community.github.io/mathematics_in_lean&#34;&gt;Mathematics in Lean&lt;/a&gt;. These are my notes as I just finished chapters one through five.&lt;/p&gt;&#xA;&lt;h2 id=&#34;mathematics-in-lean&#34;&gt;Mathematics in Lean&lt;/h2&gt;&#xA;&lt;p&gt;The online book is well-paced and well-written to connect with what an average student of mathematics already knows. The focus is on learning how to do basic mathematical proofs in Lean, and the underlying language is taught as needed for those goals, in comparison to Theorem Proving in Lean which is more of a language guide. For example, the fact that naturals&#xA;are constructed as an inductive type with zero and succ constructors is shown much after one is shown how to work with them. This is aligned with how a lot of mathematics is done before one discusses foundations in a typical mathematics curriculum, which might differ from a CS one.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Learning Lean: Part 1</title>
       <link>https://rkirov.github.io/posts/lean1/</link>
