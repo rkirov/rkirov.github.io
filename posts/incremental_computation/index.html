@@ -50,7 +50,7 @@ This problem occurs in many programming domains - UI programming, data flow, bui
 This problem occurs in many programming domains - UI programming, data flow, build systems, compilers, code editors. Likely you have seen it before, but didn’t call it incremental computation. Despite its prevalence, it is rarely viewed as a common computational paradigm. It is more often referred to as an ad-hoc application of caching or memoization. In comparison, other computational paradigms like concurrent, lazy, distributed computation have better known nomenclature and techniques.">
   <meta itemprop="datePublished" content="2020-05-03T00:00:00+00:00">
   <meta itemprop="dateModified" content="2020-05-03T00:00:00+00:00">
-  <meta itemprop="wordCount" content="3450">
+  <meta itemprop="wordCount" content="3449">
   <meta itemprop="keywords" content="Incremental Computation">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
@@ -490,7 +490,7 @@ incrementality?  As it turns out the answer is &rsquo;no&rsquo;. If we notice th
 and <code>op2</code> are the same and want to jump to the old output that would require
 skipping over <code>op3</code> which was on the function call stack. We have to keep a
 custom stack in order to achieve this, so I will leave this as an exercise to
-the reader. You can see a gist to my solution (here)[https://gist.github.com/rkirov/1e002748a9794b098f39c918d191f59b].</p>
+the reader. You can see a gist to my solution <a href="https://gist.github.com/rkirov/1e002748a9794b098f39c918d191f59b">here</a>.</p>
 <p>Next we will look at another classic transformation of the computation model -
 <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation passing style</a>.</p>
 <h2 id="incremental-computation-and-continuation-passing-style">Incremental Computation and Continuation Passing Style</h2>
@@ -689,9 +689,8 @@ basically one step away from incrementality. It will look something like this:</
 the minimum needed work. The downside of this approach is that batch updates,
 meaning change a number of inputs and then recompute are harder to implement.</p>
 <p>Push-based computations appears naturally easier for incrementality. The same
-observation was made by Yaron Minksy in his excellent blog on the Incremental
-library in OCaml
-<a href="https://blog.janestreet.com/introducing-incremental/">https://blog.janestreet.com/introducing-incremental/.</a></p>
+observation was made by Yaron Minksy in his excellent <a href="https://blog.janestreet.com/introducing-incremental/">blog on the Incremental
+library in OCaml.</a></p>
 <p>If you are wondering if there is such thing as a reversed push-based
 computation, that&rsquo;s another thing I am leaving to the reader. Spoiler it
 doesn&rsquo;t appear to be nicer than the direct push-based style.</p>

@@ -58,7 +58,7 @@ Conditional statements Let’s add a single conditional statement first.
 function cond(b: boolean, x: number, y: number) { return b ? x * x : y * y; } What does it mean to make cond incremental? Say we compute the result first for some values of b, x, y.">
   <meta itemprop="datePublished" content="2020-05-10T00:00:00+00:00">
   <meta itemprop="dateModified" content="2020-05-10T00:00:00+00:00">
-  <meta itemprop="wordCount" content="3099">
+  <meta itemprop="wordCount" content="3098">
   <meta itemprop="keywords" content="Incremental Computation">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
@@ -633,8 +633,7 @@ climbing up the abstraction stack there is a whole zoo of data structures
 and methods that have to be supported.</p>
 <p>At the extreme there are fully custom data structures that support very
 efficient results to a fixed set of computations, after small changes. This
-work of Tarjan is representative - [A Data Structure for Dynamic Trees]
-(<a href="https://www.cs.cmu.edu/~sleator/papers/dynamic-trees.pdf)">https://www.cs.cmu.edu/~sleator/papers/dynamic-trees.pdf)</a>. One of the
+work of Tarjan is representative - <a href="https://www.cs.cmu.edu/~sleator/papers/dynamic-trees.pdf">A Data Structure for Dynamic Trees</a>. One of the
 original goals of research of incremental computation was to automatically
 derive these type of structures through incrementalizing the classical
 algorithms, instead of incremenlizing them one by one.</p>
