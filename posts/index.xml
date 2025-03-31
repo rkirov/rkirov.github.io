@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Sun, 02 Mar 2025 07:14:48 -0800</lastBuildDate>
+    <lastBuildDate>Sun, 30 Mar 2025 08:05:09 -0700</lastBuildDate>
     <atom:link href="https://rkirov.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Thoughts on Signals in the JavaScript Ecosystem</title>
+      <link>https://rkirov.github.io/posts/signals/</link>
+      <pubDate>Sun, 30 Mar 2025 08:05:09 -0700</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/signals/</guid>
+      <description>&lt;p&gt;Around 5-8 years ago when working on Angular and TypeScript rules in Bazel, I got&#xA;very interested in exploring the core ideas of incremental computation, which seemed&#xA;like the right way to abstractly (but still precisely) describe the similarities between&#xA;build systems and UI reactivity. As an aside, incremental dataflow is a third view into&#xA;the same concept, but I am least familiar with it.&lt;/p&gt;&#xA;&lt;p&gt;I wrote the following series of &lt;a href=&#34;https://rkirov.github.io/posts/incremental_computation/&#34;&gt;posts&lt;/a&gt;&#xA;to try to pull all the different threads together. It was useful for me to put something to paper,&#xA;but at the end I failed in painting a picture as clear as I wanted.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Learning Lean: Part 2</title>
       <link>https://rkirov.github.io/posts/lean2/</link>

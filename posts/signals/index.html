@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Thoughts on Signals in the JavaScript Ecosystem | Rado&#39;s Radical Reflections</title>
+<meta name="title" content="Thoughts on Signals in the JavaScript Ecosystem" />
+<meta name="description" content="Around 5-8 years ago when working on Angular and TypeScript rules in Bazel, I got
+very interested in exploring the core ideas of incremental computation, which seemed
+like the right way to abstractly (but still precisely) describe the similarities between
+build systems and UI reactivity. As an aside, incremental dataflow is a third view into
+the same concept, but I am least familiar with it.
+I wrote the following series of posts
+to try to pull all the different threads together. It was useful for me to put something to paper,
+but at the end I failed in painting a picture as clear as I wanted." />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="https://rkirov.github.io/posts/signals/">
+  <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
+  <meta property="og:title" content="Thoughts on Signals in the JavaScript Ecosystem">
+  <meta property="og:description" content="Around 5-8 years ago when working on Angular and TypeScript rules in Bazel, I got very interested in exploring the core ideas of incremental computation, which seemed like the right way to abstractly (but still precisely) describe the similarities between build systems and UI reactivity. As an aside, incremental dataflow is a third view into the same concept, but I am least familiar with it.
+I wrote the following series of posts to try to pull all the different threads together. It was useful for me to put something to paper, but at the end I failed in painting a picture as clear as I wanted.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-03-30T08:05:09-07:00">
+    <meta property="article:modified_time" content="2025-03-30T08:05:09-07:00">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Thoughts on Signals in the JavaScript Ecosystem">
+  <meta name="twitter:description" content="Around 5-8 years ago when working on Angular and TypeScript rules in Bazel, I got very interested in exploring the core ideas of incremental computation, which seemed like the right way to abstractly (but still precisely) describe the similarities between build systems and UI reactivity. As an aside, incremental dataflow is a third view into the same concept, but I am least familiar with it.
+I wrote the following series of posts to try to pull all the different threads together. It was useful for me to put something to paper, but at the end I failed in painting a picture as clear as I wanted.">
+      <meta name="twitter:site" content="@radokirov">
+
+
+
+
+  <meta itemprop="name" content="Thoughts on Signals in the JavaScript Ecosystem">
+  <meta itemprop="description" content="Around 5-8 years ago when working on Angular and TypeScript rules in Bazel, I got very interested in exploring the core ideas of incremental computation, which seemed like the right way to abstractly (but still precisely) describe the similarities between build systems and UI reactivity. As an aside, incremental dataflow is a third view into the same concept, but I am least familiar with it.
+I wrote the following series of posts to try to pull all the different threads together. It was useful for me to put something to paper, but at the end I failed in painting a picture as clear as I wanted.">
+  <meta itemprop="datePublished" content="2025-03-30T08:05:09-07:00">
+  <meta itemprop="dateModified" content="2025-03-30T08:05:09-07:00">
+  <meta itemprop="wordCount" content="1947">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Rado&#39;s Radical Reflections</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/posts/">Blog</a>
+
+<a href="/about/">About</a>
+
+
+</nav>
+</header>
+  <main>
+
+<content>
+  <p>Around 5-8 years ago when working on Angular and TypeScript rules in Bazel, I got
+very interested in exploring the core ideas of incremental computation, which seemed
+like the right way to abstractly (but still precisely) describe the similarities between
+build systems and UI reactivity. As an aside, incremental dataflow is a third view into
+the same concept, but I am least familiar with it.</p>
+<p>I wrote the following series of <a href="https://rkirov.github.io/posts/incremental_computation/">posts</a>
+to try to pull all the different threads together. It was useful for me to put something to paper,
+but at the end I failed in painting a picture as clear as I wanted.</p>
+<p>To my surprise, after I left the JS framework world, fine-grained reactivity using signals became very popular.
+Currently, the following frameworks have implemented them - Angular, Ember, Knockout, Preact, Solid, Svelte, Vue and
+likely many more. There is even a ECMAScript proposal to add them to the core language <a href="https://github.com/tc39/proposal-signals">Stage 1</a>.</p>
+<p>In a classic naming irony, the word &ldquo;signal&rdquo; likely originates from <a href="http://conal.net/papers/icfp97/">Conal Elliott&rsquo;s functional reactive programming (FRP) work</a>, but
+signals are not FRP according the precise semantics of that work. What JS ecosystem calls signals is much more closely connected to the incremental or self-adjusting computation (SAC) from <a href="https://www.cs.cmu.edu/~rwh/students/acar.pdf">Ucar, et.al. work</a> that I was learning about in years prior.
+(Aside, if you already know FRP you can learn more about the similarities and differences with SAC in this Jane Street <a href="https://blog.janestreet.com/breaking-down-frp/">blog post</a>.)</p>
+<p>Speaking of words, &ldquo;incremental&rdquo; and &ldquo;self-adjusting&rdquo; are not used in the JS ecosystem, but rather &ldquo;reactivity&rdquo;, undoubtedly
+due to React&rsquo;s popularity, which ironically is not <a href="https://braythwayt.com/posterous/2012/11/01/programming-is-a-pop-culture.html">fully reactive</a>.</p>
+<p>It remains to be seen if JS signals just the latest fad (<a href="https://braythwayt.com/posterous/2012/11/01/programming-is-a-pop-culture.html">programming is pop culture</a> after all) or truly a better approach to UI reactivity that would outlast the latest framework churn, but in this post I want to emphasize again the connection with SAC that transcends language of implementation and use-case.</p>
+<h2 id="differences-between-sac-implementations-and-signals">Differences between SAC implementations and Signals</h2>
+<p>There are three notable implementations of self-adjusting computation:</p>
+<ol>
+<li>original OCaml implemenation from the Ucar et.al. I haven&rsquo;t looked into that too much, other than reading the original papers.</li>
+<li>haskell implementation with monads based on the <a href="https://www.researchgate.net/publication/221241270_Monads_for_incremental_computing">paper by Magnus Carlsson.</a> I understood this enough to rewrite it in <a href="https://github.com/rkirov/adapt-comp">TS.</a></li>
+<li>Jane Streets modern <a href="https://github.com/janestreet/incremental">Incremental.</a> The connection with UIs is understood and utilized here first <a href="https://blog.janestreet.com/introducing-incremental/">blog.</a></li>
+</ol>
+<p>Here is an example of SAC directly from Jane Street&rsquo;s Incremental <a href="https://blog.janestreet.com/introducing-incremental/">blog post</a>.
+Don&rsquo;t worry if you can&rsquo;t read OCaml for now.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ocaml" data-lang="ocaml"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> width_v  <span style="color:#f92672">=</span> Var.create 3<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> depth_v  <span style="color:#f92672">=</span> Var.create 5<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> height_v <span style="color:#f92672">=</span> Var.create 4<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> width  <span style="color:#f92672">=</span> Var.watch width_v
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> depth  <span style="color:#f92672">=</span> Var.watch depth_v
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> height <span style="color:#f92672">=</span> Var.watch height_v
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> base_area <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>  Inc.map2 width depth <span style="color:#f92672">~</span>f<span style="color:#f92672">:(</span> <span style="color:#f92672">*.</span> <span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> volume <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>  Inc.map2 base_area height <span style="color:#f92672">~</span>f<span style="color:#f92672">:(</span> <span style="color:#f92672">*.</span> <span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> base_area_obs <span style="color:#f92672">=</span> Inc.observe base_area
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> volume_obs    <span style="color:#f92672">=</span> Inc.observe volume
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> () <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> v <span style="color:#f92672">=</span> Inc.Observer.value_exn <span style="color:#66d9ef">in</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> display s <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>    printf <span style="color:#e6db74">&#34;%20s: base area: %F; volume: %F</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>      s <span style="color:#f92672">(</span>v base_area_obs<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>v volume_obs<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">in</span>
+</span></span><span style="display:flex;"><span>  Inc.stabilize ()<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  display <span style="color:#e6db74">&#34;1st stabilize&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  Var.set height_v 10<span style="color:#f92672">.;</span>
+</span></span><span style="display:flex;"><span>  display <span style="color:#e6db74">&#34;after set height&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  Inc.stabilize ()<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  display <span style="color:#e6db74">&#34;2nd stabilize&#34;</span>
+</span></span></code></pre></div><p>producing the output:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ocaml" data-lang="ocaml"><span style="display:flex;"><span>1st stabilize<span style="color:#f92672">:</span> base area<span style="color:#f92672">:</span> 25<span style="color:#f92672">.;</span> volume<span style="color:#f92672">:</span> 125<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>    after set height<span style="color:#f92672">:</span> base area<span style="color:#f92672">:</span> 25<span style="color:#f92672">.;</span> volume<span style="color:#f92672">:</span> 125<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>       2nd stabilize<span style="color:#f92672">:</span> base area<span style="color:#f92672">:</span> 25<span style="color:#f92672">.;</span> volume<span style="color:#f92672">:</span> 250<span style="color:#f92672">.</span>
+</span></span></code></pre></div><p>In JS this would be</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">width_v</span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">var</span>(<span style="color:#ae81ff">3</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">depth_v</span>  <span style="color:#f92672">=</span> <span style="color:#66d9ef">var</span>(<span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">height_v</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">var</span>(<span style="color:#ae81ff">4</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">width</span>  <span style="color:#f92672">=</span> <span style="color:#a6e22e">width_v</span>.<span style="color:#a6e22e">watch</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">depth</span>  <span style="color:#f92672">=</span> <span style="color:#a6e22e">depth_v</span>.<span style="color:#a6e22e">watch</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">height</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">height_v</span>.<span style="color:#a6e22e">watch</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">base_area</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Inc</span>.<span style="color:#a6e22e">map2</span>(<span style="color:#a6e22e">width</span>, <span style="color:#a6e22e">depth</span>, (<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>) =&gt; <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">volume</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Inc</span>.<span style="color:#a6e22e">map2</span>(<span style="color:#a6e22e">base_area</span>, <span style="color:#a6e22e">height</span>, (<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>) =&gt; <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">base_area_obs</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Inc</span>.<span style="color:#a6e22e">observe</span>(<span style="color:#a6e22e">base_area</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">volume_obs</span>    <span style="color:#f92672">=</span> <span style="color:#a6e22e">Inc</span>.<span style="color:#a6e22e">observe</span>(<span style="color:#a6e22e">volume</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">v</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Inc</span>.<span style="color:#a6e22e">Observer</span>.<span style="color:#a6e22e">value_exn</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">display</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">s</span>) =&gt;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">s</span><span style="color:#e6db74">}</span><span style="color:#e6db74">: base area: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">v</span>(<span style="color:#a6e22e">base_area_obs</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">; volume: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">v</span>(<span style="color:#a6e22e">volume_obs</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">\n`</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Inc</span>.<span style="color:#a6e22e">stabilize</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">display</span>(<span style="color:#e6db74">&#34;1st stabilize&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">height_v</span>.<span style="color:#a6e22e">set</span>(<span style="color:#ae81ff">10</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">display</span>(<span style="color:#e6db74">&#34;after set height&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Inc</span>.<span style="color:#a6e22e">stabilize</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">display</span>(<span style="color:#e6db74">&#34;2nd stabilize&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>It still looks very far from signals. Conceptually, it is because SAC systems are built by four types of objects:</p>
+<ul>
+<li>Vars - think of them as inputs into the computation.</li>
+<li>Incrementals - the in-between values created with <code>watch</code> and transformed with <code>Inc.map2</code>. These were called <code>Modifiable</code> in previous SAC implementations.</li>
+<li>Observables - think of them as the outputs of the computation. These are called <code>Changable</code> in previous SAC implemenations.</li>
+<li>Inc - the incremental system reified outside any of the 3 objects above. This is called <code>Adaptive</code> is previous SAC implemenations.</li>
+</ul>
+<p>However, the JS ecosystem deeply cares about simplicity so a system with two core primitives will almost always
+be preferred to one with four. This is a cultural value of the ecosystem due to large number
+of newcomers to programming entering through front-end technologies (I was one of those myself 15 years ago.)</p>
+<p>First we remove the explicitly reified system <code>Inc</code>.
+Instead of <code>Inc.stabalize</code>, the observable changes are recomputed on-demand exactly when an Observable is read. This is what is called <code>pull-based</code>. Note, that
+in theory this misses one opportunity for some extra batching and optimization.</p>
+<p>Alternative
+approach would be to recompute even earlier when Var changes are made. That are so-called <code>push-based</code> systems, but they are even less efficient and harder to
+build without what signal implementors call &ldquo;glitches&rdquo;, i.e. failing to propagate changes in a topologically sorted order of dependencies.</p>
+<p>Then we can collapse <code>Incrementals</code> and <code>Observables</code>, basically any intermediate value can be an output. We rename this final object <code>Signal</code>. Finally, we observe
+that <code>Var</code> is just a special <code>Signal</code> that can be written to, but shares the reading interface. So we arrive at this simpler code while hypothetically perserving the same SAC implementation and semantics:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">width</span>  <span style="color:#f92672">=</span> <span style="color:#a6e22e">signal</span>(<span style="color:#ae81ff">3</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">depth</span>  <span style="color:#f92672">=</span> <span style="color:#a6e22e">signal</span>(<span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">height</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">signal</span>(<span style="color:#ae81ff">4</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">base_area</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">width</span>, <span style="color:#a6e22e">depth</span>, (<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>) =&gt; <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">volume</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">base_area</span>, <span style="color:#a6e22e">height</span>, (<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>) =&gt; <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">display</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">s</span>) =&gt;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">`</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">s</span><span style="color:#e6db74">}</span><span style="color:#e6db74">: base area: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">base_area</span>.<span style="color:#a6e22e">get</span>()<span style="color:#e6db74">}</span><span style="color:#e6db74">; volume: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">volume_obs</span>.<span style="color:#a6e22e">get</span>()<span style="color:#e6db74">}</span><span style="color:#e6db74">\n`</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">display</span>(<span style="color:#e6db74">&#34;initial&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">height</span>.<span style="color:#a6e22e">set</span>(<span style="color:#ae81ff">10</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">display</span>(<span style="color:#e6db74">&#34;after set&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Note, I have built a toy signals library based on that interface <a href="https://github.com/rkirov/cont-signal">cont-signal</a> if one wants to play with it.</p>
+<p>In order to get fully look like JS signals, we have to finally replace the explicit <code>s.read(val =&gt; {...})</code> with <code>read(() =&gt; {...s.val()...})</code> and rename <code>read</code> with <code>computed</code>.
+To the familiar with FP techniques this is akin to continuation passing style rewrites and points to a deeper connection with the continuation monad (ignore this comment if not.)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">base_area</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">width</span>, <span style="color:#a6e22e">depth</span>, (<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>) =&gt; <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">volume</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">read</span>(<span style="color:#a6e22e">base_area</span>, <span style="color:#a6e22e">height</span>, (<span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>) =&gt; <span style="color:#a6e22e">x</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">y</span>);
+</span></span></code></pre></div><p>gets turned into</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">base_area</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">computed</span>(() =&gt; <span style="color:#a6e22e">width</span>.<span style="color:#a6e22e">get</span>() <span style="color:#f92672">*</span> <span style="color:#a6e22e">depth</span>.<span style="color:#a6e22e">get</span>());
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">volume</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">computed</span>(() =&gt; <span style="color:#a6e22e">base_area</span>.<span style="color:#a6e22e">get</span>() <span style="color:#f92672">*</span> <span style="color:#a6e22e">height</span>.<span style="color:#a6e22e">get</span>());
+</span></span></code></pre></div><p>basically interleaving the signal reads and the computation description.</p>
+<h2 id="js-signals-are-sac---so-what">JS Signals are SAC - So What?</h2>
+<p>One of my favorite quotes is by Goethe:</p>
+<blockquote>
+<p>Mathematicians are like Frenchmen: whatever you say to them they translate into their own language and forthwith it is something entirely different.</p>
+</blockquote>
+<p>Undoubtedly, this might read like that to JS practitioners - signals don&rsquo;t seem that complex and connecting them to obscure CS research can feel useless.</p>
+<p>But let&rsquo;s think more deeply why - so much software engineering energy is spent on writing and rewriting JS signals libraries, without
+spending some of it learning SAC as implemented in the functional world? There could be three different reasons:</p>
+<ol>
+<li>the connection is unknown.</li>
+<li>the energy required to explore the connection is higher than the practical benefits.</li>
+<li>there is nothing to be gained by exploring this connection.</li>
+</ol>
+<p>I hope to popularize the connection with this post and solve 1. On personal aesthetics grounds I would like to
+believe there is something to be gained (i.e. we are not in option 3), but I can&rsquo;t directly point to what that is, so I could be just plain wrong.</p>
+<p>Some possibilities include for one, borrowing SAC&rsquo;s usage of certain optimized data structures from 80s see <a href="https://www.cs.cmu.edu/~sleator/papers/maintaining-order.pdf">Dietz and Sleator</a>
+for dependency tracking.</p>
+<p>Another possible direction is the connection with the continuation monad which allows one to precisely define &ldquo;singals are kinda like promises&rdquo;.
+Realizing something is a monad allows reuse of ideas like a unified do-notation. Turns out in JS that can be simulated by existing async/await notation <a href="https://github.com/rkirov/cont-signal/blob/main/burrido-wrapper.test.ts">see example</a>.</p>
+<p>So if there are truly some insights to be gained (option 2), I have tried to do my part by reimplementing different SAC solutions in JS to reduce the friction from reading
+foreign languages like OCaml and Haskell.</p>
+<h2 id="towards-reactivity-a-la-carte-paper">Towards Reactivity a la Carte paper</h2>
+<p>I am big fan of the build systems paper <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2018/03/build-systems.pdf">Build Systems a la Carte</a>.
+I keep envisioning a similar paper / blog post - Reactive UIs a la Carte. My own attempt to get to something like that with <a href="https://rkirov.github.io/posts/incremental_computation/">incremental computation</a> has failed. I no longer believe the four different approaches I describe there <code>forward/reverse push/pull</code> computation are
+the right ones. Even just <code>push/pull</code> reactive system, something everyone is convinced is inherently clear, is as not as well-defined as I would like to see it.</p>
+<p>A number of folks working on reactive system in JS have also tried to write blogs describing the different approaches to reactivity:</p>
+<ul>
+<li><a href="https://www.pzuraq.com/blog/what-is-reactivity">What is Reactivity</a></li>
+<li><a href="https://vsavkin.com/the-taxonomy-of-reactive-programming-d40e2e23dee4">The taxonomy of reactive programming</a></li>
+<li><a href="https://dev.to/ninjin/components-of-reactivity-4f0a">Components of Reactivity</a></li>
+<li>&hellip; likely there are more, send me links if you know of some that belong to that list &hellip;</li>
+</ul>
+<p>Sadly they miss the mark (for what I like to see, they are excellent blog posts by themselves) because they connect too closely to the specifics of the DOM, UI programming or JavaScript. I would like to see an abstract (but still in code) toy model of reactivity, that can be modified to be push or pull, or any other category of reactive system. It would be a principled exploration of the design space by abstracting away the specifics, so that one can see what has been tried, what hasn&rsquo;t, where do current solutions land. The sheer amount of engineers working on JS frameworks make the ad-hoc exploration of the design space tractable, but it feels like a random walk. It is bound to reach all possible states, but could it have been so much faster by having a clear map of the land and by learning where have others been. (Maybe the answer is to get SPJ interested in UIs and write that paper himself :))</p>
+<h2 id="on-the-value-of-abstraction-in-theory-and-practice">On the value of abstraction in theory and practice</h2>
+<p>Finally, I wanted to self-reflect on what makes this subject so irresistible to me. I basically got nerd snipped into writing this post by my friend <a href="https://neugierig.org/software/blog/">Evan</a> mentioning the latest JS reactivity news and me ending up thinking about it obsessively for hours until I wrote this.</p>
+<p>A lot of it has to do with personally enjoying abstraction to a degree that would seem unreasonable for a software engineer. I have been on both sides of
+that eternal debate - both as a proponent and opposer of more abstraction, but in this particular situation my sense is that something of value is to be gained by approaching reactivity design through a more cross-language and cross-usecase lenses. As I said earlier I don&rsquo;t know what that precisely is, and I could be deluding myself (won&rsquo;t be the first time.)</p>
+<p>I will one day write a much longer post about abstraction in general, but something about reactivity approached in an abstract cross-domain way tickles my brain similarly to <a href="https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach">Gödel, Escher, Bach</a>. Aside, I recently discovered MIT has videos of a <a href="https://www.youtube.com/watch?v=lWZ2Bz0tS-s&amp;ab_channel=jasonofthel33t">whole class</a> on it. As far as I can tell, that book did not make any logician, musician, artist or neuroscientist practically do their job better, and yet it is universally accepted as a masterpiece. So there must be something universally enjoyable in connecting seemingly disparate disciplines through their shared abstract patterns – a satisfaction that transcends immediate practical utility while long-term proving to be &ldquo;unreasonably effective&rdquo; (to borrow from <a href="https://www.maths.ed.ac.uk/~v1ranick/papers/wigner.pdf">Wigner</a>.)</p>
+
+</content>
+<p>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+    
+</body>
+
+</html>
