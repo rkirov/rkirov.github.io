@@ -256,16 +256,16 @@ likely many more. There is even a ECMAScript proposal to add them to the core la
 signals are not FRP according the precise semantics of that work. What JS ecosystem calls signals is much more closely connected to the incremental or self-adjusting computation (SAC) from <a href="https://www.cs.cmu.edu/~rwh/students/acar.pdf">Ucar, et.al. work</a> that I was learning about in years prior.
 (Aside, if you already know FRP you can learn more about the similarities and differences with SAC in this Jane Street <a href="https://blog.janestreet.com/breaking-down-frp/">blog post</a>.)</p>
 <p>Speaking of words, &ldquo;incremental&rdquo; and &ldquo;self-adjusting&rdquo; are not used in the JS ecosystem, but rather &ldquo;reactivity&rdquo;, undoubtedly
-due to React&rsquo;s popularity, which ironically is not <a href="https://braythwayt.com/posterous/2012/11/01/programming-is-a-pop-culture.html">fully reactive</a>.</p>
+due to React&rsquo;s popularity, which ironically is not <a href="https://dev.to/this-is-learning/how-react-isn-t-reactive-and-why-you-shouldn-t-care-152m">fully reactive</a>.</p>
 <p>It remains to be seen if JS signals just the latest fad (<a href="https://braythwayt.com/posterous/2012/11/01/programming-is-a-pop-culture.html">programming is pop culture</a> after all) or truly a better approach to UI reactivity that would outlast the latest framework churn, but in this post I want to emphasize again the connection with SAC that transcends language of implementation and use-case.</p>
 <h2 id="differences-between-sac-implementations-and-signals">Differences between SAC implementations and Signals</h2>
 <p>There are three notable implementations of self-adjusting computation:</p>
 <ol>
-<li>original OCaml implemenation from the Ucar et.al. I haven&rsquo;t looked into that too much, other than reading the original papers.</li>
+<li>original OCaml implementation from the Ucar et.al. I haven&rsquo;t looked into that too much, other than reading the original papers.</li>
 <li>haskell implementation with monads based on the <a href="https://www.researchgate.net/publication/221241270_Monads_for_incremental_computing">paper by Magnus Carlsson.</a> I understood this enough to rewrite it in <a href="https://github.com/rkirov/adapt-comp">TS.</a></li>
 <li>Jane Streets modern <a href="https://github.com/janestreet/incremental">Incremental.</a> The connection with UIs is understood and utilized here first <a href="https://blog.janestreet.com/introducing-incremental/">blog.</a></li>
 </ol>
-<p>Here is an example of SAC directly from Jane Street&rsquo;s Incremental <a href="https://blog.janestreet.com/introducing-incremental/">blog post</a>.
+<p>Here is an example of SAC directly from Jane Street&rsquo;s Incremental blog post.
 Don&rsquo;t worry if you can&rsquo;t read OCaml for now.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ocaml" data-lang="ocaml"><span style="display:flex;"><span><span style="color:#66d9ef">let</span> width_v  <span style="color:#f92672">=</span> Var.create 3<span style="color:#f92672">.</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> depth_v  <span style="color:#f92672">=</span> Var.create 5<span style="color:#f92672">.</span>
