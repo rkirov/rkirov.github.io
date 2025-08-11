@@ -9,14 +9,14 @@
 <meta name="title" content="Learning Lean: Part 3" />
 <meta name="description" content="I am continuing to learn Lean (see part 1 and part 2). I lost some steam around March-April, but in the last
 two months I picked it up again. In a way it was a nice spaced repetition for relearning some of the basics. This summary was supposed to be my notes from finishing the rest of Mathematics in Lean and finishing chapters 2 and 3 of exercises from Terence Tao&rsquo;s Analysis textbook, but also I couldn&rsquo;t help also comment on the challenges and
-opportunties I see in doing formal mathematics with Lean as I see them." />
+opportunties I see in doing formal mathematics with Lean." />
 <meta name="keywords" content="" />
 
 
 <meta property="og:url" content="https://rkirov.github.io/posts/lean3/">
   <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
   <meta property="og:title" content="Learning Lean: Part 3">
-  <meta property="og:description" content="I am continuing to learn Lean (see part 1 and part 2). I lost some steam around March-April, but in the last two months I picked it up again. In a way it was a nice spaced repetition for relearning some of the basics. This summary was supposed to be my notes from finishing the rest of Mathematics in Lean and finishing chapters 2 and 3 of exercises from Terence Tao’s Analysis textbook, but also I couldn’t help also comment on the challenges and opportunties I see in doing formal mathematics with Lean as I see them.">
+  <meta property="og:description" content="I am continuing to learn Lean (see part 1 and part 2). I lost some steam around March-April, but in the last two months I picked it up again. In a way it was a nice spaced repetition for relearning some of the basics. This summary was supposed to be my notes from finishing the rest of Mathematics in Lean and finishing chapters 2 and 3 of exercises from Terence Tao’s Analysis textbook, but also I couldn’t help also comment on the challenges and opportunties I see in doing formal mathematics with Lean.">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -28,17 +28,17 @@ opportunties I see in doing formal mathematics with Lean as I see them." />
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Learning Lean: Part 3">
-  <meta name="twitter:description" content="I am continuing to learn Lean (see part 1 and part 2). I lost some steam around March-April, but in the last two months I picked it up again. In a way it was a nice spaced repetition for relearning some of the basics. This summary was supposed to be my notes from finishing the rest of Mathematics in Lean and finishing chapters 2 and 3 of exercises from Terence Tao’s Analysis textbook, but also I couldn’t help also comment on the challenges and opportunties I see in doing formal mathematics with Lean as I see them.">
+  <meta name="twitter:description" content="I am continuing to learn Lean (see part 1 and part 2). I lost some steam around March-April, but in the last two months I picked it up again. In a way it was a nice spaced repetition for relearning some of the basics. This summary was supposed to be my notes from finishing the rest of Mathematics in Lean and finishing chapters 2 and 3 of exercises from Terence Tao’s Analysis textbook, but also I couldn’t help also comment on the challenges and opportunties I see in doing formal mathematics with Lean.">
       <meta name="twitter:site" content="@radokirov">
 
 
 
 
   <meta itemprop="name" content="Learning Lean: Part 3">
-  <meta itemprop="description" content="I am continuing to learn Lean (see part 1 and part 2). I lost some steam around March-April, but in the last two months I picked it up again. In a way it was a nice spaced repetition for relearning some of the basics. This summary was supposed to be my notes from finishing the rest of Mathematics in Lean and finishing chapters 2 and 3 of exercises from Terence Tao’s Analysis textbook, but also I couldn’t help also comment on the challenges and opportunties I see in doing formal mathematics with Lean as I see them.">
+  <meta itemprop="description" content="I am continuing to learn Lean (see part 1 and part 2). I lost some steam around March-April, but in the last two months I picked it up again. In a way it was a nice spaced repetition for relearning some of the basics. This summary was supposed to be my notes from finishing the rest of Mathematics in Lean and finishing chapters 2 and 3 of exercises from Terence Tao’s Analysis textbook, but also I couldn’t help also comment on the challenges and opportunties I see in doing formal mathematics with Lean.">
   <meta itemprop="datePublished" content="2025-06-27T22:30:30-07:00">
   <meta itemprop="dateModified" content="2025-06-27T22:30:30-07:00">
-  <meta itemprop="wordCount" content="2710">
+  <meta itemprop="wordCount" content="2706">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
   <style>
@@ -235,7 +235,7 @@ opportunties I see in doing formal mathematics with Lean as I see them." />
 <content>
   <p>I am continuing to learn Lean (see <a href="/posts/lean1">part 1</a> and <a href="/posts/lean2">part 2</a>). I lost some steam around March-April, but in the last
 two months I picked it up again. In a way it was a nice spaced repetition for relearning some of the basics. This summary was supposed to be my notes from finishing the rest of <a href="https://leanprover-community.github.io/mathematics_in_lean">Mathematics in Lean</a> and finishing chapters 2 and 3 of exercises from <a href="https://github.com/teorth/analysis">Terence Tao&rsquo;s Analysis textbook</a>, but also I couldn&rsquo;t help also comment on the challenges and
-opportunties I see in doing formal mathematics with Lean as I see them.</p>
+opportunties I see in doing formal mathematics with Lean.</p>
 <h2 id="thoughts-on-mathematics-in-lean">Thoughts on Mathematics in Lean</h2>
 <p>I enjoyed the first part of the book a lot more than the second. Naturally the second part goes deeper in mathematical topics
 and the exercises start to have a very different feel to them. Especially around the topology and filter chapters, my own
@@ -368,7 +368,7 @@ some particular new Lean tricks. I am getting a feeling that my bag of tricks is
 basic proofs any longer. The next level of learning is how to write idiomatic and clean proofs.</p>
 <p>The tricks and gotchas I learned:</p>
 <ul>
-<li>be very clean when working within <code>Type</code> or <code>Prop</code>. Certain things are only allowed for <code>Prop</code>, like <code>obtain</code>.</li>
+<li>be very clear when working within <code>Type</code> or <code>Prop</code>. Certain things are only allowed for <code>Prop</code>, like <code>obtain</code>.</li>
 <li>Every <code>Classical.choose</code> needs a matching <code>choose_spec</code> to work with. Using <code>generalized_proofs</code> allows one to pull
 the proofs in scope.</li>
 <li>If <code>rw</code> fails due to the <code>motive</code> error (often the thing you are trying to rewrite is used inside other types, etc), try
@@ -391,7 +391,7 @@ others in the same stage of the journey. If you are algebraicly minded mathemati
 don&rsquo;t be offput by the Analysis title, at least the first four chapters are equally foundational, assuming you are not expecting to see category theory as foundations instead of set theory.</p>
 <p>I am totally sold on formal proofs as the future of mathematics. Lean has the most
 momentum at the moment, including an active and welcoming community and I see no reason to try to learn other alterantives like Isabelle or Coq at the moment.</p>
-<p>Formal mathematics, i.e. don&rsquo;t proofs with a computer, is especially beneficial to hobbyists like me. I hope one day these are prevalent enough so we drop &ldquo;formal&rdquo; and just call them proofs, like how we don&rsquo;t need to say &ldquo;computer-aided computation&rdquo; to differentiate from computation we run in our brains instead of on silicon.</p>
+<p>Formal mathematics, i.e. checking proofs with a computer, is especially beneficial to hobbyists like me. I hope one day these are prevalent enough so we drop &ldquo;formal&rdquo; and just call them proofs, like how we don&rsquo;t need to say &ldquo;computer-aided computation&rdquo; to differentiate from computation we run in our brains instead of on silicon.</p>
 <p>P.S. This post was too long. Thank you for reading if you got so far. I do need to blog more often in smaller chunks.</p>
 
 </content>
