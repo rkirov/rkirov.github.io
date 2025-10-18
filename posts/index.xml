@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Sat, 20 Sep 2025 07:54:08 -0700</lastBuildDate>
+    <lastBuildDate>Thu, 16 Oct 2025 22:32:49 -0700</lastBuildDate>
     <atom:link href="https://rkirov.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Why formalize mathematics - more than catching errors</title>
+      <link>https://rkirov.github.io/posts/why_lean/</link>
+      <pubDate>Thu, 16 Oct 2025 22:32:49 -0700</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/why_lean/</guid>
+      <description>&lt;p&gt;I read a good &lt;a href=&#34;https://lawrencecpaulson.github.io/2025/10/15/Proofs-trivial.html&#34;&gt;post&lt;/a&gt; by one of the authors of the Isabelle theorem prover, that got me thinking. The author, Lawrence Paulson, observed that most math proofs are trivial, but writing them (preferably with a proof assistant) is a worthwhile activity, for reasons similar to safety&#xA;checklists - &amp;ldquo;Not every obvious statement is true.&amp;rdquo;&lt;/p&gt;&#xA;&lt;p&gt;As I have been a bit obsessed with doing formalized mathematics, this got me thinking about why I am excited to spend&#xA;many hours recently writing formalized proofs in Lean for exercises from Tao&amp;rsquo;s &lt;a href=&#34;https://github.com/rkirov/analysis&#34;&gt;Real Analysis&lt;/a&gt; (along with this recent attempt to write a companion to &lt;a href=&#34;https://github.com/rkirov/category-theory-in-context-lean&#34;&gt;Riehl&amp;rsquo;s Category Theory In Context&lt;/a&gt;). On a very personal level, I just&#xA;like math, computers and puzzles, and writing Lean proofs feels like doing all three at once. But I do&#xA;believe formalization is important beyond nerd-snipping folks like me.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Learning Lean: Part 4</title>
       <link>https://rkirov.github.io/posts/lean4/</link>

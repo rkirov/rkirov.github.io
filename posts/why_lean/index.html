@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Why formalize mathematics - more than catching errors | Rado&#39;s Radical Reflections</title>
+<meta name="title" content="Why formalize mathematics - more than catching errors" />
+<meta name="description" content="I read a good post by one of the authors of the Isabelle theorem prover, that got me thinking. The author, Lawrence Paulson, observed that most math proofs are trivial, but writing them (preferably with a proof assistant) is a worthwhile activity, for reasons similar to safety
+checklists - &ldquo;Not every obvious statement is true.&rdquo;
+As I have been a bit obsessed with doing formalized mathematics, this got me thinking about why I am excited to spend
+many hours recently writing formalized proofs in Lean for exercises from Tao&rsquo;s Real Analysis (along with this recent attempt to write a companion to Riehl&rsquo;s Category Theory In Context). On a very personal level, I just
+like math, computers and puzzles, and writing Lean proofs feels like doing all three at once. But I do
+believe formalization is important beyond nerd-snipping folks like me." />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="https://rkirov.github.io/posts/why_lean/">
+  <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
+  <meta property="og:title" content="Why formalize mathematics - more than catching errors">
+  <meta property="og:description" content="I read a good post by one of the authors of the Isabelle theorem prover, that got me thinking. The author, Lawrence Paulson, observed that most math proofs are trivial, but writing them (preferably with a proof assistant) is a worthwhile activity, for reasons similar to safety checklists - “Not every obvious statement is true.”
+As I have been a bit obsessed with doing formalized mathematics, this got me thinking about why I am excited to spend many hours recently writing formalized proofs in Lean for exercises from Tao’s Real Analysis (along with this recent attempt to write a companion to Riehl’s Category Theory In Context). On a very personal level, I just like math, computers and puzzles, and writing Lean proofs feels like doing all three at once. But I do believe formalization is important beyond nerd-snipping folks like me.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-10-16T22:32:49-07:00">
+    <meta property="article:modified_time" content="2025-10-16T22:32:49-07:00">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Why formalize mathematics - more than catching errors">
+  <meta name="twitter:description" content="I read a good post by one of the authors of the Isabelle theorem prover, that got me thinking. The author, Lawrence Paulson, observed that most math proofs are trivial, but writing them (preferably with a proof assistant) is a worthwhile activity, for reasons similar to safety checklists - “Not every obvious statement is true.”
+As I have been a bit obsessed with doing formalized mathematics, this got me thinking about why I am excited to spend many hours recently writing formalized proofs in Lean for exercises from Tao’s Real Analysis (along with this recent attempt to write a companion to Riehl’s Category Theory In Context). On a very personal level, I just like math, computers and puzzles, and writing Lean proofs feels like doing all three at once. But I do believe formalization is important beyond nerd-snipping folks like me.">
+      <meta name="twitter:site" content="@radokirov">
+
+
+
+
+  <meta itemprop="name" content="Why formalize mathematics - more than catching errors">
+  <meta itemprop="description" content="I read a good post by one of the authors of the Isabelle theorem prover, that got me thinking. The author, Lawrence Paulson, observed that most math proofs are trivial, but writing them (preferably with a proof assistant) is a worthwhile activity, for reasons similar to safety checklists - “Not every obvious statement is true.”
+As I have been a bit obsessed with doing formalized mathematics, this got me thinking about why I am excited to spend many hours recently writing formalized proofs in Lean for exercises from Tao’s Real Analysis (along with this recent attempt to write a companion to Riehl’s Category Theory In Context). On a very personal level, I just like math, computers and puzzles, and writing Lean proofs feels like doing all three at once. But I do believe formalization is important beyond nerd-snipping folks like me.">
+  <meta itemprop="datePublished" content="2025-10-16T22:32:49-07:00">
+  <meta itemprop="dateModified" content="2025-10-16T22:32:49-07:00">
+  <meta itemprop="wordCount" content="1026">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Rado&#39;s Radical Reflections</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/posts/">Blog</a>
+
+<a href="/about/">About</a>
+
+
+</nav>
+</header>
+  <main>
+
+<content>
+  <p>I read a good <a href="https://lawrencecpaulson.github.io/2025/10/15/Proofs-trivial.html">post</a> by one of the authors of the Isabelle theorem prover, that got me thinking. The author, Lawrence Paulson, observed that most math proofs are trivial, but writing them (preferably with a proof assistant) is a worthwhile activity, for reasons similar to safety
+checklists - &ldquo;Not every obvious statement is true.&rdquo;</p>
+<p>As I have been a bit obsessed with doing formalized mathematics, this got me thinking about why I am excited to spend
+many hours recently writing formalized proofs in Lean for exercises from Tao&rsquo;s <a href="https://github.com/rkirov/analysis">Real Analysis</a> (along with this recent attempt to write a companion to <a href="https://github.com/rkirov/category-theory-in-context-lean">Riehl&rsquo;s Category Theory In Context</a>). On a very personal level, I just
+like math, computers and puzzles, and writing Lean proofs feels like doing all three at once. But I do
+believe formalization is important beyond nerd-snipping folks like me.</p>
+<p>While Paulson focuses on the obvious benefit of finding potential errors in proofs as they are checked by a computer, I will discuss some other less obvious benefits of shifting to formal math or &ldquo;doing math with computers&rdquo; as I tell my friends who ask me what I am obsessing over.</p>
+<p>To understand these benefits let me begin by sharing a parallel from my engineering career.</p>
+<h2 id="typescript-story">TypeScript story</h2>
+<p>TypeScript is an optional static type system for JavaScript (a dynamic language without static types). Very briefly,
+when writing TypeScript, one is roughly writing JavaScript with some extra annotations - types. Those are checked by the TypeScript compiler, as part of the compilation / build process. If the type annotations are not consistent - say you
+said the function <code>f</code> expects a <code>number</code> but somewhere you also wrote <code>f('foo')</code> an error will be thrown. If no such
+errors are found, the type annotations are erased and JavaScript is emitted for further execution.</p>
+<p>It seems all TypeScript is good for is catching errors and rejecting your programs. So when we went around Google pitching
+different teams to migrate, the questions were always around how many bugs this system can find. What we soon realized is
+that actually finding bugs in code that was tested and in production for many years is not that valuable. Some of it
+is due to JavaScript being mainly used for UIs, so worst case scenario one often can just refresh the page (thankfully no one is writing mission critical software in JS, right?!?). And even more surprising the risk of fixing the &ldquo;bug&rdquo; that TS found was often higher, due to new errors that might arise.</p>
+<p>If correctness wasn&rsquo;t that big of a deal (especially over established codebases) what good is this type-checking? As I learned more about it, the following benefits emerged:</p>
+<ul>
+<li>TypeScript types power IDEs - turns out whatever the correctness checker needs to connect say the definition of <code>f</code> and
+all call sites to verify that the arguments match the parameter signatures, is the same thing developer tooling needs to
+allow you to CTRL-click to definition, find all usages, refactor, etc.</li>
+<li>TypeScript types are a design language - once you get familiar enough one can use them as an initial language to spec
+design before the implementation. So a team of TS developers gets to share a mini-specification language for free, that they can use in early design before any runtime is even written.</li>
+<li>Immediate feedback correctness - TypeScript generally integrates with your IDE, so while checking correctness of already written and tested codebase is low value, having the correctness checks appear right underneath the code as you are writing it in the infamous &ldquo;red squiggles&rdquo; does offer big value, because of the immediacy. Caveats of course are, assuming
+one is not doing TDD and writing tests first, and the project is not too large when type-checking starts to bog down and can&rsquo;t appear as you are typing.</li>
+</ul>
+<h2 id="analogy-with-lean-and-math">Analogy with Lean and Math</h2>
+<p>So by analogy, formalizing math with Lean has the following similar benefits outside correctness and assistance in writing proofs.</p>
+<ul>
+<li>powering math IDEs - instead of just writing LaTeX, and keeping all definitions in one&rsquo;s head, with Lean one gets the
+very basic IDE support every programmer expects, but no informal mathematician gets - click-through definitions, hover over statements, auto-generated docs (like <a href="https://leanprover-community.github.io/mathlib4_docs/">mathlib4_docs</a>), non-string searching, refactoring, etc. For example, the <a href="https://stacks.math.columbia.edu/">Stacks Project</a> is a very useful attempt to get
+some of these benefits without formalization, but formalization basically guarantees that every part of mathematics can
+generate something like this.</li>
+<li>analyzing meta-math trends - with fixed names of theorems and cross-project imports, one can generate more easily and reliably the meta-structures of mathematical proofs, which theorem uses which other ones. This enables automated discovery of alternative proof paths and visualization of the dependency graph of modern mathematics.</li>
+<li>repository and version control - if a result is retracted currently there is no guarantee that other results that depended on it would even know that happened and recursively retract their claims. Turning mathematical results into actual libraries with versions and dependency management will make the evolution of mathematical truth more streamlined.</li>
+</ul>
+<p>Basically, the process of doing math will become more efficient and hopefully more pleasant. The price one has to pay is
+proving many more trivial proofs than they wish. Mathematicians are not against trivial proofs, textbooks are full of proofs that are &ldquo;follow-your-nose&rdquo; style. What is hard to accept, is that Lean will not allow anyone to
+control what they call &ldquo;trivial&rdquo;. To Lean everything needs a proof, but there are more and more powerful tactics being built, so &ldquo;trivial&rdquo; is what Lean&rsquo;s current set of tactics can close in one-line, the rest need more work.</p>
+<p>Finally, note that a lot of the benefits I am describing above don&rsquo;t even need to have the full formal proofs, just formal statements are enough. This effort by Kevin Buzzard with support from Renaissance Philanthropy seems to confirm that just
+having statements is a very valuable task by itself - <a href="https://www.renaissancephilanthropy.org/a-dataset-of-modern-formalized-theorem-statements">Renaissance Philanthropy formalized theorem statements</a>.</p>
+<p>Will these extra benefits tip the scale to make it worthwhile for mathematicians to change how they have been doing math for millennia, adopt new tools with steep learning curves? I hope so, but only time will tell.</p>
+
+</content>
+<p>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+    
+</body>
+
+</html>
