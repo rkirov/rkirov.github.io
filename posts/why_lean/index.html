@@ -44,7 +44,7 @@ As I have been a bit obsessed with doing formalized mathematics, this got me thi
 As I have been a bit obsessed with doing formalized mathematics, this got me thinking about why I am excited to spend many hours recently writing formalized proofs in Lean for exercises from Tao’s Real Analysis (along with this recent attempt to write a companion to Riehl’s Category Theory In Context). On a very personal level, I just like math, computers and puzzles, and writing Lean proofs feels like doing all three at once. But I do believe formalization is important beyond nerd-snipping folks like me.">
   <meta itemprop="datePublished" content="2025-10-16T22:32:49-07:00">
   <meta itemprop="dateModified" content="2025-10-16T22:32:49-07:00">
-  <meta itemprop="wordCount" content="1026">
+  <meta itemprop="wordCount" content="1028">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
   <style>
@@ -258,7 +258,7 @@ that actually finding bugs in code that was tested and in production for many ye
 is due to JavaScript being mainly used for UIs, so worst case scenario one often can just refresh the page (thankfully no one is writing mission critical software in JS, right?!?). And even more surprising the risk of fixing the &ldquo;bug&rdquo; that TS found was often higher, due to new errors that might arise.</p>
 <p>If correctness wasn&rsquo;t that big of a deal (especially over established codebases) what good is this type-checking? As I learned more about it, the following benefits emerged:</p>
 <ul>
-<li>TypeScript types power IDEs - turns out whatever the correctness checker needs to connect say the definition of <code>f</code> and
+<li>TypeScript types power other tools - turns out whatever the correctness checker needs to connect say the definition of <code>f</code> and
 all call sites to verify that the arguments match the parameter signatures, is the same thing developer tooling needs to
 allow you to CTRL-click to definition, find all usages, refactor, etc.</li>
 <li>TypeScript types are a design language - once you get familiar enough one can use them as an initial language to spec
@@ -269,7 +269,7 @@ one is not doing TDD and writing tests first, and the project is not too large w
 <h2 id="analogy-with-lean-and-math">Analogy with Lean and Math</h2>
 <p>So by analogy, formalizing math with Lean has the following similar benefits outside correctness and assistance in writing proofs.</p>
 <ul>
-<li>powering math IDEs - instead of just writing LaTeX, and keeping all definitions in one&rsquo;s head, with Lean one gets the
+<li>powering various math tools - instead of just writing LaTeX, and keeping all definitions in one&rsquo;s head, with Lean one gets the
 very basic IDE support every programmer expects, but no informal mathematician gets - click-through definitions, hover over statements, auto-generated docs (like <a href="https://leanprover-community.github.io/mathlib4_docs/">mathlib4_docs</a>), non-string searching, refactoring, etc. For example, the <a href="https://stacks.math.columbia.edu/">Stacks Project</a> is a very useful attempt to get
 some of these benefits without formalization, but formalization basically guarantees that every part of mathematics can
 generate something like this.</li>
