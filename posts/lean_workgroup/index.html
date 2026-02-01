@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Local Lean Workgroup Retro | Rado&#39;s Radical Reflections</title>
+<meta name="title" content="Local Lean Workgroup Retro" />
+<meta name="description" content="I started learning formalized mathematics with Lean last year 1, 2, 3, 4. As I progressed beyond basics, it dawned on me that I need to start interacting with the broader community as Lean is rapidly evolving and beyond basic getting started guides there aren&rsquo;t as many high-quality resources to learn solo. It could also be a great way to meet folks with similar interests and build more social connections. To that end I tried to start a local workgroup around Oct&#39;25 details. I have never done anything like this before, so this is a small retro of how it went so far (in Jan&#39;26) and what&rsquo;s next." />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="https://rkirov.github.io/posts/lean_workgroup/">
+  <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
+  <meta property="og:title" content="Local Lean Workgroup Retro">
+  <meta property="og:description" content="I started learning formalized mathematics with Lean last year 1, 2, 3, 4. As I progressed beyond basics, it dawned on me that I need to start interacting with the broader community as Lean is rapidly evolving and beyond basic getting started guides there aren’t as many high-quality resources to learn solo. It could also be a great way to meet folks with similar interests and build more social connections. To that end I tried to start a local workgroup around Oct&#39;25 details. I have never done anything like this before, so this is a small retro of how it went so far (in Jan&#39;26) and what’s next.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-02-01T14:04:19-08:00">
+    <meta property="article:modified_time" content="2026-02-01T14:04:19-08:00">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Local Lean Workgroup Retro">
+  <meta name="twitter:description" content="I started learning formalized mathematics with Lean last year 1, 2, 3, 4. As I progressed beyond basics, it dawned on me that I need to start interacting with the broader community as Lean is rapidly evolving and beyond basic getting started guides there aren’t as many high-quality resources to learn solo. It could also be a great way to meet folks with similar interests and build more social connections. To that end I tried to start a local workgroup around Oct&#39;25 details. I have never done anything like this before, so this is a small retro of how it went so far (in Jan&#39;26) and what’s next.">
+      <meta name="twitter:site" content="@radokirov">
+
+
+
+
+  <meta itemprop="name" content="Local Lean Workgroup Retro">
+  <meta itemprop="description" content="I started learning formalized mathematics with Lean last year 1, 2, 3, 4. As I progressed beyond basics, it dawned on me that I need to start interacting with the broader community as Lean is rapidly evolving and beyond basic getting started guides there aren’t as many high-quality resources to learn solo. It could also be a great way to meet folks with similar interests and build more social connections. To that end I tried to start a local workgroup around Oct&#39;25 details. I have never done anything like this before, so this is a small retro of how it went so far (in Jan&#39;26) and what’s next.">
+  <meta itemprop="datePublished" content="2026-02-01T14:04:19-08:00">
+  <meta itemprop="dateModified" content="2026-02-01T14:04:19-08:00">
+  <meta itemprop="wordCount" content="1158">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Rado&#39;s Radical Reflections</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/posts/">Blog</a>
+
+<a href="/about/">About</a>
+
+
+</nav>
+</header>
+  <main>
+
+<content>
+  <p>I started learning formalized mathematics with Lean last year <a href="../lean1">1</a>, <a href="../lean2">2</a>, <a href="../lean3">3</a>, <a href="../lean4">4</a>. As I progressed beyond basics, it dawned on me that I need to start interacting with the broader community as Lean is rapidly evolving and beyond basic getting started guides there aren&rsquo;t as many high-quality resources to learn solo. It could also be a great way to meet folks with similar interests and build more social connections. To that end I tried to start a local workgroup around Oct'25 <a href="https://github.com/rkirov/analysis/blob/main/analysis/Analysis/Section_5_epilogue.lean">details</a>. I have never done anything like this before, so this is a small retro of how it went so far (in Jan'26) and what&rsquo;s next.</p>
+<h2 id="vision">Vision</h2>
+<p>Without much experience of what is possible or advisable, my vision for this workgroup was for it to be something like &ldquo;academia outside academia&rdquo;, i.e. take as many of the good parts of university classes, and adapt to the reality of doing this after work/school. So I set up a syllabus based on <a href="https://github.com/teorth/analysis">Tao&rsquo;s Companion to Real Analysis</a> that I have been working through on my own.</p>
+<p>A key ingredient is active learning, meaning everyone should be learning something from this class/workgroup and that happens best by writing Lean theorems and exercises.</p>
+<p>I also wanted to emphasize in-person meetups at least weekly (along with ample online async communication) in order to build a sense of community.</p>
+<h2 id="what-worked-well">What worked well</h2>
+<ul>
+<li>Interest - the most basic question was whether anybody would even be interested in this and show up. After close to 10-15 weekly meetings, I can say that there is generally a lot of interest and we always had at least 5-10 people show up. Some folks even commute from the further parts of the Bay Area to attend.</li>
+<li>Venue - I thought finding an appropriate place to host the meeting would be easy at first, thinking by analogy with pre-covid tech meetups I attended in various tech company offices. Actually, it turned out to be quite tricky initially, we didn&rsquo;t have many options that replied. Luckily, we got put in touch with <a href="https://moxsf.com/">MOX</a> who were very enthusiastic about the meetup and have been hosting us since the first meeting. The location is very convenient, right next to a BART station in downtown SF.</li>
+<li>Personal accountability - as the year progressed my own motivation to work on Lean stuff has waned and the weekly meetup has acted as a good motivator to keep the basic connection going and not completely forget everything.</li>
+<li>Steady newcomer inflow - despite not doing much advertisement after the initial boost, we are still seeing newcomers every week. The Discord channel has 70 members, which suggests a wide pool of interested people in the area.</li>
+</ul>
+<h2 id="what-didnt-work-well">What didn&rsquo;t work well</h2>
+<ul>
+<li>Alignment with attendees&rsquo; goals - since there is no general SF Lean meetup, we attract everyone: complete beginners wanting to try the Natural Number Game, Lean experts, software engineers interested in Lean as a programming language, AI researchers, and working mathematicians. Motivations vary just as much - some want active learning, some prefer the community aspect, some care more about foundations than formalization. This makes it hard to run a focused workgroup, but splitting into multiple meetups would leave each one too small.</li>
+<li>Lectures - I did a few intro lectures initially, and very quickly realized that I don&rsquo;t have the time to make them very polished and they go against my own vision for active learning.</li>
+<li>Retention - the Discord channel has 70 members but each session after the first had fewer than ten people show up. Most people attend once or twice before moving on. The constant influx of newcomers also means the group&rsquo;s effective level keeps resetting, making it hard to build momentum on more advanced material.</li>
+<li>Time spent outside the workgroup - it would have been more ideal if folks tried to work through exercises outside the meetup time and brought in questions they were stuck on. However, the majority (and sadly myself recently) only interact with Lean during the meetup.</li>
+</ul>
+<h2 id="where-did-we-end-up">Where did we end up</h2>
+<p>Currently, we use the meetup as a shared Math in Lean coworking time. The majority of folks are newcomers who work through the Natural Number Game and first chapters of Tao&rsquo;s Real Analysis. At the beginning of the session, I create groups of folks working on a similar level of problems so they can discuss with each other. Experts help others, share advanced tips, tricks, and the occasional demo.</p>
+<p>In terms of concrete progress: around 10 people finished the Natural Number Game through the workgroup, about 5 finished (or did major parts of) Chapter 2 of Tao&rsquo;s Real Analysis, and roughly 3 got through enough of Chapter 3 to feel ready to move on to Chapter 4. The funnel shape is expected, but it&rsquo;s encouraging that people are making real progress on non-trivial material.</p>
+<h2 id="going-forward">Going forward</h2>
+<p>I am going to continue to give this a try for another few months. For the reasons above, it is a bit of a challenge to reconcile my vision of active learning time for doing math in Lean with the attendees&rsquo; schedules and vision. So I am officially dropping the syllabus and the Real Analysis focus (though not sure what other structured exercises I would recommend after NNG), but keeping the math focus (instead of general programming with Lean) and coworking aspect instead of giving talks.</p>
+<p>I feel the natural pull is to turn this into an SF Lean meetup, where folks give weekly talks and demos. This workgroup shows there is enough interest and material, and it would solve a number of the challenges above. But I find that working together with people on the real experience of trying to learn and use Lean is more valuable to me than being in the passive audience of another talk. So for now, the coworking format stays.</p>
+<h2 id="advice-for-someone-starting-a-similar-group">Advice for someone starting a similar group</h2>
+<ul>
+<li>Active learning is even harder to pull off outside academia than inside it, but it&rsquo;s still worth trying. The alternative - passive talks - is easier to organize but produces less learning. Don&rsquo;t give up on the active format just because it&rsquo;s messy.</li>
+<li>Prepare for multiple async tracks. Give up on hard cohesion across the group, but still try to maximize the number of people working on the same problems at the same time. That&rsquo;s when the magic happens - when someone next to you is stuck on the same lemma and you figure it out together.</li>
+<li>Adjust as you go. Your initial vision will not survive contact with your actual attendees, and that&rsquo;s fine. The retro above is basically a story of continuous adjustment.</li>
+</ul>
+<p>If you&rsquo;re in the Bay Area and interested, come join us - <a href="https://discord.com/invite/bXNPhQyjfe">details</a> and <a href="https://discord.com/invite/bXNPhQyjfe">Discord</a>.</p>
+<p>If you&rsquo;ve had success running an active learning group outside of school - in any topic, not just math or Lean - I&rsquo;d love to hear what worked for you. Reach out on Discord or leave a comment.</p>
+
+</content>
+<p>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+    
+</body>
+
+</html>

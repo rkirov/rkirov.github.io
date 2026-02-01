@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Tue, 11 Nov 2025 20:18:26 -0800</lastBuildDate>
+    <lastBuildDate>Sun, 01 Feb 2026 14:04:19 -0800</lastBuildDate>
     <atom:link href="https://rkirov.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Local Lean Workgroup Retro</title>
+      <link>https://rkirov.github.io/posts/lean_workgroup/</link>
+      <pubDate>Sun, 01 Feb 2026 14:04:19 -0800</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/lean_workgroup/</guid>
+      <description>&lt;p&gt;I started learning formalized mathematics with Lean last year &lt;a href=&#34;../lean1&#34;&gt;1&lt;/a&gt;, &lt;a href=&#34;../lean2&#34;&gt;2&lt;/a&gt;, &lt;a href=&#34;../lean3&#34;&gt;3&lt;/a&gt;, &lt;a href=&#34;../lean4&#34;&gt;4&lt;/a&gt;. As I progressed beyond basics, it dawned on me that I need to start interacting with the broader community as Lean is rapidly evolving and beyond basic getting started guides there aren&amp;rsquo;t as many high-quality resources to learn solo. It could also be a great way to meet folks with similar interests and build more social connections. To that end I tried to start a local workgroup around Oct&#39;25 &lt;a href=&#34;https://github.com/rkirov/analysis/blob/main/analysis/Analysis/Section_5_epilogue.lean&#34;&gt;details&lt;/a&gt;. I have never done anything like this before, so this is a small retro of how it went so far (in Jan&#39;26) and what&amp;rsquo;s next.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Is this JS function pure?</title>
       <link>https://rkirov.github.io/posts/pure/</link>
