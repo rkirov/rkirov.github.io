@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Leaning on AI | Rado&#39;s Radical Reflections</title>
+<meta name="title" content="Leaning on AI" />
+<meta name="description" content="Leaning on AI
+It&rsquo;s been five months since my last dedicated Lean post and as usual I have started to lose steam on Lean projects. After the thrill of discovering the world of formalized mathematics started to wear off, I did not find motivation to push as hard as before. The SF Math with Lean work group kept me vaguely connected (at least in the one hour a week we meet (see retro)) but other than that I wasn&rsquo;t putting in more than a few hours a week on math and Lean." />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="https://rkirov.github.io/posts/lean5/">
+  <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
+  <meta property="og:title" content="Leaning on AI">
+  <meta property="og:description" content="Leaning on AI It’s been five months since my last dedicated Lean post and as usual I have started to lose steam on Lean projects. After the thrill of discovering the world of formalized mathematics started to wear off, I did not find motivation to push as hard as before. The SF Math with Lean work group kept me vaguely connected (at least in the one hour a week we meet (see retro)) but other than that I wasn’t putting in more than a few hours a week on math and Lean.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-02-08T21:16:11-08:00">
+    <meta property="article:modified_time" content="2026-02-08T21:16:11-08:00">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Leaning on AI">
+  <meta name="twitter:description" content="Leaning on AI It’s been five months since my last dedicated Lean post and as usual I have started to lose steam on Lean projects. After the thrill of discovering the world of formalized mathematics started to wear off, I did not find motivation to push as hard as before. The SF Math with Lean work group kept me vaguely connected (at least in the one hour a week we meet (see retro)) but other than that I wasn’t putting in more than a few hours a week on math and Lean.">
+      <meta name="twitter:site" content="@radokirov">
+
+
+
+
+  <meta itemprop="name" content="Leaning on AI">
+  <meta itemprop="description" content="Leaning on AI It’s been five months since my last dedicated Lean post and as usual I have started to lose steam on Lean projects. After the thrill of discovering the world of formalized mathematics started to wear off, I did not find motivation to push as hard as before. The SF Math with Lean work group kept me vaguely connected (at least in the one hour a week we meet (see retro)) but other than that I wasn’t putting in more than a few hours a week on math and Lean.">
+  <meta itemprop="datePublished" content="2026-02-08T21:16:11-08:00">
+  <meta itemprop="dateModified" content="2026-02-08T21:16:11-08:00">
+  <meta itemprop="wordCount" content="1479">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Rado&#39;s Radical Reflections</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/posts/">Blog</a>
+
+<a href="/about/">About</a>
+
+
+</nav>
+</header>
+  <main>
+
+<content>
+  <h1 id="leaning-on-ai">Leaning on AI</h1>
+<p>It&rsquo;s been five months since my last dedicated <a href="../lean4">Lean post</a> and as usual I have started to lose steam on Lean projects. After the thrill of discovering the world of formalized mathematics started to wear off, I did not find motivation to push as hard as before. The SF Math with Lean work group kept me vaguely connected (at least in the one hour a week we meet <a href="../lean_workgroup">(see retro)</a>) but other than that I wasn&rsquo;t putting in more than a few hours a week on math and Lean.</p>
+<p>So when I tried to get back into working through Tao&rsquo;s companion chapter 6, I had a rough awakening - while I remembered roughly my way around Lean tactics, I seem to have forgotten most of mathlib theorem names. Grinding through chapter 6 felt even harder and more chore-ish than before.</p>
+<p>Luckily for me, the times have changed&hellip;</p>
+<h2 id="claude-proof">Claude Proof</h2>
+<p>It seems that AI tools reached a breaking point, where more and more engineers are using Claude Code daily for their coding tasks. As a manager I don&rsquo;t code as much at work, so I was slow to switch from the autocompletion use of AI (GitHub Copilot, which I used for last year&rsquo;s Advent of Code, for example) to the new fully agentic coding with AI.</p>
+<p>But basically, I was faced with a hard choice - at my current pace, it would take me at least a year to complete Tao&rsquo;s companion text, and I have to commit to memory a large number of mathlib theorems - was it <code>lt_le_of_le</code> or <code>lt_of_le_lt</code>. Or I can take a plunge into using Claude Code for Lean more aggressively.</p>
+<p>I decided to do the latter and the results were amazing.</p>
+<h2 id="the-setup">The Setup</h2>
+<p>Inspired by moltbot (which I briefly experimented with) I wanted to have a claude code instance that is continuously working - I got a VM from digital ocean, setup Claude code and all lean tooling, enabled Lean MCP server and let it grind. I even have an iOS terminal emulator to check on progress and discuss issues when stuck.</p>
+<h2 id="results">Results</h2>
+<p>Claude Code 4.6 is fully able to autonomously complete all examples and exercises in the real analysis companion <a href="https://github.com/rkirov/analysis/blob/main/analysis/Analysis/Section_6_4.lean">see section 6.4 for example</a>. I used two concurrent agents and upgraded to Claude Max (which was enough for them).</p>
+<p>In one weekend I (we?) managed to complete sections 6.2, 6.3, 6.4, while I kept my usual weekend routine - bike ride, board games, watched the Super Bowl. I was maybe 2 hours max in front of the computer, to do code reviews and read the agents&rsquo; summaries. Without AI, this would have easily been 10x the time effort on my part, and given I know Lean basics, the educational value for me would have been questionable.</p>
+<p>I also manually checked places where the agents spotted odd formulations in Lean, which turned out to be typos when I cross-referenced with the actual textbook. As it is the case with everything these days, there is nothing that I believe can&rsquo;t be done by AI on fundamental grounds, but some things are still more ergonomic for me to do. For example, if my agent opens an upstream request, I need to verify it is not sending Tao some nonsense and wasting his time. The agents do the work, we provide the value system.</p>
+<p>I had to learn how to improve my prompt <a href="https://github.com/rkirov/analysis/blob/main/CLAUDE.md">see CLAUDE.md</a> and periodically ask the agents for key insights. I do read the PRs they produce and incorporate suggestions if I don&rsquo;t like the style or believe there is an easier way to do something.</p>
+<h2 id="is-there-a-problem">Is there a problem?</h2>
+<p>A nagging thought started to bother me. Using AI is undoubtedly more efficient, but am I defeating the point of the whole exercise? Why am I working through Tao&rsquo;s Real Analysis companion? I want to learn formalized mathematics with Lean, and by analogy with computer programming, the only way to learn a language is to write a lot of code in it. I don&rsquo;t do math research so the only math within my access is undergraduate and graduate textbooks. But if AI is writing the Lean code, what am I learning?</p>
+<p>I broke it down further. Not all knowledge is equal, and AI help has very different costs for each kind:</p>
+<p><strong>Basic language familiarity</strong> - key concepts, tactics. This I already got by manually working through chapters 2 to 5. It is an open question what I would recommend to a newcomer; following what I did doesn&rsquo;t seem efficient. I probably should have started using AI earlier, but it was also not as capable back then. My current bar: if a tactic appears in my codebase and I can&rsquo;t explain what it does and roughly when to reach for it, that&rsquo;s a gap worth closing.</p>
+<p><strong>Knowing mathlib theorems and structures</strong> - this doesn&rsquo;t feel useful to learn as a human at all. I know <code>a &lt; b</code> and <code>b &lt;= c</code> implies <code>a &lt; c</code>, committing the mathlib theorem name to memory is not useful. This is pure search, and outsourcing search to AI is pure upside.</p>
+<p><strong>Learning advanced proof engineering</strong> - (again by analogy with executable software) design patterns, good proof style, etc. This is indeed my next goal, but Tao&rsquo;s companion is not the right exercise for it. Someone already decided what the lemmas are, how they&rsquo;re organized, what depends on what. I&rsquo;m getting zero reps on the hardest part of proof engineering — decomposing a theorem into pieces that are individually provable and collectively sufficient. That requires a project where I&rsquo;m making the structural decisions myself.</p>
+<p><strong>Engaging with the underlying mathematical ideas</strong> - this is the most important, non-negotiable thing. If Claude figures out the proof strategy and I read it afterwards, I&rsquo;m getting a fraction of the value compared to working through it myself. That said, a lot of the proofs in this intro real analysis textbook have no novel proof strategy - they are just expand the definitions and follow your nose, and only formalization with Lean makes them tedious.</p>
+<h2 id="the-workflow">The workflow</h2>
+<p>To make it more concrete, I am experimenting with the following protocol per chapter:</p>
+<ol>
+<li>Read the textbook chapter.</li>
+<li>Read the corresponding .lean file and spot novel Lean concepts (at this point this is rare).</li>
+<li>Look through the examples and see if there are novel math ideas (often none, there is a reason those are not exercises). Ask Claude to complete all examples.</li>
+<li>Read through the exercises and sketch out a proof in Lean code or as a comment in Lean.</li>
+<li>Ask AI to finish the proofs of the exercises.</li>
+<li>Review Claude&rsquo;s summary (which I asked it to always produce after each session in CLAUDE.md).</li>
+<li>Review the generated code. Unfamiliar tactic? Look it up. Unexpected proof strategy? Stop and understand why it worked.</li>
+<li>If there is a repeated pattern, encode it as a rule in CLAUDE.md.</li>
+<li>If there is something I don&rsquo;t understand, ask clarifying questions.</li>
+</ol>
+<h2 id="the-claudemd-as-style-guide">The CLAUDE.md as style guide</h2>
+<p>Step 8 deserves more attention, because it turned out to be surprisingly educational. The CLAUDE.md file is where I encode things like which tactics to prefer, when to ask me for help versus push through, what &ldquo;done&rdquo; looks like. Writing these instructions forces me to articulate my own standards. I can&rsquo;t tell Claude Code &ldquo;write clean proofs&rdquo; — I have to say what clean means. Prefer <code>exact</code> over <code>simp</code> when the term is short? Don&rsquo;t use <code>omega</code> to close goals that have mathematical content? Every rule I write is a proof engineering opinion I had to develop and make explicit.</p>
+<p>And it&rsquo;s iterative. Claude does something I don&rsquo;t like, and instead of just fixing it, I ask whether this is a one-off or a pattern. If it&rsquo;s a pattern, it becomes a rule. Over time the CLAUDE.md becomes a document of my evolving Lean taste — a style guide for formalization that I authored through friction with the tool.</p>
+<p>The irony is that this is one of the places where the AI workflow teaches me <em>more</em> about proof engineering than working alone would. Solo, my standards stay implicit. Having to communicate them to an agent forces clarity. And the resulting proofs end up more distinctly <em>mine</em> — shaped by my preferences, my aesthetic, my opinions about what good formalization looks like — than they would be if I were just following whatever path the tactics led me down.</p>
+<h2 id="looking-forward">Looking forward</h2>
+<p>This all feels novel and foreign to the old world of actually writing the code yourself. But five months of losing steam taught me that the perfect workflow I never use is worse than the imperfect one that keeps me going. And maybe there&rsquo;s another thing I&rsquo;m learning besides Lean — how to work with AI itself. That might end up being the most useful skill I take away from this whole project.</p>
+
+</content>
+<p>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+    
+</body>
+
+</html>

@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Sun, 01 Feb 2026 14:04:19 -0800</lastBuildDate>
+    <lastBuildDate>Sun, 08 Feb 2026 21:16:11 -0800</lastBuildDate>
     <atom:link href="https://rkirov.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Leaning on AI</title>
+      <link>https://rkirov.github.io/posts/lean5/</link>
+      <pubDate>Sun, 08 Feb 2026 21:16:11 -0800</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/lean5/</guid>
+      <description>&lt;h1 id=&#34;leaning-on-ai&#34;&gt;Leaning on AI&lt;/h1&gt;&#xA;&lt;p&gt;It&amp;rsquo;s been five months since my last dedicated &lt;a href=&#34;../lean4&#34;&gt;Lean post&lt;/a&gt; and as usual I have started to lose steam on Lean projects. After the thrill of discovering the world of formalized mathematics started to wear off, I did not find motivation to push as hard as before. The SF Math with Lean work group kept me vaguely connected (at least in the one hour a week we meet &lt;a href=&#34;../lean_workgroup&#34;&gt;(see retro)&lt;/a&gt;) but other than that I wasn&amp;rsquo;t putting in more than a few hours a week on math and Lean.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Local Lean Workgroup Retro</title>
       <link>https://rkirov.github.io/posts/lean_workgroup/</link>
