@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Sun, 08 Feb 2026 21:16:11 -0800</lastBuildDate>
+    <lastBuildDate>Sat, 14 Feb 2026 20:54:04 -0800</lastBuildDate>
     <atom:link href="https://rkirov.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype</title>
+      <link>https://rkirov.github.io/posts/sets-vs-types/</link>
+      <pubDate>Sat, 14 Feb 2026 20:54:04 -0800</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/sets-vs-types/</guid>
+      <description>&lt;h2 id=&#34;preface-why-all-mathematicians-should-learn-lean&#34;&gt;Preface: Why All Mathematicians Should Learn Lean&lt;/h2&gt;&#xA;&lt;p&gt;LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don&amp;rsquo;t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.&lt;/p&gt;&#xA;&lt;p&gt;This puts mathematicians at a fork. Either accept formal proofs as the verification layer, or reject all LLM-generated mathematics outright. The first path seems far more productive — but it requires mathematicians to read and write formalized math, at least well enough to verify that formal statements faithfully capture informal ones.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Leaning on AI</title>
       <link>https://rkirov.github.io/posts/lean5/</link>

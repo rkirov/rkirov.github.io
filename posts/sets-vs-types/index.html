@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype | Rado&#39;s Radical Reflections</title>
+<meta name="title" content="From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype" />
+<meta name="description" content="Preface: Why All Mathematicians Should Learn Lean
+LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don&rsquo;t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.
+This puts mathematicians at a fork. Either accept formal proofs as the verification layer, or reject all LLM-generated mathematics outright. The first path seems far more productive — but it requires mathematicians to read and write formalized math, at least well enough to verify that formal statements faithfully capture informal ones." />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="https://rkirov.github.io/posts/sets-vs-types/">
+  <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
+  <meta property="og:title" content="From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype">
+  <meta property="og:description" content="Preface: Why All Mathematicians Should Learn Lean LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don’t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.
+This puts mathematicians at a fork. Either accept formal proofs as the verification layer, or reject all LLM-generated mathematics outright. The first path seems far more productive — but it requires mathematicians to read and write formalized math, at least well enough to verify that formal statements faithfully capture informal ones.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-02-14T20:54:04-08:00">
+    <meta property="article:modified_time" content="2026-02-14T20:54:04-08:00">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype">
+  <meta name="twitter:description" content="Preface: Why All Mathematicians Should Learn Lean LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don’t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.
+This puts mathematicians at a fork. Either accept formal proofs as the verification layer, or reject all LLM-generated mathematics outright. The first path seems far more productive — but it requires mathematicians to read and write formalized math, at least well enough to verify that formal statements faithfully capture informal ones.">
+      <meta name="twitter:site" content="@radokirov">
+
+
+
+
+  <meta itemprop="name" content="From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype">
+  <meta itemprop="description" content="Preface: Why All Mathematicians Should Learn Lean LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don’t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.
+This puts mathematicians at a fork. Either accept formal proofs as the verification layer, or reject all LLM-generated mathematics outright. The first path seems far more productive — but it requires mathematicians to read and write formalized math, at least well enough to verify that formal statements faithfully capture informal ones.">
+  <meta itemprop="datePublished" content="2026-02-14T20:54:04-08:00">
+  <meta itemprop="dateModified" content="2026-02-14T20:54:04-08:00">
+  <meta itemprop="wordCount" content="2369">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Rado&#39;s Radical Reflections</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/posts/">Blog</a>
+
+<a href="/about/">About</a>
+
+
+</nav>
+</header>
+  <main>
+
+<content>
+  <h2 id="preface-why-all-mathematicians-should-learn-lean">Preface: Why All Mathematicians Should Learn Lean</h2>
+<p>LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don&rsquo;t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.</p>
+<p>This puts mathematicians at a fork. Either accept formal proofs as the verification layer, or reject all LLM-generated mathematics outright. The first path seems far more productive — but it requires mathematicians to read and write formalized math, at least well enough to verify that formal statements faithfully capture informal ones.</p>
+<p>I&rsquo;ve been working through a Lean companion to Tao&rsquo;s <em>Analysis I</em>, and the experience has surfaced many small friction points — places where the gap between blackboard math and Lean&rsquo;s type theory causes real confusion. This post is one in a series meant to address those friction points with practical guidance.</p>
+<p>Today&rsquo;s topic: translating set-theoretic language into Lean&rsquo;s type system. This is not a theoretical comparison of set theory vs type theory as foundations. It&rsquo;s a practical guide for working mathematicians who take a piece of math written in set-theoretic notation and try to formalize it in Lean — and immediately hit confusing errors.</p>
+<h2 id="basics">Basics</h2>
+<p>I assume you are familiar with the basic language of sets (even if not its formalized version as ZFC). Generally, there are primitive objects and sets, which are unordered collections of objects or sets (skipping a lot of details here, but this is the rough practical version a working mathematician uses). One notable property is that an object can be a member of many sets — e.g. 0 is a member of <code>ℕ</code>, <code>ℤ</code>, <code>{0}</code>, <code>{0,1,2}</code>, <code>{x | x ∈ ℤ, x &gt; -1}</code>, etc.</p>
+<p>In type theory, we similarly have objects and types, where objects belong to types and types themselves belong to higher-level types called <em>universes</em>, but notably each object belongs to a unique type. It is an inherent property of the object — at any point the type system knows its unique type. In Lean we write the type after <code>:</code>. Mathlib defines the basic number types one expects for doing math: <code>ℕ</code>, <code>ℤ</code>, <code>ℚ</code>, <code>ℝ</code>, <code>ℂ</code>.</p>
+<p>Right off the bat this poses some awkwardness for mathematicians. Take the simple number 0 — what is its unique type? <code>ℕ</code> or <code>ℤ</code> or <code>ℚ</code>? Lean deals with this in a way familiar to Haskell programmers, but perhaps confusing to mathematicians at first. There is no object called just <code>0</code>. There is a numeric <em>literal</em> <code>0</code> (which is not a priori a mathematical object), which through the typeclass system any type can &ldquo;claim&rdquo; for itself, defining how to turn the literal into an object of that type.</p>
+<p>If there is a specific type annotation like <code>(0 : ℚ)</code>, or one can be inferred from context, the zero literal is turned into the specific zero object of the type needed. To avoid confusion for newcomers, Lean has a default so that <code>#eval 0</code> results in <code>0 : ℕ</code>.</p>
+<h2 id="explicit-coercions">Explicit coercions</h2>
+<p>Now that we have distinct objects like <code>(0 : ℕ)</code> and <code>(0 : ℚ)</code>, how do we capture the mathematical intuition that they are basically the same thing? Lean makes it easy to convert between them via the natural injection. Instead of naming this injection, you can write <code>(0 : ℕ) : ℚ</code> and Lean&rsquo;s typeclass mechanism finds and applies the right injection automatically. As a reminder that coercion is really a function — not the same <code>0</code> belonging to different sets — Lean renders <code>↑0</code>, the up arrow indicating an injection was applied.</p>
+<p>Make sure to always hover over <code>0</code> or <code>↑</code> in the Lean infoview. It will show you which type <code>0</code> belongs to and the specific injection used.</p>
+<h2 id="subtypes">Subtypes</h2>
+<p>In math, you might say &ldquo;let <code>n</code> be an <em>even</em> natural number&rdquo; and move on. Implicitly in set theory terms, you mean <code>n</code> belongs to the set of even numbers <code>{0, 2, 4, ...}</code>. However, in type theory this is a problem: is <code>n</code> in <code>ℕ</code> (with some extra info) or in <code>{0, 2, 4, ...}</code>? An object can belong to only a single unambiguous type.</p>
+<p>Lean resolves this by pairing each value with a proof that it satisfies some property. This is called a <strong>subtype</strong> and the syntax is <code>{n : ℕ // Even n}</code>, and an element is a pair — the value <code>x.val : ℕ</code> and a proof <code>x.prop : Even x.val</code>.</p>
+<p>A key example is <code>Fin n</code>, the type of natural numbers less than <code>n</code>. It is defined as <code>{i : ℕ // i &lt; n}</code> — a subtype of <code>ℕ</code>. When you write <code>i : Fin 5</code>, <code>i.val</code> is the underlying natural number and <code>i.prop</code> is a proof that <code>i.val &lt; 5</code>.</p>
+<p>Subtypes are distinct from their parent type. <code>(0 : ℕ)</code> and <code>(⟨0, by decide⟩ : Fin 5)</code> are different objects with different types. Lean provides coercions — if <code>i : Fin 5</code>, you can use <code>i</code> where a <code>ℕ</code> is expected and Lean inserts <code>↑i</code> — but this can still surprise newcomers when type mismatches appear.</p>
+<p>Finally, note that subtypes are merely a convenience. One can always just work with the unpacked raw value plus the proposition - a function can ask for <code>(x : ℕ) (hxeven : Even x)</code>.</p>
+<p>Now we can clarify the two coercion arrows you&rsquo;ll encounter:</p>
+<ul>
+<li><code>↑x</code> coerces a <strong>value</strong> — e.g. <code>↑i</code> sends <code>i : Fin 5</code> to <code>ℕ</code></li>
+<li><code>↥</code> coerces something <strong>into a type</strong> — you&rsquo;ll see this later when we discuss <code>Set</code>, where <code>↥S</code> turns a set into its corresponding subtype</li>
+</ul>
+<p>For now, <code>↑</code> is the one you&rsquo;ll see most: it injects an element into a larger type.</p>
+<h3 id="subtypes-of-subtypes">Subtypes of subtypes</h3>
+<p>In set theory, you can take a subset of a subset without thinking twice: &ldquo;let <code>S</code> be the even numbers, and let <code>T</code> be the even numbers less than 10.&rdquo; Both <code>S</code> and <code>T</code> are just sets of natural numbers. An element of <code>T</code> is an element of <code>S</code> is a natural number — no wrapping or unwrapping needed.</p>
+<p>In Lean, subtypes nest. If <code>S = {n : ℕ // Even n}</code> and you want the elements less than 10, you get <code>{x : S // x.val &lt; 10}</code>, which is <code>{x : {n : ℕ // Even n} // x.val &lt; 10}</code>. An element of this type is a pair whose first component is itself a pair: <code>⟨⟨4, by decide⟩, by decide⟩</code>. To get back to the underlying natural number, you write <code>x.val.val</code>.</p>
+<p>This compounds. Each layer of restriction adds another <code>.val</code> to unwrap and another proof to carry. Lean&rsquo;s coercions help — <code>↑x</code> will often get you back to <code>ℕ</code> — but in the infoview you&rsquo;ll see types like <code>↥↥S</code> and expressions like <code>↑↑x</code>, which can be disorienting.</p>
+<p>The practical advice: avoid nesting subtypes when you can. Instead of building <code>{x : {n : ℕ // Even n} // x.val &lt; 10}</code>, prefer a single subtype with a combined predicate: <code>{n : ℕ // Even n ∧ n &lt; 10}</code>. This keeps elements flat — one <code>.val</code>, one <code>.prop</code> — and avoids the coercion chains. In set theory this distinction doesn&rsquo;t exist; in Lean it determines how painful your proofs are.</p>
+<h2 id="sets">Sets</h2>
+<p>With subtypes in hand, we can understand Lean&rsquo;s <code>Set</code>. Lean supports familiar set notation — you can write <code>({0, 1, 2} : Set ℕ)</code> or <code>{x : ℕ | x &gt; 0}</code> and get an object of type <code>Set ℕ</code>. The literal <code>{0, 1, 2}</code> is polymorphic — it can produce a <code>Set ℚ</code> or <code>Set ℤ</code> depending on context. You can use <code>∈</code>, <code>∪</code>, <code>∩</code>, <code>⊆</code> and other set operations as expected.</p>
+<p>When you need to treat a set as a type — to define a function on its elements, or quantify over them — Lean coerces <code>S</code> to the subtype <code>↥S</code>, which as we saw is <code>{x : T // x ∈ S}</code>. So you can write <code>(f : ↥S → ℝ)</code> to define a function on the elements of <code>S</code>.</p>
+<p>One important thing to note: <strong>sets are always relative to a type.</strong> There is no bare <code>Set</code> in Lean, only <code>Set T</code> for some type <code>T</code>. A useful mental model: in Lean, &ldquo;sets are subsets&rdquo; — you always need an ambient type to even talk about them.</p>
+<h2 id="finsets-and-fintypes">Finsets and Fintypes</h2>
+<p>Under the hood, <code>Set T</code> is defined as <code>T → Prop</code> — just a membership predicate. You can state that <code>x ∈ S</code> and prove it, but you can&rsquo;t iterate over a <code>Set</code>, sum over it, or take its cardinality. So how do you do computation with sets?</p>
+<p>Lean provides two separate mechanisms, and the distinction between them is one of the most confusing aspects for newcomers.</p>
+<h3 id="finset">Finset</h3>
+<p><code>Finset T</code> is a <em>concrete, finite subset</em> of a type <code>T</code>. Unlike <code>Set</code>, a <code>Finset</code> carries actual data — it knows exactly which elements it contains, and membership is decidable (you can compute whether <code>x ∈ S</code>). This is what you need for:</p>
+<ul>
+<li>summing: <code>∑ x ∈ S, f x</code> (finite sums — no convergence proof needed)</li>
+<li>counting: <code>S.card</code> (returns a plain <code>ℕ</code>, not a cardinal)</li>
+<li>filtering: <code>S.filter (fun x =&gt; x &gt; 3)</code> (requires the predicate to be decidable)</li>
+</ul>
+<p>A subtle but important point: <code>∑ x ∈ S, f x</code> and <code>∑ x : S, f x</code> mean different things. With <code>∈</code>, the variable <code>x</code> has the ambient type (<code>x : T</code>) and the sum just restricts which elements are included. With <code>:</code>, Lean coerces <code>S</code> into a subtype <code>↥S</code>, so <code>x : ↥S</code> — a pair of a value and a membership proof. If <code>f : T → ℝ</code>, then <code>∑ x ∈ S, f x</code> works directly, but <code>∑ x : S, f x</code> fails because <code>x</code> has the wrong type. You&rsquo;d need <code>f ↑x</code> to coerce back. In practice, <code>∈</code> is almost always what you want when summing over a <code>Finset</code>.</p>
+<p>You can build a <code>Finset</code> with a literal like <code>({1, 3, 5} : Finset ℕ)</code>, or from <code>Finset.range n</code> (the numbers 0 to n-1), or by filtering another <code>Finset</code>.</p>
+<p>Like <code>Set</code>, a <code>Finset</code> always lives relative to an ambient type — <code>Finset ℕ</code>, <code>Finset (Fin n)</code>, etc. And like <code>Set</code>, you can convert a <code>Finset</code> to a subtype with <code>↥S</code>. But unlike <code>Set</code>, you can actually compute with it.</p>
+<h3 id="fintype">Fintype</h3>
+<p><code>Fintype T</code> is a <em>typeclass</em> asserting that the type <code>T</code> has finitely many elements. It&rsquo;s not a subset — it&rsquo;s a property of the whole type. When <code>[Fintype T]</code> is in scope, <code>Finset.univ : Finset T</code> gives you a <code>Finset</code> containing every element of <code>T</code>.</p>
+<p>This also lets you write <code>∑ x, f x</code> (sum over the whole type) without specifying a set — Lean knows there are finitely many <code>x</code> to sum over. Common <code>Fintype</code> instances include <code>Fin n</code>, <code>Bool</code>, and any product or subtype of finite types.</p>
+<h3 id="the-choice-finset-vs-fintype">The choice: Finset vs Fintype</h3>
+<p>When a textbook says &ldquo;let <code>S</code> be a finite set,&rdquo; you have two encodings:</p>
+<ul>
+<li><code>(S : Finset U)</code> — <code>S</code> is a finite subset of some ambient type <code>U</code></li>
+<li><code>[Fintype S]</code> — <code>S</code> <em>is</em> the type, and it&rsquo;s finite</li>
+</ul>
+<p>Each has tradeoffs — we&rsquo;ll compare them in the example below.</p>
+<h3 id="converting-between-set-and-finset">Converting between Set and Finset</h3>
+<p>You can convert a <code>Set</code> to a <code>Finset</code> with <code>.toFinset</code>, provided the predicate is decidable and the type is finite. For example, <code>{x : Fin n | x &gt; 3}.toFinset</code> produces a <code>Finset (Fin n)</code>. Going the other way, every <code>Finset</code> can be viewed as a <code>Set</code> via coercion — if <code>S : Finset ℕ</code>, you can use <code>S</code> where a <code>Set ℕ</code> is expected.</p>
+<h2 id="a-full-example">A full example</h2>
+<p>Here&rsquo;s a textbook exercise from Tao&rsquo;s <em>Analysis I</em> (Exercise 7.1.6):</p>
+<blockquote>
+<p>Let S be a finite set which is the disjoint union of E₁, &hellip;, Eₙ. Then ∑(x ∈ S) f(x) = ∑(i=1..n) ∑(x ∈ Eᵢ) f(x).</p></blockquote>
+<p>One sentence. Perfectly clear to any math student. But formalizing it in Lean required choosing between the encodings we&rsquo;ve discussed. Here&rsquo;s what I landed on:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">theorem</span> sum_union_disjoint <span style="color:#f92672">{</span>n <span style="color:#f92672">:</span> ℕ<span style="color:#f92672">}</span> <span style="color:#f92672">{</span>S <span style="color:#f92672">:</span> <span style="color:#66d9ef">Type</span>*<span style="color:#f92672">}</span> <span style="color:#f92672">[</span>Fintype S<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>E <span style="color:#f92672">:</span> Fin n → Finset S<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>disj <span style="color:#f92672">:</span> ∀ i j <span style="color:#f92672">:</span> Fin n<span style="color:#f92672">,</span> i ≠ j → Disjoint <span style="color:#f92672">(</span>E i<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>E j<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>cover <span style="color:#f92672">:</span> ∀ s <span style="color:#f92672">:</span> S<span style="color:#f92672">,</span> ∃ i<span style="color:#f92672">,</span> s ∈ E i<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>f <span style="color:#f92672">:</span> S → ℝ<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    ∑ s<span style="color:#f92672">,</span> f s = ∑ i<span style="color:#f92672">,</span> ∑ s ∈ E i<span style="color:#f92672">,</span> f s
+</span></span></code></pre></div><p>Notice the choices and their consequences:</p>
+<ul>
+<li><strong><code>S</code> is a type with <code>[Fintype S]</code></strong>, not a <code>Finset U</code>. This gives us the clean LHS: <code>∑ s, f s</code> — sum over every element of the type. With <code>S : Finset U</code> instead, the LHS would be <code>∑ s ∈ S, f s</code> and <code>f</code> would need to be <code>f : U → ℝ</code> — defined on the entire ambient type, not just <code>S</code>.</li>
+<li><strong>The index type is <code>Fin n</code></strong>, not <code>(i : ℕ)</code> with a hypothesis <code>i &lt; n</code>. The textbook&rsquo;s &ldquo;E₁, &hellip;, Eₙ&rdquo; becomes <code>E : Fin n → Finset S</code> — the bound is baked into the type rather than carried as a separate proof. And since <code>Fin n</code> has a <code>Fintype</code> instance, <code>∑ i</code> on the RHS just works.</li>
+<li><strong><code>E i : Finset S</code></strong> — each piece of the partition is a <code>Finset</code>, so we can sum over it.</li>
+<li><strong>The partition is stated as hypotheses</strong> — <code>disj</code> (pairwise disjoint) and <code>cover</code> (every element belongs to some <code>E i</code>). In the textbook, &ldquo;S is the disjoint union&rdquo; says this in one phrase. In Lean, since <code>S</code> is a standalone type, the relationship must be spelled out.</li>
+<li><strong><code>f : S → ℝ</code> is a total function</strong> — defined on all of <code>S</code>, not on a subtype. This avoids coercion pain. We restrict the summation range on the RHS with <code>∑ s ∈ E i</code>, not the function domain.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Formalizing even a straightforward set-theoretic statement in Lean requires real choices. Many come down to whether properties are packaged into a subtype, stated explicitly as hypotheses, or carried implicitly via typeclasses. Usually any encoding works in terms of what you can prove — but the readability of the resulting proof can differ significantly.</p>
+
+</content>
+<p>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+    
+</body>
+
+</html>
