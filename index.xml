@@ -11,11 +11,11 @@
     <lastBuildDate>Sun, 08 Mar 2026 23:35:37 -0700</lastBuildDate>
     <atom:link href="https://rkirov.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Update on Real Analysis with Lean and Claude</title>
+      <title>Human Intuition, AI Formalization: A Real Analysis Case Study</title>
       <link>https://rkirov.github.io/posts/lean6/</link>
       <pubDate>Sun, 08 Mar 2026 23:35:37 -0700</pubDate><author>rkirov@gmail.com</author>
       <guid>https://rkirov.github.io/posts/lean6/</guid>
-      <description>&lt;p&gt;&lt;em&gt;Disclaimer&lt;/em&gt; - I wrote the core ideas; Claude helped flesh out and polish the article. See &lt;a href=&#34;#appendix-on-ai-assisted-writing&#34;&gt;appendix&lt;/a&gt; for more on this.&lt;/p&gt;&#xA;&lt;p&gt;This is a follow up to my &lt;a href=&#34;../lean5&#34;&gt;previous post&lt;/a&gt; on leaning on Claude for Lean. I&amp;rsquo;ve now worked up to chapter 8.3 in Tao&amp;rsquo;s companion. The speed is great and Claude&amp;rsquo;s capabilities continue to impress (autoformalization is possible, but not my goal). I haven&amp;rsquo;t been stuck on anything so far. I&amp;rsquo;ve also upstreamed many typos to the &lt;a href=&#34;https://github.com/teorth/analysis&#34;&gt;companion repo&lt;/a&gt;.&lt;/p&gt;</description>
+      <description>&lt;h1 id=&#34;human-intuition-ai-formalization-a-real-analysis-case-study&#34;&gt;Human Intuition, AI Formalization: A Real Analysis Case Study&lt;/h1&gt;&#xA;&lt;p&gt;&lt;em&gt;Disclaimer&lt;/em&gt; - I wrote the core ideas; Claude helped flesh out and polish the article. See &lt;a href=&#34;#appendix-on-ai-assisted-writing&#34;&gt;appendix&lt;/a&gt; for more on this.&lt;/p&gt;&#xA;&lt;p&gt;This is a follow up to my &lt;a href=&#34;../lean5&#34;&gt;previous post&lt;/a&gt; on leaning on Claude for Lean. I&amp;rsquo;ve now worked up to chapter 8.3 in Tao&amp;rsquo;s companion. The speed is great and Claude&amp;rsquo;s capabilities continue to impress (autoformalization is possible, but not my goal). I haven&amp;rsquo;t been stuck on anything so far. I&amp;rsquo;ve also upstreamed many typos to the &lt;a href=&#34;https://github.com/teorth/analysis&#34;&gt;companion repo&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     <item>
       <title>From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype</title>

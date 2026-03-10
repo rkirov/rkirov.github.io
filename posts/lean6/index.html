@@ -5,17 +5,18 @@
   <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Update on Real Analysis with Lean and Claude | Rado&#39;s Radical Reflections</title>
-<meta name="title" content="Update on Real Analysis with Lean and Claude" />
-<meta name="description" content="Disclaimer - I wrote the core ideas; Claude helped flesh out and polish the article. See appendix for more on this.
+<title>Human Intuition, AI Formalization: A Real Analysis Case Study | Rado&#39;s Radical Reflections</title>
+<meta name="title" content="Human Intuition, AI Formalization: A Real Analysis Case Study" />
+<meta name="description" content="Human Intuition, AI Formalization: A Real Analysis Case Study
+Disclaimer - I wrote the core ideas; Claude helped flesh out and polish the article. See appendix for more on this.
 This is a follow up to my previous post on leaning on Claude for Lean. I&rsquo;ve now worked up to chapter 8.3 in Tao&rsquo;s companion. The speed is great and Claude&rsquo;s capabilities continue to impress (autoformalization is possible, but not my goal). I haven&rsquo;t been stuck on anything so far. I&rsquo;ve also upstreamed many typos to the companion repo." />
 <meta name="keywords" content="" />
 
 
 <meta property="og:url" content="https://rkirov.github.io/posts/lean6/">
   <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
-  <meta property="og:title" content="Update on Real Analysis with Lean and Claude">
-  <meta property="og:description" content="Disclaimer - I wrote the core ideas; Claude helped flesh out and polish the article. See appendix for more on this.
+  <meta property="og:title" content="Human Intuition, AI Formalization: A Real Analysis Case Study">
+  <meta property="og:description" content="Human Intuition, AI Formalization: A Real Analysis Case Study Disclaimer - I wrote the core ideas; Claude helped flesh out and polish the article. See appendix for more on this.
 This is a follow up to my previous post on leaning on Claude for Lean. I’ve now worked up to chapter 8.3 in Tao’s companion. The speed is great and Claude’s capabilities continue to impress (autoformalization is possible, but not my goal). I haven’t been stuck on anything so far. I’ve also upstreamed many typos to the companion repo.">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
@@ -27,20 +28,20 @@ This is a follow up to my previous post on leaning on Claude for Lean. I’ve no
 
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Update on Real Analysis with Lean and Claude">
-  <meta name="twitter:description" content="Disclaimer - I wrote the core ideas; Claude helped flesh out and polish the article. See appendix for more on this.
+  <meta name="twitter:title" content="Human Intuition, AI Formalization: A Real Analysis Case Study">
+  <meta name="twitter:description" content="Human Intuition, AI Formalization: A Real Analysis Case Study Disclaimer - I wrote the core ideas; Claude helped flesh out and polish the article. See appendix for more on this.
 This is a follow up to my previous post on leaning on Claude for Lean. I’ve now worked up to chapter 8.3 in Tao’s companion. The speed is great and Claude’s capabilities continue to impress (autoformalization is possible, but not my goal). I haven’t been stuck on anything so far. I’ve also upstreamed many typos to the companion repo.">
       <meta name="twitter:site" content="@radokirov">
 
 
 
 
-  <meta itemprop="name" content="Update on Real Analysis with Lean and Claude">
-  <meta itemprop="description" content="Disclaimer - I wrote the core ideas; Claude helped flesh out and polish the article. See appendix for more on this.
+  <meta itemprop="name" content="Human Intuition, AI Formalization: A Real Analysis Case Study">
+  <meta itemprop="description" content="Human Intuition, AI Formalization: A Real Analysis Case Study Disclaimer - I wrote the core ideas; Claude helped flesh out and polish the article. See appendix for more on this.
 This is a follow up to my previous post on leaning on Claude for Lean. I’ve now worked up to chapter 8.3 in Tao’s companion. The speed is great and Claude’s capabilities continue to impress (autoformalization is possible, but not my goal). I haven’t been stuck on anything so far. I’ve also upstreamed many typos to the companion repo.">
   <meta itemprop="datePublished" content="2026-03-08T23:35:37-07:00">
   <meta itemprop="dateModified" content="2026-03-08T23:35:37-07:00">
-  <meta itemprop="wordCount" content="2017">
+  <meta itemprop="wordCount" content="2037">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
   <style>
@@ -235,7 +236,8 @@ This is a follow up to my previous post on leaning on Claude for Lean. I’ve no
   <main>
 
 <content>
-  <p><em>Disclaimer</em> - I wrote the core ideas; Claude helped flesh out and polish the article. See <a href="#appendix-on-ai-assisted-writing">appendix</a> for more on this.</p>
+  <h1 id="human-intuition-ai-formalization-a-real-analysis-case-study">Human Intuition, AI Formalization: A Real Analysis Case Study</h1>
+<p><em>Disclaimer</em> - I wrote the core ideas; Claude helped flesh out and polish the article. See <a href="#appendix-on-ai-assisted-writing">appendix</a> for more on this.</p>
 <p>This is a follow up to my <a href="../lean5">previous post</a> on leaning on Claude for Lean. I&rsquo;ve now worked up to chapter 8.3 in Tao&rsquo;s companion. The speed is great and Claude&rsquo;s capabilities continue to impress (autoformalization is possible, but not my goal). I haven&rsquo;t been stuck on anything so far. I&rsquo;ve also upstreamed many typos to the <a href="https://github.com/teorth/analysis">companion repo</a>.</p>
 <p>There have been many great recent essays on math, AI and formalization:</p>
 <ul>
@@ -275,7 +277,7 @@ This is a follow up to my previous post on leaning on Claude for Lean. I’ve no
 <p><strong>Learning</strong> - Part 10 of the proof, I am stuck. I ask Claude to explain what is happening in words, convince myself on paper conceptually, then read the proof and agree it makes sense. This is tricky indeed. I ask to refactor a bit and add better comments matching my understanding, which I relay back to Claude as another intuition sketch.</p>
 </li>
 <li>
-<p><strong>Cleanup</strong> - I ask Claude to clean up the whole thing and commit. The result is <a href="https://github.com/rkirov/analysis/blob/main/analysis/Analysis/Section_8_2.lean#L843-L1182">300+ lines of lean</a>. I guess to both the uninitiated in Lean and the Lean expert, it looks like slop (for different reasons). But through this process, to me it is a formal proof that I roughly follow.</p>
+<p><strong>Cleanup</strong> - I ask Claude to clean up the whole thing and commit. The result is <a href="https://github.com/rkirov/analysis/blob/main/analysis/Analysis/Section_8_2.lean#L843-L1182">300+ lines of lean</a>. I guess to both the uninitiated in Lean and the Lean expert, it looks like slop (for different reasons). But through this process, to me it is a formal proof that I roughly follow and can stand by.</p>
 </li>
 </ul>
 <h2 id="followup-problem-826---divergence-after-rearrangement">Followup problem 8.2.6 - divergence after rearrangement</h2>
@@ -291,7 +293,7 @@ This is a follow up to my previous post on leaning on Claude for Lean. I’ve no
 <li><strong>Cleanup and generalization</strong> to -inf. I ask for refactoring with the -inf case in mind. Claude finishes that and we are done with the chapter, all in one 2-3 hour session. Another <a href="https://github.com/rkirov/analysis/blob/main/analysis/Analysis/Section_8_2.lean#L1184-L1552">300 line proof</a>. When I was writing these by hand, a 300 line proof would take me at least 10 times longer.</li>
 </ul>
 <h2 id="summary">Summary</h2>
-<p>I am surprisingly happy with this workflow and plan to keep charging ahead until I complete the Real Analysis exercises (likely another month or so). If I used Claude less I likely would have learned more, but at the expense of 10x of my time, it doesn&rsquo;t feel like the right tradeoff right now. I am happy that I can still engage the material on an intuition level. After the iteration we did, I feel the resulting lean proof is <em>our</em> proof not just Claude&rsquo;s output. Admittedly I did much less work, but feel more like a collaborator than say a principal researcher whose name is on the paper because he provided the money (I did pay for the Claude $100/month subscription.)</p>
+<p>I am surprisingly happy with this workflow and plan to keep charging ahead until I complete the Real Analysis exercises (likely another month or so). If I used Claude less I likely would have learned more about Lean and mathlib, but at the expense of 10x of my time, it doesn&rsquo;t feel like the right tradeoff right now. I am happy that I can still engage the material on an intuition level. After the iteration we did, I feel the resulting lean proof is <em>our</em> proof not just Claude&rsquo;s output. Admittedly I did much less work, but feel more like a collaborator than say a principal researcher whose name is on the paper because he provided the money (I did pay for the Claude $100/month subscription.)</p>
 <p>As Terence Tao says in <a href="https://www.theatlantic.com/technology/2026/02/ai-math-terrance-tao/686107/">his interview</a>:</p>
 <blockquote>
 <p>There’s a big crowd of people who really, really want AI success stories. And then there’s an equal and opposite crowd of people who want to dismiss all AI progress. And what we have is a very complicated and nuanced story in between.</p></blockquote>
@@ -301,14 +303,17 @@ This is a follow up to my previous post on leaning on Claude for Lean. I’ve no
 <li>amazing producer of one-shotted breakthroughs - this is far from the truth. Current AI tools still need a lot of steering, and formal proofs remain harder than informal ones.</li>
 </ul>
 <p>I believe I am finding a nice middle ground through my usage of Claude and Lean.</p>
-<p>When I was in grad school I had a repeated feeling of being unable to see the forest from the trees. I was grinding through definitions and proofs with no intuition in sight, until I left academia altogether. In the new human / LLM / Lean collaborative math world, I feel I can stay more fully in the intuitive level, converse on that level with the LLM, which can then translate it to the formal Lean level (paying the high time cost of that conversion instead of using my human time) and bring back any missing insight to me. Finally, I know enough of Lean to spot check the formal level, but I&rsquo;m not required to fully (especially outside definitions). I can dream up math ideas, while Claude can ground them in Lean, I don&rsquo;t see it as a bad development.</p>
+<p>When I was in grad school I had a repeated feeling of being unable to see the forest from the trees. I was grinding through definitions and proofs with no intuition in sight, until I left academia altogether. In the new human / LLM / Lean collaborative math world, I feel I can stay more fully in the intuitive level, converse on that level with the LLM, which can then translate it to the formal Lean level (paying the high time cost of that conversion instead of using my human time) and bring back any missing insight to me. Finally, I know enough of Lean to spot check the formal level, but I&rsquo;m not required to fully (especially outside definitions).</p>
+<p>I can dream up math ideas, while Claude can ground them in Lean and come back to me with the logical reality. I don&rsquo;t see this as a bad development.</p>
 <h2 id="appendix-riemanns-original-proof">Appendix: Riemann&rsquo;s original proof</h2>
 <p>I thought it would be curious to see how Riemann actually proved it — <a href="https://www.maths.tcd.ie/pub/HistMath/People/Riemann/Trig/Trig.pdf">original text (PDF)</a> (used Claude for translation)</p>
 <blockquote>
 <p>The insight into the path to be taken in solving this problem came to him from the recognition that infinite series fall into two essentially different classes, depending on whether they remain convergent or not when all terms are made positive. In the former, the terms may be arbitrarily rearranged; the value of the latter, by contrast, depends on the ordering of the terms. Indeed, if in a series of the second class one denotes the positive terms in succession by a₁, a₂, a₃, …, and the negative ones by −b₁, −b₂, −b₃, …, it is clear that both Σa and Σb must be infinite; for if both were finite, the series would still converge after making all signs equal; but if one were infinite, the series would diverge. Now it is evident that the series can, by a suitable arrangement of its terms, be made to equal any arbitrarily given value C. For if one takes alternately positive terms of the series until their sum exceeds C, and then negative terms until their sum falls below C, the deviation from C will never be greater than the value of the term preceding the last change of sign. Since now both the quantities a and the quantities b ultimately become infinitely small as the index grows, the deviations from C will also, if one goes far enough in the series, become arbitrarily small — that is, the series will converge to C. Only to series of the first class are the laws of finite sums applicable; only they can truly be regarded as representing the totality of their terms — series of the second class cannot; a circumstance that was overlooked by the mathematicians of the previous century, mainly, it seems, because the series that proceed in ascending powers of a variable quantity belong, generally speaking (that is, with the exception of particular values of that quantity), to the first class.</p></blockquote>
-<p>Curiously, if one classifies the three levels of proof rigor - 1) my handwavy intuition proof sketch 2) proper paper math as taught in current math classes 3) formal Lean math, Riemann&rsquo;s proof is closest to 1) — of course, it was 150 years ago. While we adopted a much stricter notion of proofs (level 2) to root out logical issues, I feel something got lost. With this new workflow, my proof writing is surprisingly similar to Riemann&rsquo;s notes of the past.</p>
+<p>Curiously, Riemann&rsquo;s proof reads more like my handwavy intuition sketches than a modern textbook proof — of course, it was 150 years ago. We&rsquo;ve since adopted much stricter standards of rigor, and rightly so, but I feel something got lost in the process. With this new human + AI + Lean workflow, I find myself writing proofs at Riemann&rsquo;s level of intuition again, while Claude and Lean handle the formal details. It feels like coming full circle.</p>
+<p><a href="#human-intuition-ai-formalization-a-real-analysis-case-study">Back to top</a></p>
 <h2 id="appendix-on-ai-assisted-writing">Appendix: On AI-assisted writing</h2>
-<p>As an experiment I am leaving the initial pre-AI edits <a href="../lean6-raw">draft</a>. I both empathise with readers tricked into reading low-signal but plausibly looking one-shotted articles, but also benefit from the efficiency provided by Claude fleshing out my blog outlines quickly and effortlessly. So hope the raw outline dump convinces readers this is not a low-quality one-shot post. Feedback welcome, we are all trying to figure out how this brave new world should work!</p>
+<p>As an experiment I am leaving the initial pre-AI edits <a href="../lean6-raw">draft</a>. I empathise with readers who are tired of plausible-looking but low-signal AI-generated articles. At the same time, I benefit from Claude&rsquo;s efficiency in fleshing out my outlines. The raw draft should make clear this is not a one-shot post. Feedback welcome, we are all trying to figure out how this brave new world should work!</p>
+<p><a href="#human-intuition-ai-formalization-a-real-analysis-case-study">Back to top</a></p>
 
 </content>
 <p>
