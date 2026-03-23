@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Code Proven to Work - The Math Way | Rado&#39;s Radical Reflections</title>
+<meta name="title" content="Code Proven to Work - The Math Way" />
+<meta name="description" content="This post is aimed at a general programmer and no prior knowledge of math or CS is assumed.
+I got nerd-sniped to write this after reading Simon&rsquo;s excellent post Code proven to work.
+As someone who works in the software industry that is adapting to using AI tools, the post was very timely and very well put. I agree with everything said, but I just can&rsquo;t resist being that guy - bringing up the &ldquo;you keep using that word&rdquo; meme." />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="https://rkirov.github.io/posts/code-proof/">
+  <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
+  <meta property="og:title" content="Code Proven to Work - The Math Way">
+  <meta property="og:description" content="This post is aimed at a general programmer and no prior knowledge of math or CS is assumed.
+I got nerd-sniped to write this after reading Simon’s excellent post Code proven to work. As someone who works in the software industry that is adapting to using AI tools, the post was very timely and very well put. I agree with everything said, but I just can’t resist being that guy - bringing up the “you keep using that word” meme.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-03-22T17:25:24-07:00">
+    <meta property="article:modified_time" content="2026-03-22T17:25:24-07:00">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Code Proven to Work - The Math Way">
+  <meta name="twitter:description" content="This post is aimed at a general programmer and no prior knowledge of math or CS is assumed.
+I got nerd-sniped to write this after reading Simon’s excellent post Code proven to work. As someone who works in the software industry that is adapting to using AI tools, the post was very timely and very well put. I agree with everything said, but I just can’t resist being that guy - bringing up the “you keep using that word” meme.">
+      <meta name="twitter:site" content="@radokirov">
+
+
+
+
+  <meta itemprop="name" content="Code Proven to Work - The Math Way">
+  <meta itemprop="description" content="This post is aimed at a general programmer and no prior knowledge of math or CS is assumed.
+I got nerd-sniped to write this after reading Simon’s excellent post Code proven to work. As someone who works in the software industry that is adapting to using AI tools, the post was very timely and very well put. I agree with everything said, but I just can’t resist being that guy - bringing up the “you keep using that word” meme.">
+  <meta itemprop="datePublished" content="2026-03-22T17:25:24-07:00">
+  <meta itemprop="dateModified" content="2026-03-22T17:25:24-07:00">
+  <meta itemprop="wordCount" content="1926">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Rado&#39;s Radical Reflections</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/posts/">Blog</a>
+
+<a href="/about/">About</a>
+
+
+</nav>
+</header>
+  <main>
+
+<content>
+  <p>This post is aimed at a general programmer and no prior knowledge of math or CS is assumed.</p>
+<p>I got nerd-sniped to write this after reading Simon&rsquo;s excellent post <a href="https://simonwillison.net/2025/Dec/18/code-proven-to-work/">Code proven to work</a>.
+As someone who works in the software industry that is adapting to using AI tools, the post was very timely and very well put. I agree with everything said, but I just can&rsquo;t resist being that guy - bringing up the &ldquo;you keep using that word&rdquo; meme.</p>
+<p>As you might have already guessed the word is &ldquo;proof&rdquo;, and using it in the context of manual and automated testing is mildly off-putting. When I see &ldquo;proof&rdquo; I think first of mathematical proof - like the proof of the infinitude of primes.</p>
+<p>You might think that mathematical proof is not applicable to software engineering, but that is not quite true. As it turns out it has been known and possible for a long time, but the tools and techniques are mostly unknown outside academia and high-stakes coding like security.</p>
+<h2 id="example-in-lean">Example in Lean</h2>
+<p>Following the <code>show-don't-tell</code> principle I will directly show you an example in a language that can write both code and proofs about the code - <a href="https://lean-lang.org/">Lean</a>.</p>
+<p>Here is quick sort written in Lean:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span>partial <span style="color:#f92672">def</span> qsort <span style="color:#f92672">:</span> List Int -&gt; List Int 
+</span></span><span style="display:flex;"><span>  | <span style="color:#f92672">[]</span> =&gt; <span style="color:#f92672">[]</span>
+</span></span><span style="display:flex;"><span>  | x :: xs =&gt;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> lesser <span style="color:#f92672">:</span>= xs.filter <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; y &lt; x<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> greater_eq <span style="color:#f92672">:</span>= xs.filter <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; y &gt;= x<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    qsort lesser ++ <span style="color:#f92672">[</span>x<span style="color:#f92672">]</span> ++ qsort greater_eq
+</span></span></code></pre></div><p><a href="https://live.lean-lang.org/#codez=A4QwTgLgliA2AEATApgM3gRwM4HtLwC54AZKLCeASQDsKBaAPhLIpooCh54AfeAbQC68ALxNBnHvAAehIlKwiGErrGQVVWLMjCFh0rADpUUWBG3wAFKgCu1eAE9FD+AB5pASmXxVFAOZhkEDMwAH1kDF19IxNgyxs7R1FnBj0pTy4ubDx1ZE1zAGp8/ikhQsxcfH9A4LCMIA">Try it in the Lean playground</a></p>
+<p>Here is the TS version of the exact same function logic:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">qsort</span>(<span style="color:#a6e22e">xs</span>: <span style="color:#66d9ef">number</span>[])<span style="color:#f92672">:</span> <span style="color:#66d9ef">number</span>[] {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">xs</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">===</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span> [];
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">x</span>, ...<span style="color:#a6e22e">rest</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">xs</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">lesser</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">rest</span>.<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">y</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">x</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">greaterEq</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">rest</span>.<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">y</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">y</span> <span style="color:#f92672">&gt;=</span> <span style="color:#a6e22e">x</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> [...<span style="color:#a6e22e">qsort</span>(<span style="color:#a6e22e">lesser</span>), <span style="color:#a6e22e">x</span>, ...<span style="color:#a6e22e">qsort</span>(<span style="color:#a6e22e">greaterEq</span>)];
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>But if you have written a functional language before you should be able to spot what the algorithm does directly in Lean (and presumably you remember the gist of the algorithm).</p>
+<p>If you wrote this in a regular language the next thing you would do is to add tests. Unless you are using a fancier framework like property testing, you will pass some lists like [], [1,2,3], [3,2,1] and check that each comes back sorted.</p>
+<p>But this is Lean, a language that has proofs as first class objects and we can directly prove properties of this function without writing a single test. Note this function is typed and type-checks but all of this goes beyond types.</p>
+<h2 id="proving-termination">Proving termination</h2>
+<p>First, we will prove that this function doesn&rsquo;t go into an infinite loop, always a possibility with recursion. Informally, you will likely argue like this - the initial call starts with a list of <code>n</code> elements, since we peel off one, both <code>lesser</code> and <code>greaterEq</code> would be elements of at most <code>n - 1</code>. Finally the empty array terminates, so by induction the function terminates for all lists.</p>
+<p>As it turns out this proof can be written in code too. Terminating functions are so important in Lean that they are required by default and the <code>partial</code> keyword turns off the termination checker. So we remove it and provide Lean with the proof as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">def</span> qsort <span style="color:#f92672">:</span> List Int -&gt; List Int 
+</span></span><span style="display:flex;"><span>  | <span style="color:#f92672">[]</span> =&gt; <span style="color:#f92672">[]</span>
+</span></span><span style="display:flex;"><span>  | x :: xs =&gt;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> lesser <span style="color:#f92672">:</span>= xs.filter <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; y &lt; x<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> greater_eq <span style="color:#f92672">:</span>= xs.filter <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; y &gt;= x<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    qsort lesser ++ <span style="color:#f92672">[</span>x<span style="color:#f92672">]</span> ++ qsort greater_eq
+</span></span><span style="display:flex;"><span>termination_by x =&gt; x.length
+</span></span><span style="display:flex;"><span>decreasing_by
+</span></span><span style="display:flex;"><span>  all_goals
+</span></span><span style="display:flex;"><span>    simp
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">calc</span> <span style="color:#f92672">(</span>List.filter _ xs.attach<span style="color:#f92672">)</span>.length
+</span></span><span style="display:flex;"><span>        ≤ xs.attach.length <span style="color:#f92672">:</span>= List.length_filter_le _ _
+</span></span><span style="display:flex;"><span>      _ = xs.length <span style="color:#f92672">:</span>= List.length_attach
+</span></span><span style="display:flex;"><span>      _ &lt; xs.length + <span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span>= Nat.lt_succ_of_le <span style="color:#f92672">(</span>Nat.le_refl _<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p><a href="https://live.lean-lang.org/#codez=CYUwZgBAjgzg9gJwC4QFwQDIEsYoJIB2KAtAHyY75EQBQEEAPhANoC6EAvOW3YxAB5p0/GJ1K96AGxAppMGCARoOAmADowWSUkUQAFGACuBCAE8xZiAB4BASgkRpKAOYIQAQx0IA+iCjLVDS0vfSMTcy5LUhV+e3p6WERZEHldAGo0ln52DOh4ZAhXDy9fKBovAFssAk8sOAJvACNzQUj+NWkCZyQACxpQAGM3dxhq5ybTXndJSW9nOGmYB1GKgAcHAemB/WxcIO1db0DPJHcBntsOkC7eh3iIQBMiY6RT86ubnoDdpHfunu9NAcfNIIEdvHdQZxAp0/l9KL9et4Tmc+vd6EcbCIEZ9MgBGAIAOU8HSQ3hghgGA28cDA3hBeiJP2k3jcYEkoPs5R6IEQIAqeSS3gGcGMKD0IjQFFwEEISFs+ncktl8tQDj0iQKIkuwtFEEVMXUOuoitQKmaEHyCEmXJ5bn5GtJ+R0wH0EvQ3xlRBVtHugAAifRYCAAK0lADFqvoHapLjDerYADQQQNPEOAJMJI07o2pnDIk48M0kszmUCHTRBzZbTEA">Try it in the Lean playground</a></p>
+<p>The extra lines are <code>termination_by</code> which defines a function to turn the input into a natural number that we can do induction on, in our case naturally we pick the length. And <code>decreasing_by</code> is the proof that if the input is of length <code>n</code> the subsequent recursive calls are of arrays of smaller length. I won&rsquo;t go into how proofs are written and checked in Lean, but roughly we put together two other known proofs:</p>
+<ul>
+<li><code>Nat.lt_succ_of_le</code> - a mouthful way of saying <code>n &lt; n + 1</code>. Yes, even basic facts like this are theorems with names that we need to invoke like functions.</li>
+<li><code>List.length_filter_le</code> - the fact that a filter of a list produces a list of length less than or equal to the original&rsquo;s length.</li>
+</ul>
+<p>The rest is some massaging of Lean technicalities. Yes, you should also be getting a feel for why this is not widely adopted in industry - it&rsquo;s a lot to ask of programmers to write.</p>
+<h2 id="proving-correctness">Proving correctness</h2>
+<p>Now that we proved that function terminates, we want to show that the output is indeed sorted. There are two parts to that:</p>
+<ol>
+<li>the count of every possible number should be the same in the input and the output</li>
+<li>for any two indices i, j of the output, if i &lt;= j, then o[i] &lt;= o[j].</li>
+</ol>
+<p>In Lean we write those statements as:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">theorem</span> qsort_count <span style="color:#f92672">(</span>xs <span style="color:#f92672">:</span> List Int<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>a <span style="color:#f92672">:</span> Int<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>qsort xs<span style="color:#f92672">)</span>.count a = xs.count a
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">theorem</span> qsort_sorted <span style="color:#f92672">(</span>xs <span style="color:#f92672">:</span> List Int<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> 
+</span></span><span style="display:flex;"><span>    ∀ <span style="color:#f92672">(</span>i j <span style="color:#f92672">:</span> Fin <span style="color:#f92672">(</span>qsort xs<span style="color:#f92672">)</span>.length<span style="color:#f92672">),</span> i ≤ j → <span style="color:#f92672">(</span>qsort xs<span style="color:#f92672">)</span>.get i ≤ <span style="color:#f92672">(</span>qsort xs<span style="color:#f92672">)</span>.get j
+</span></span></code></pre></div><p><a href="https://live.lean-lang.org/#codez=C4Cwpg9gTmC2AEBHAztYB9AxhArgO2HgAoAPZeALngBkBLZQgSQIEpiBDS+Z4NigKHhDiKNPDIsAdNnyFOAXnHJpuAvHb9+oSDASioGVAbAATYmS50G3Vl0HDAAETFa8AFZcAYrTwijhCZIANmB4AOagLAA08C6AJkRu8IBJhL5iAaFghHEpBkpS6YSuQA">Try it in the Lean playground</a></p>
+<p>Once we know <code>Fin n</code> is <code>[0, 1, ..., n - 1]</code> (<code>range</code> in Python) this should be somewhat readable to all. Conceptually the proofs are not hard:</p>
+<ol>
+<li>We show that every element has one of three fates: it is either the pivot x, it ends up in <code>lesser</code>, or in <code>greater_eq</code>. Nothing gets added or removed. We use induction for the inner calls.</li>
+<li>By case analysis depending on whether <code>o[i]</code> and <code>o[j]</code> are in <code>lesser</code>, <code>x</code>, or <code>greater_eq</code>. Use induction if both are in <code>lesser</code> or in <code>greater_eq</code>.</li>
+</ol>
+<p>That said the actual proofs as written in Lean are quite verbose because of keeping track of all the details, see appendix.</p>
+<p>To reiterate, after coming up with these two properties and proving them, in the same language (literally in the same .lean file) we don&rsquo;t need to write a single test or come up with any test case, or wonder whether we forgot some edge cases to test. The implementation is proven to terminate and produce a correct result for <em>all</em> possible inputs (that is an infinite collection.)</p>
+<h2 id="where-does-that-leave-us">Where does that leave us</h2>
+<p>I wanted to show that it is possible to <em>prove</em> your code is correct, in the truly mathematical sense. Lean is just the language for doing that that is gaining the most popularity, but there are other possibilities.</p>
+<p>Also, it should be clear why you haven&rsquo;t seen this in any industry software project - the ergonomics are not great. Even if one swallows the cost of a new language, a whole new library ecosystem, just so one can prove things about their code, the proofs themselves are very long and laborious to write. Programmers don&rsquo;t want to become mathematicians.</p>
+<p>However, as I am writing this there is an AI revolution underway and any argument based on human ergonomics is suspect. The ergonomics of AI-written code are very different. In fact, I didn&rsquo;t write the proofs in the appendix either, Claude did, but I know enough Lean to verify the statements it proved are the ones I needed.</p>
+<p>So could it be that in the AI-writing-code future, programming languages like Lean will have a bigger role?</p>
+<p>I invite you to take a bit of time to learn Lean: <a href="https://lean-lang.org/functional_programming_in_lean/">Functional Programming in Lean</a>. And next time you are vibe coding something, maybe try asking Claude to write it in Lean and prove the correctness. The results might surprise you - including the token usage as Claude wrestles with Lean (at least it is not your time.)</p>
+<h2 id="appendix-full-proof">Appendix: full proof</h2>
+<p>Written by Claude. I know enough Lean to read it line by line, but would struggle to write it from scratch. <a href="https://live.lean-lang.org/#codez=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">Try it in the Lean playground</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">import</span> Mathlib.Data.List.Pairwise
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">def</span> qsort <span style="color:#f92672">:</span> List Int -&gt; List Int
+</span></span><span style="display:flex;"><span>  | <span style="color:#f92672">[]</span> =&gt; <span style="color:#f92672">[]</span>
+</span></span><span style="display:flex;"><span>  | x :: xs =&gt;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> lesser <span style="color:#f92672">:</span>= xs.filter <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; y &lt; x<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> greater_eq <span style="color:#f92672">:</span>= xs.filter <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; y &gt;= x<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    qsort lesser ++ <span style="color:#f92672">[</span>x<span style="color:#f92672">]</span> ++ qsort greater_eq
+</span></span><span style="display:flex;"><span>termination_by x =&gt; x.length
+</span></span><span style="display:flex;"><span>decreasing_by
+</span></span><span style="display:flex;"><span>  all_goals simp_wf
+</span></span><span style="display:flex;"><span>  all_goals exact Nat.lt_succ_of_le <span style="color:#f92672">(</span>Nat.le_trans <span style="color:#f92672">(</span>List.length_filter_le _ _<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>Nat.le_of_eq List.length_attach<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Correctness part 1: qsort preserves element counts</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">theorem</span> count_filter_partition <span style="color:#f92672">(</span>tail <span style="color:#f92672">:</span> List Int<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>p <span style="color:#f92672">:</span> Int → Bool<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>a <span style="color:#f92672">:</span> Int<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>tail.filter p<span style="color:#f92672">)</span>.count a + <span style="color:#f92672">(</span>tail.filter <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; !p y<span style="color:#f92672">))</span>.count a = tail.count a <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>  induction tail <span style="color:#66d9ef">with</span>
+</span></span><span style="display:flex;"><span>  | nil =&gt; simp
+</span></span><span style="display:flex;"><span>  | cons x xs ih =&gt;
+</span></span><span style="display:flex;"><span>    simp only <span style="color:#f92672">[</span>List.filter<span style="color:#f92672">,</span> List.count_cons<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    split &lt;;&gt; simp_all <span style="color:#f92672">[</span>List.count_cons<span style="color:#f92672">]</span> &lt;;&gt; split &lt;;&gt; omega
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">theorem</span> qsort_count <span style="color:#f92672">(</span>xs <span style="color:#f92672">:</span> List Int<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>a <span style="color:#f92672">:</span> Int<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>qsort xs<span style="color:#f92672">)</span>.count a = xs.count a <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">match</span> xs <span style="color:#66d9ef">with</span>
+</span></span><span style="display:flex;"><span>  | <span style="color:#f92672">[]</span> =&gt; simp <span style="color:#f92672">[</span>qsort.eq_def<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  | pivot :: tail =&gt;
+</span></span><span style="display:flex;"><span>    rw <span style="color:#f92672">[</span>qsort.eq_def<span style="color:#f92672">]</span>; simp only
+</span></span><span style="display:flex;"><span>    rw <span style="color:#f92672">[</span>List.count_append<span style="color:#f92672">,</span> List.count_append<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>        qsort_count <span style="color:#f92672">(</span>tail.filter <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; decide <span style="color:#f92672">(</span>y &lt; pivot<span style="color:#f92672">)))</span> a<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>        qsort_count <span style="color:#f92672">(</span>tail.filter <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; decide <span style="color:#f92672">(</span>y ≥ pivot<span style="color:#f92672">)))</span> a<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    simp only <span style="color:#f92672">[</span>List.count_cons<span style="color:#f92672">,</span> List.count_nil<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">have</span> h <span style="color:#f92672">:</span>= count_filter_partition tail <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; decide <span style="color:#f92672">(</span>y &lt; pivot<span style="color:#f92672">))</span> a
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">have</span> <span style="color:#f92672">:</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; !decide <span style="color:#f92672">(</span>y &lt; pivot<span style="color:#f92672">))</span> = <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; decide <span style="color:#f92672">(</span>y ≥ pivot<span style="color:#f92672">))</span> <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>      ext y; cases hy <span style="color:#f92672">:</span> decide <span style="color:#f92672">(</span>y &lt; pivot<span style="color:#f92672">)</span> &lt;;&gt; simp_all <span style="color:#f92672">[</span>Int.lt_iff_add_one_le<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    rw <span style="color:#f92672">[</span>this<span style="color:#f92672">]</span> <span style="color:#66d9ef">at</span> h
+</span></span><span style="display:flex;"><span>    omega
+</span></span><span style="display:flex;"><span>termination_by xs.length
+</span></span><span style="display:flex;"><span>decreasing_by all_goals simp_wf; exact Nat.lt_succ_of_le <span style="color:#f92672">(</span>List.length_filter_le _ _<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Helper: membership version (derived from count, used in sortedness proof)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">theorem</span> qsort_mem <span style="color:#f92672">(</span>a <span style="color:#f92672">:</span> Int<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>xs <span style="color:#f92672">:</span> List Int<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> a ∈ qsort xs ↔ a ∈ xs <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">match</span> xs <span style="color:#66d9ef">with</span>
+</span></span><span style="display:flex;"><span>  | <span style="color:#f92672">[]</span> =&gt; simp <span style="color:#f92672">[</span>qsort.eq_def<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  | pivot :: tail =&gt;
+</span></span><span style="display:flex;"><span>    rw <span style="color:#f92672">[</span>qsort.eq_def<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    simp only <span style="color:#f92672">[</span>List.mem_append<span style="color:#f92672">,</span> List.mem_cons<span style="color:#f92672">,</span> List.not_mem_nil<span style="color:#f92672">,</span> or_false<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    rw <span style="color:#f92672">[</span>qsort_mem a <span style="color:#f92672">(</span>tail.filter <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; decide <span style="color:#f92672">(</span>y &lt; pivot<span style="color:#f92672">))),</span>
+</span></span><span style="display:flex;"><span>        qsort_mem a <span style="color:#f92672">(</span>tail.filter <span style="color:#f92672">(</span><span style="color:#66d9ef">fun</span> y =&gt; decide <span style="color:#f92672">(</span>y ≥ pivot<span style="color:#f92672">)))]</span>
+</span></span><span style="display:flex;"><span>    simp only <span style="color:#f92672">[</span>List.mem_filter<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    constructor
+</span></span><span style="display:flex;"><span>    · rintro <span style="color:#f92672">((</span>⟨h<span style="color:#f92672">,</span> _⟩ | rfl<span style="color:#f92672">)</span> | ⟨h<span style="color:#f92672">,</span> _⟩<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      all_goals simp_all
+</span></span><span style="display:flex;"><span>    · rintro <span style="color:#f92672">(</span>rfl | h<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>      · left; right; rfl
+</span></span><span style="display:flex;"><span>      · by_cases hlt <span style="color:#f92672">:</span> a &lt; pivot
+</span></span><span style="display:flex;"><span>        · left; left; exact ⟨h<span style="color:#f92672">,</span> <span style="color:#66d9ef">by</span> simp <span style="color:#f92672">[</span>hlt<span style="color:#f92672">]</span>⟩
+</span></span><span style="display:flex;"><span>        · right; exact ⟨h<span style="color:#f92672">,</span> <span style="color:#66d9ef">by</span> simp <span style="color:#f92672">[</span>Int.not_lt.mp hlt<span style="color:#f92672">]</span>⟩
+</span></span><span style="display:flex;"><span>termination_by xs.length
+</span></span><span style="display:flex;"><span>decreasing_by all_goals simp_wf; exact Nat.lt_succ_of_le <span style="color:#f92672">(</span>List.length_filter_le _ _<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Correctness part 2: qsort produces a sorted list</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">theorem</span> qsort_pairwise <span style="color:#f92672">(</span>xs <span style="color:#f92672">:</span> List Int<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> List.Pairwise <span style="color:#f92672">(</span>· ≤ ·<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>qsort xs<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">match</span> xs <span style="color:#66d9ef">with</span>
+</span></span><span style="display:flex;"><span>  | <span style="color:#f92672">[]</span> =&gt; simp <span style="color:#f92672">[</span>qsort.eq_def<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  | pivot :: tail =&gt;
+</span></span><span style="display:flex;"><span>    rw <span style="color:#f92672">[</span>qsort.eq_def<span style="color:#f92672">]</span>; simp only
+</span></span><span style="display:flex;"><span>    rw <span style="color:#f92672">[</span>List.pairwise_append<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    refine ⟨?_<span style="color:#f92672">,</span> qsort_pairwise _<span style="color:#f92672">,</span> ?_⟩
+</span></span><span style="display:flex;"><span>    · rw <span style="color:#f92672">[</span>List.pairwise_append<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>      refine ⟨qsort_pairwise _<span style="color:#f92672">,</span> List.pairwise_singleton _ _<span style="color:#f92672">,</span> ?_⟩
+</span></span><span style="display:flex;"><span>      intro a ha b hb
+</span></span><span style="display:flex;"><span>      simp only <span style="color:#f92672">[</span>List.mem_singleton<span style="color:#f92672">]</span> <span style="color:#66d9ef">at</span> hb; subst hb
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">have</span> <span style="color:#f92672">:</span>= <span style="color:#f92672">(</span>qsort_mem a _<span style="color:#f92672">)</span>.mp ha
+</span></span><span style="display:flex;"><span>      rw <span style="color:#f92672">[</span>List.mem_filter<span style="color:#f92672">]</span> <span style="color:#66d9ef">at</span> this; simp <span style="color:#66d9ef">at</span> this
+</span></span><span style="display:flex;"><span>      exact Int.le_of_lt this.<span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    · intro a ha b hb
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">have</span> hb&#39; <span style="color:#f92672">:</span>= <span style="color:#f92672">(</span>qsort_mem b _<span style="color:#f92672">)</span>.mp hb
+</span></span><span style="display:flex;"><span>      rw <span style="color:#f92672">[</span>List.mem_filter<span style="color:#f92672">]</span> <span style="color:#66d9ef">at</span> hb&#39;; simp <span style="color:#66d9ef">at</span> hb&#39;
+</span></span><span style="display:flex;"><span>      rcases List.mem_append.mp ha <span style="color:#66d9ef">with</span> ha&#39; | ha&#39;
+</span></span><span style="display:flex;"><span>      · <span style="color:#66d9ef">have</span> ha&#39;&#39; <span style="color:#f92672">:</span>= <span style="color:#f92672">(</span>qsort_mem a _<span style="color:#f92672">)</span>.mp ha&#39;
+</span></span><span style="display:flex;"><span>        rw <span style="color:#f92672">[</span>List.mem_filter<span style="color:#f92672">]</span> <span style="color:#66d9ef">at</span> ha&#39;&#39;; simp <span style="color:#66d9ef">at</span> ha&#39;&#39;
+</span></span><span style="display:flex;"><span>        exact Int.le_trans <span style="color:#f92672">(</span>Int.le_of_lt ha&#39;&#39;.<span style="color:#ae81ff">2</span><span style="color:#f92672">)</span> hb&#39;.<span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>      · simp only <span style="color:#f92672">[</span>List.mem_singleton<span style="color:#f92672">]</span> <span style="color:#66d9ef">at</span> ha&#39;; subst ha&#39;
+</span></span><span style="display:flex;"><span>        exact hb&#39;.<span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>termination_by xs.length
+</span></span><span style="display:flex;"><span>decreasing_by all_goals simp_wf; exact Nat.lt_succ_of_le <span style="color:#f92672">(</span>List.length_filter_le _ _<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">theorem</span> qsort_sorted <span style="color:#f92672">(</span>xs <span style="color:#f92672">:</span> List Int<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    ∀ <span style="color:#f92672">(</span>i j <span style="color:#f92672">:</span> Fin <span style="color:#f92672">(</span>qsort xs<span style="color:#f92672">)</span>.length<span style="color:#f92672">),</span> i ≤ j → <span style="color:#f92672">(</span>qsort xs<span style="color:#f92672">)</span>.get i ≤ <span style="color:#f92672">(</span>qsort xs<span style="color:#f92672">)</span>.get j <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>  intro ⟨i<span style="color:#f92672">,</span> hi⟩ ⟨j<span style="color:#f92672">,</span> hj⟩ hij
+</span></span><span style="display:flex;"><span>  simp only <span style="color:#f92672">[</span>List.get_eq_getElem<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  rcases Nat.eq_or_lt_of_le hij <span style="color:#66d9ef">with</span> rfl | hlt
+</span></span><span style="display:flex;"><span>  · exact Int.le_refl _
+</span></span><span style="display:flex;"><span>  · exact List.pairwise_iff_getElem.mp <span style="color:#f92672">(</span>qsort_pairwise xs<span style="color:#f92672">)</span> i j hi hj hlt
+</span></span></code></pre></div>
+</content>
+<p>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+    
+</body>
+
+</html>

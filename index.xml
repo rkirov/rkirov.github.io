@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Sun, 08 Mar 2026 23:35:37 -0700</lastBuildDate>
+    <lastBuildDate>Sun, 22 Mar 2026 17:25:24 -0700</lastBuildDate>
     <atom:link href="https://rkirov.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Code Proven to Work - The Math Way</title>
+      <link>https://rkirov.github.io/posts/code-proof/</link>
+      <pubDate>Sun, 22 Mar 2026 17:25:24 -0700</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/code-proof/</guid>
+      <description>&lt;p&gt;This post is aimed at a general programmer and no prior knowledge of math or CS is assumed.&lt;/p&gt;&#xA;&lt;p&gt;I got nerd-sniped to write this after reading Simon&amp;rsquo;s excellent post &lt;a href=&#34;https://simonwillison.net/2025/Dec/18/code-proven-to-work/&#34;&gt;Code proven to work&lt;/a&gt;.&#xA;As someone who works in the software industry that is adapting to using AI tools, the post was very timely and very well put. I agree with everything said, but I just can&amp;rsquo;t resist being that guy - bringing up the &amp;ldquo;you keep using that word&amp;rdquo; meme.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Human Intuition, AI Formalization: A Real Analysis Case Study</title>
       <link>https://rkirov.github.io/posts/lean6/</link>
