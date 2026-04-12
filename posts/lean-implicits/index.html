@@ -46,7 +46,7 @@ This post is aimed at Lean language beginners that are interested in writing pro
 A very simplified mental model of Lean is that at the core there are two systems:">
   <meta itemprop="datePublished" content="2026-04-12T09:25:28-07:00">
   <meta itemprop="dateModified" content="2026-04-12T09:25:28-07:00">
-  <meta itemprop="wordCount" content="2403">
+  <meta itemprop="wordCount" content="2450">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
   <style>
@@ -255,9 +255,7 @@ draft</a> which was written fully before asking AI to edit the post with me.</p>
 <p>This post is aimed at Lean language beginners that are interested in writing proofs in Lean, but
 still feel lost when reading Lean code.</p>
 <p>A very simplified mental model of Lean is that at the core there are two systems:</p>
-<ol>
-<li>a very fancy functional programming language. The objects here are <code>Nat</code>, <code>List Nat</code>, functions of those, etc</li>
-</ol>
+<p><strong>The FP language</strong> - a very fancy functional programming language. The objects here are <code>Nat</code>, <code>List Nat</code>, functions of those, etc</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">def</span> n<span style="color:#f92672">:</span> Nat <span style="color:#f92672">:</span>= <span style="color:#ae81ff">3</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">def</span> l<span style="color:#f92672">:</span> List Nat <span style="color:#f92672">:</span>= <span style="color:#f92672">[</span><span style="color:#ae81ff">1</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">]</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">def</span> f <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>= n + <span style="color:#ae81ff">1</span>
@@ -271,13 +269,11 @@ we can write generic parameters using exactly the same syntax for declaration or
 (no &lt;&gt; or [] like Java or TypeScript.) So far this should be very familiar to people with exposure
 to typed FP.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">def</span> append <span style="color:#f92672">(</span>a<span style="color:#f92672">:</span> <span style="color:#66d9ef">Type</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>x <span style="color:#f92672">:</span> a<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>arr<span style="color:#f92672">:</span> List a<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>= arr ++ <span style="color:#f92672">[</span>x<span style="color:#f92672">]</span>
-</span></span></code></pre></div><ol>
-<li>a system to state and manipulate logical propositions about the objects of 1). By convention these are
-named <code>h*</code> which stands for hypothesis.</li>
-</ol>
+</span></span></code></pre></div><p><strong>The theorem prover</strong> - a system to state and manipulate logical propositions about the objects of the FP language. By convention these are
+named <code>h*</code> which stands for hypothesis.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">def</span> n <span style="color:#f92672">:</span>= <span style="color:#ae81ff">3</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">def</span> hnpos <span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">2</span> <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> decide
-</span></span></code></pre></div><p>Again this is very uniform - system 2) uses the same keywords for defining and declaring types as 1).
+</span></span></code></pre></div><p>Again this is very uniform - the theorem prover uses the same keywords for defining and declaring types as the FP language.
 Notably, the type of the proposition is allowed to depend on variables. In the example above, <code>&gt;</code>
 is a fancy way of writing <code>GT.gt n 2</code>. On the surface it is a generic type like <code>List a</code>. Note that <code>n</code>
 is a variable of type <code>Nat</code>, unlike <code>a</code> which was of type <code>Type</code>. Allowing such dependency is why
@@ -295,6 +291,7 @@ Again since all types have their own type, it is natural to ask what&rsquo;s the
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">def</span> and_comm <span style="color:#f92672">(</span>p q<span style="color:#f92672">:</span> <span style="color:#66d9ef">Prop</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>h <span style="color:#f92672">:</span> p ∧ q<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> q ∧ p <span style="color:#f92672">:</span>= ⟨h.<span style="color:#ae81ff">2</span><span style="color:#f92672">,</span> h.<span style="color:#ae81ff">1</span>⟩
 </span></span></code></pre></div><p>You might see the ones above stated with <code>theorem</code> not <code>def</code>, which is more idiomatic and ergonomic, but the differences are minor.
 The keyword <code>example</code> is like an anonymous <code>theorem</code> and <code>lemma</code> is a synonym for <code>theorem</code>.</p>
+<p>In reality these two systems share the same core type theory, and that unification is precisely what makes Lean powerful. But thinking of them as two layers is a useful simplification when getting started.</p>
 <p>So objects of <code>Type</code> and <code>Prop</code> are the core ingredients of any Lean proof. Usually, one passes some number of objects, props about
 those and tries to prove some new prop.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">example</span> <span style="color:#f92672">(</span>a b c n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>ha <span style="color:#f92672">:</span> a &gt; <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hb <span style="color:#f92672">:</span> b &gt; <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hc <span style="color:#f92672">:</span> c &gt; <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hn <span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">2</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> a ^ n + b ^ n ≠ c ^ n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
