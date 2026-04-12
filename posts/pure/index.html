@@ -7,8 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Is this JS function pure? | Rado&#39;s Radical Reflections</title>
 <meta name="title" content="Is this JS function pure?" />
-<meta name="description" content="Is this JS function pure?
-In 2019, as functional programming was making the last
+<meta name="description" content="In 2019, as functional programming was making the last
 inroads dethroning OOP, I kept hearing the mantra of
 &ldquo;just use pure functions&rdquo; in JS. Something didn&rsquo;t sit
 right with me when talking very deterministically about
@@ -26,7 +25,7 @@ are not aware there is imprecision." />
 <meta property="og:url" content="https://rkirov.github.io/posts/pure/">
   <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
   <meta property="og:title" content="Is this JS function pure?">
-  <meta property="og:description" content="Is this JS function pure? In 2019, as functional programming was making the last inroads dethroning OOP, I kept hearing the mantra of “just use pure functions” in JS. Something didn’t sit right with me when talking very deterministically about pure functions in a large unpure language like JS. Especially, after seeing JS tooling perform optimizations based on a pure annotation (like webpack).
+  <meta property="og:description" content="In 2019, as functional programming was making the last inroads dethroning OOP, I kept hearing the mantra of “just use pure functions” in JS. Something didn’t sit right with me when talking very deterministically about pure functions in a large unpure language like JS. Especially, after seeing JS tooling perform optimizations based on a pure annotation (like webpack).
 While everyone agrees x =&gt; x &#43; 2 is pure, I felt there are a lot of subtle situations where disagreements might arise. What is worse than terms with imprecise meaning is terms with imprecise meaning where people using them are not aware there is imprecision.">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
@@ -39,7 +38,7 @@ While everyone agrees x =&gt; x &#43; 2 is pure, I felt there are a lot of subtl
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Is this JS function pure?">
-  <meta name="twitter:description" content="Is this JS function pure? In 2019, as functional programming was making the last inroads dethroning OOP, I kept hearing the mantra of “just use pure functions” in JS. Something didn’t sit right with me when talking very deterministically about pure functions in a large unpure language like JS. Especially, after seeing JS tooling perform optimizations based on a pure annotation (like webpack).
+  <meta name="twitter:description" content="In 2019, as functional programming was making the last inroads dethroning OOP, I kept hearing the mantra of “just use pure functions” in JS. Something didn’t sit right with me when talking very deterministically about pure functions in a large unpure language like JS. Especially, after seeing JS tooling perform optimizations based on a pure annotation (like webpack).
 While everyone agrees x =&gt; x &#43; 2 is pure, I felt there are a lot of subtle situations where disagreements might arise. What is worse than terms with imprecise meaning is terms with imprecise meaning where people using them are not aware there is imprecision.">
       <meta name="twitter:site" content="@radokirov">
 
@@ -47,11 +46,11 @@ While everyone agrees x =&gt; x &#43; 2 is pure, I felt there are a lot of subtl
 
 
   <meta itemprop="name" content="Is this JS function pure?">
-  <meta itemprop="description" content="Is this JS function pure? In 2019, as functional programming was making the last inroads dethroning OOP, I kept hearing the mantra of “just use pure functions” in JS. Something didn’t sit right with me when talking very deterministically about pure functions in a large unpure language like JS. Especially, after seeing JS tooling perform optimizations based on a pure annotation (like webpack).
+  <meta itemprop="description" content="In 2019, as functional programming was making the last inroads dethroning OOP, I kept hearing the mantra of “just use pure functions” in JS. Something didn’t sit right with me when talking very deterministically about pure functions in a large unpure language like JS. Especially, after seeing JS tooling perform optimizations based on a pure annotation (like webpack).
 While everyone agrees x =&gt; x &#43; 2 is pure, I felt there are a lot of subtle situations where disagreements might arise. What is worse than terms with imprecise meaning is terms with imprecise meaning where people using them are not aware there is imprecision.">
   <meta itemprop="datePublished" content="2025-11-11T20:18:26-08:00">
   <meta itemprop="dateModified" content="2025-11-11T20:18:26-08:00">
-  <meta itemprop="wordCount" content="1056">
+  <meta itemprop="wordCount" content="1051">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
   <style>
@@ -245,9 +244,17 @@ While everyone agrees x =&gt; x &#43; 2 is pure, I felt there are a lot of subtl
 </header>
   <main>
 
+<h1>Is this JS function pure?</h1>
+<p>
+  <i>
+    <time datetime='2025-11-11' pubdate>
+      11 Nov, 2025
+    </time>
+  </i>
+</p>
+
 <content>
-  <h1 id="is-this-js-function-pure">Is this JS function pure?</h1>
-<p>In 2019, as functional programming was making the last
+  <p>In 2019, as functional programming was making the last
 inroads dethroning OOP, I kept hearing the mantra of
 &ldquo;just use pure functions&rdquo; in JS. Something didn&rsquo;t sit
 right with me when talking very deterministically about

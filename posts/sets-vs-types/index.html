@@ -7,16 +7,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype | Rado&#39;s Radical Reflections</title>
 <meta name="title" content="From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype" />
-<meta name="description" content="From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype
-Preface: Why All Mathematicians Should Learn Lean
-LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don&rsquo;t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics." />
+<meta name="description" content="Preface: Why All Mathematicians Should Learn Lean
+LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don&rsquo;t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.
+This puts mathematicians at a fork. Either accept formal proofs as the verification layer, or reject all LLM-generated mathematics outright. The first path seems far more productive — but it requires mathematicians to read and write formalized math, at least well enough to verify that formal statements faithfully capture informal ones." />
 <meta name="keywords" content="" />
 
 
 <meta property="og:url" content="https://rkirov.github.io/posts/sets-vs-types/">
   <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
   <meta property="og:title" content="From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype">
-  <meta property="og:description" content="From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype Preface: Why All Mathematicians Should Learn Lean LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don’t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.">
+  <meta property="og:description" content="Preface: Why All Mathematicians Should Learn Lean LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don’t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.
+This puts mathematicians at a fork. Either accept formal proofs as the verification layer, or reject all LLM-generated mathematics outright. The first path seems far more productive — but it requires mathematicians to read and write formalized math, at least well enough to verify that formal statements faithfully capture informal ones.">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -28,17 +29,19 @@ LLMs can generate plausible-sounding proofs at unprecedented speed and scale. So
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype">
-  <meta name="twitter:description" content="From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype Preface: Why All Mathematicians Should Learn Lean LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don’t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.">
+  <meta name="twitter:description" content="Preface: Why All Mathematicians Should Learn Lean LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don’t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.
+This puts mathematicians at a fork. Either accept formal proofs as the verification layer, or reject all LLM-generated mathematics outright. The first path seems far more productive — but it requires mathematicians to read and write formalized math, at least well enough to verify that formal statements faithfully capture informal ones.">
       <meta name="twitter:site" content="@radokirov">
 
 
 
 
   <meta itemprop="name" content="From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype">
-  <meta itemprop="description" content="From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype Preface: Why All Mathematicians Should Learn Lean LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don’t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.">
+  <meta itemprop="description" content="Preface: Why All Mathematicians Should Learn Lean LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don’t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.
+This puts mathematicians at a fork. Either accept formal proofs as the verification layer, or reject all LLM-generated mathematics outright. The first path seems far more productive — but it requires mathematicians to read and write formalized math, at least well enough to verify that formal statements faithfully capture informal ones.">
   <meta itemprop="datePublished" content="2026-02-14T20:54:04-08:00">
   <meta itemprop="dateModified" content="2026-02-14T20:54:04-08:00">
-  <meta itemprop="wordCount" content="2391">
+  <meta itemprop="wordCount" content="2377">
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
   <style>
@@ -232,9 +235,17 @@ LLMs can generate plausible-sounding proofs at unprecedented speed and scale. So
 </header>
   <main>
 
+<h1>From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype</h1>
+<p>
+  <i>
+    <time datetime='2026-02-14' pubdate>
+      14 Feb, 2026
+    </time>
+  </i>
+</p>
+
 <content>
-  <h1 id="from-sets-in-math-to-types-in-lean-subtype-fin-set-finset-and-fintype">From Sets in Math to Types in Lean: Subtype, Fin, Set, Finset, and Fintype</h1>
-<h2 id="preface-why-all-mathematicians-should-learn-lean">Preface: Why All Mathematicians Should Learn Lean</h2>
+  <h2 id="preface-why-all-mathematicians-should-learn-lean">Preface: Why All Mathematicians Should Learn Lean</h2>
 <p>LLMs can generate plausible-sounding proofs at unprecedented speed and scale. Some are correct, many are not, and LLMs themselves cannot reliably tell the difference. Humans can — but they don&rsquo;t scale. Formal proof assistants like Lean do: they verify correctness mechanically and can serve as a backstop to the torrent of AI-generated mathematics.</p>
 <p>This puts mathematicians at a fork. Either accept formal proofs as the verification layer, or reject all LLM-generated mathematics outright. The first path seems far more productive — but it requires mathematicians to read and write formalized math, at least well enough to verify that formal statements faithfully capture informal ones.</p>
 <p>I&rsquo;ve been working through a Lean companion to Tao&rsquo;s <em>Analysis I</em>, and the experience has surfaced many small friction points — places where the gap between blackboard math and Lean&rsquo;s type theory causes real confusion. This post is one in a series meant to address those friction points with practical guidance.</p>

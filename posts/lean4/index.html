@@ -230,6 +230,15 @@
 </header>
   <main>
 
+<h1>Learning Lean: Part 4</h1>
+<p>
+  <i>
+    <time datetime='2025-09-20' pubdate>
+      20 Sep, 2025
+    </time>
+  </i>
+</p>
+
 <content>
   <p>It&rsquo;s been 3 months since my previous post about learning Lean <a href="/posts/lean3">part 3</a>, so it&rsquo;s time to write another one. I have mostly continued to work through Tao&rsquo;s Analysis book through his excellent <a href="https://github.com/teorth/analysis">companion</a> - which means all proofs from the paper textbook are fully formalized in Lean, while examples and exercises are stated in Lean but left with a <code>sorry</code> for me to fill in. Altogether the companions has close to 2000 sorries to fill-in.</p>
 <p>Since my previous post, I fully finished chapters 4 and 5, which amounted to constructing the integers, the rationals, and finally the reals (using equivalence classes of Cauchy sequences). I continue to enjoy the approach of building the concept from scratch (even though it is in mathlib), proving the main theorems, showing an equivalence with the mathlib construction, and in the next chapter switching to mathlib for the said concept and repeating the journey for a new one. It is a bit surprising how many theorems one needs to prove to get from the axiomatic foundations of sets and naturals (which were chapters 2 and 3 of the book) to having a fully rigorous formal construction of the reals and all the &ldquo;trivial&rdquo; properties that one expects to be true (like $x^n * x^m = x^{n + m}$). That said, it is very satisfying to see that everything is formally proved and logically follows from the constructions. I see it like the math version of building your OS kernel, except doing with a computer what mathematicians first did in the late 19th century.</p>
