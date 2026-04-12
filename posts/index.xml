@@ -8,8 +8,22 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Sun, 22 Mar 2026 17:25:24 -0700</lastBuildDate>
+    <lastBuildDate>Sun, 12 Apr 2026 09:25:28 -0700</lastBuildDate>
     <atom:link href="https://rkirov.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Four types of implicits in Lean</title>
+      <link>https://rkirov.github.io/posts/lean-implicits-raw/</link>
+      <pubDate>Sun, 12 Apr 2026 09:25:28 -0700</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/lean-implicits-raw/</guid>
+      <description>&lt;p&gt;Note: AI was used to edit this post. As a proof-of-human thought and input, I am also publishing the original&#xA;draft &lt;a href=&#34;https://rkirov.github.io/lean-implicits-raw.md&#34;&gt;here&lt;/a&gt; which was written fully before asking AI to workshop the post with me.&lt;/p&gt;&#xA;&lt;p&gt;This post is aimed at Lean language beginners that are interested in writing proofs in Lean, but&#xA;still feel lost when reading lean code.&lt;/p&gt;&#xA;&lt;p&gt;A very simplified mental model of Lean is that at the core there are two systems:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Types of implicits in Lean</title>
+      <link>https://rkirov.github.io/posts/lean-implicits/</link>
+      <pubDate>Sun, 12 Apr 2026 09:25:28 -0700</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/lean-implicits/</guid>
+      <description>&lt;p&gt;Note: AI was used to edit this post. As a proof-of-human thought and input, I am also publishing the &lt;a href=&#34;../lean-implicits-raw&#34;&gt;original&#xA;draft&lt;/a&gt; which was written fully before asking AI to edit the post with me.&lt;/p&gt;&#xA;&lt;p&gt;This post is aimed at Lean language beginners that are interested in writing proofs in Lean, but&#xA;still feel lost when reading Lean code.&lt;/p&gt;&#xA;&lt;p&gt;A very simplified mental model of Lean is that at the core there are two systems:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Code Proven to Work - The Math Way</title>
       <link>https://rkirov.github.io/posts/code-proof/</link>

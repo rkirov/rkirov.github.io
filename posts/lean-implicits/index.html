@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Types of implicits in Lean | Rado&#39;s Radical Reflections</title>
+<meta name="title" content="Types of implicits in Lean" />
+<meta name="description" content="Note: AI was used to edit this post. As a proof-of-human thought and input, I am also publishing the original
+draft which was written fully before asking AI to edit the post with me.
+This post is aimed at Lean language beginners that are interested in writing proofs in Lean, but
+still feel lost when reading Lean code.
+A very simplified mental model of Lean is that at the core there are two systems:" />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="https://rkirov.github.io/posts/lean-implicits/">
+  <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
+  <meta property="og:title" content="Types of implicits in Lean">
+  <meta property="og:description" content="Note: AI was used to edit this post. As a proof-of-human thought and input, I am also publishing the original draft which was written fully before asking AI to edit the post with me.
+This post is aimed at Lean language beginners that are interested in writing proofs in Lean, but still feel lost when reading Lean code.
+A very simplified mental model of Lean is that at the core there are two systems:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-04-12T09:25:28-07:00">
+    <meta property="article:modified_time" content="2026-04-12T09:25:28-07:00">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Types of implicits in Lean">
+  <meta name="twitter:description" content="Note: AI was used to edit this post. As a proof-of-human thought and input, I am also publishing the original draft which was written fully before asking AI to edit the post with me.
+This post is aimed at Lean language beginners that are interested in writing proofs in Lean, but still feel lost when reading Lean code.
+A very simplified mental model of Lean is that at the core there are two systems:">
+      <meta name="twitter:site" content="@radokirov">
+
+
+
+
+  <meta itemprop="name" content="Types of implicits in Lean">
+  <meta itemprop="description" content="Note: AI was used to edit this post. As a proof-of-human thought and input, I am also publishing the original draft which was written fully before asking AI to edit the post with me.
+This post is aimed at Lean language beginners that are interested in writing proofs in Lean, but still feel lost when reading Lean code.
+A very simplified mental model of Lean is that at the core there are two systems:">
+  <meta itemprop="datePublished" content="2026-04-12T09:25:28-07:00">
+  <meta itemprop="dateModified" content="2026-04-12T09:25:28-07:00">
+  <meta itemprop="wordCount" content="2403">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Rado&#39;s Radical Reflections</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/posts/">Blog</a>
+
+<a href="/about/">About</a>
+
+
+</nav>
+</header>
+  <main>
+
+<content>
+  <p>Note: AI was used to edit this post. As a proof-of-human thought and input, I am also publishing the <a href="../lean-implicits-raw">original
+draft</a> which was written fully before asking AI to edit the post with me.</p>
+<p>This post is aimed at Lean language beginners that are interested in writing proofs in Lean, but
+still feel lost when reading Lean code.</p>
+<p>A very simplified mental model of Lean is that at the core there are two systems:</p>
+<ol>
+<li>a very fancy functional programming language. The objects here are <code>Nat</code>, <code>List Nat</code>, functions of those, etc</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">def</span> n<span style="color:#f92672">:</span> Nat <span style="color:#f92672">:</span>= <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">def</span> l<span style="color:#f92672">:</span> List Nat <span style="color:#f92672">:</span>= <span style="color:#f92672">[</span><span style="color:#ae81ff">1</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">def</span> f <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>= n + <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>The type system is fancy in the way that types have their own types (and so on recursively). But for the purposes
+of this post we will just talk about the first layer <code>Type</code> (which is shorthand for <code>Type 0</code>)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span>#check Nat  <span style="color:#75715e">--  Nat : Type</span>
+</span></span><span style="display:flex;"><span>#check List Nat <span style="color:#75715e">-- List Nat : Type</span>
+</span></span><span style="display:flex;"><span>#check Nat -&gt; Nat <span style="color:#75715e">-- Nat → Nat : Type</span>
+</span></span></code></pre></div><p>Finally, parametric polymorphism is very pleasingly uniform with the rest of the system, meaning
+we can write generic parameters using exactly the same syntax for declaration or application
+(no &lt;&gt; or [] like Java or TypeScript.) So far this should be very familiar to people with exposure
+to typed FP.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">def</span> append <span style="color:#f92672">(</span>a<span style="color:#f92672">:</span> <span style="color:#66d9ef">Type</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>x <span style="color:#f92672">:</span> a<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>arr<span style="color:#f92672">:</span> List a<span style="color:#f92672">)</span> <span style="color:#f92672">:</span>= arr ++ <span style="color:#f92672">[</span>x<span style="color:#f92672">]</span>
+</span></span></code></pre></div><ol>
+<li>a system to state and manipulate logical propositions about the objects of 1). By convention these are
+named <code>h*</code> which stands for hypothesis.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">def</span> n <span style="color:#f92672">:</span>= <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">def</span> hnpos <span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">2</span> <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> decide
+</span></span></code></pre></div><p>Again this is very uniform - system 2) uses the same keywords for defining and declaring types as 1).
+Notably, the type of the proposition is allowed to depend on variables. In the example above, <code>&gt;</code>
+is a fancy way of writing <code>GT.gt n 2</code>. On the surface it is a generic type like <code>List a</code>. Note that <code>n</code>
+is a variable of type <code>Nat</code>, unlike <code>a</code> which was of type <code>Type</code>. Allowing such dependency is why
+we say Lean is based on <code>dependent types</code>.</p>
+<p>Finally, if the logical proposition is the type, the object
+of that type is a proof of the proposition, in this case <code>by decide</code>. Don&rsquo;t worry if you don&rsquo;t understand what it does, there
+are many ways to prove that 3 is bigger than 2. If the proposition was not true like <code>n &lt; 2</code> we can still state it,
+but will have a very hard time proving, i.e. filling out the other side of <code>def h: n &lt; 2 := sorry</code>.</p>
+<p>Any statement from first order logic can be written in Lean, <code>n &gt; 2</code>, <code>n = n</code>, <code>∀ n: Nat, ∃ m: Nat, m * 2 = n</code>, etc.
+Again since all types have their own type, it is natural to ask what&rsquo;s the type of those statements - it is <code>Prop</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span>#check n &gt; <span style="color:#ae81ff">2</span> <span style="color:#75715e">-- n &gt; 2 : Prop</span>
+</span></span><span style="display:flex;"><span>#check n = n <span style="color:#75715e">-- n = n : Prop</span>
+</span></span><span style="display:flex;"><span>#check ∀ n<span style="color:#f92672">:</span> Nat<span style="color:#f92672">,</span> ∃ m<span style="color:#f92672">:</span> Nat<span style="color:#f92672">,</span> m * <span style="color:#ae81ff">2</span> = n <span style="color:#75715e">-- ∀ (n : Nat), ∃ m, m * 2 = n : Prop</span>
+</span></span></code></pre></div><p>Props can be manipulated using the usual logical ways - creating conjunctions, disjunctions, implications, iff, etc.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">def</span> and_comm <span style="color:#f92672">(</span>p q<span style="color:#f92672">:</span> <span style="color:#66d9ef">Prop</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>h <span style="color:#f92672">:</span> p ∧ q<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> q ∧ p <span style="color:#f92672">:</span>= ⟨h.<span style="color:#ae81ff">2</span><span style="color:#f92672">,</span> h.<span style="color:#ae81ff">1</span>⟩
+</span></span></code></pre></div><p>You might see the ones above stated with <code>theorem</code> not <code>def</code>, which is more idiomatic and ergonomic, but the differences are minor.
+The keyword <code>example</code> is like an anonymous <code>theorem</code> and <code>lemma</code> is a synonym for <code>theorem</code>.</p>
+<p>So objects of <code>Type</code> and <code>Prop</code> are the core ingredients of any Lean proof. Usually, one passes some number of objects, props about
+those and tries to prove some new prop.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">example</span> <span style="color:#f92672">(</span>a b c n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>ha <span style="color:#f92672">:</span> a &gt; <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hb <span style="color:#f92672">:</span> b &gt; <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hc <span style="color:#f92672">:</span> c &gt; <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hn <span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">2</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> a ^ n + b ^ n ≠ c ^ n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span></code></pre></div><h2 id="ergonomics">Ergonomics</h2>
+<p>I hope the above exposition convinces you that there is a minimal core to Lean. I like to think of it
+as the explicit model. It is nice and simple but sadly has bad ergonomics once you start doing non-trivial
+proofs. The argument lists become long and unwieldy, so a lot of the complexity in Lean comes from adding
+different systems of implicits, inference, etc, to make it more ergonomic to write proofs in Lean.</p>
+<p>The situation reminds me of this quote from <a href="https://homepages.inf.ed.ac.uk/wadler/papers/marktoberdorf/baastad.pdf">Wadler&rsquo;s monad paper</a></p>
+<blockquote>
+<p>Pure functional languages have this advantage: all flow of data is made explicit.
+And this disadvantage: sometimes it is painfully explicit.</p></blockquote>
+<p>In the rest of the post I will go over some of the niceties Lean overlays on this simple model
+of types and props. I will use the following very contrived example. Suspend disbelief and
+imagine a much more complex proof as we will be doing various refactoring to make it &ldquo;simpler&rdquo;
+while it already is quite simple:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t1 <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hn<span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> n + <span style="color:#ae81ff">1</span> = <span style="color:#ae81ff">1</span> + n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t2 <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hn<span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> n + n = <span style="color:#ae81ff">2</span> * n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t3 <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hn<span style="color:#f92672">:</span> n + <span style="color:#ae81ff">1</span> = <span style="color:#ae81ff">1</span> + n<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> n + <span style="color:#ae81ff">2</span> = <span style="color:#ae81ff">2</span> + n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">theorem</span> t4 <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hn <span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> True <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h1 <span style="color:#f92672">:</span>= t1 n hn
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h2 <span style="color:#f92672">:</span>= t2 n hn
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h3 <span style="color:#f92672">:</span>= t3 n h1
+</span></span><span style="display:flex;"><span>  trivial
+</span></span></code></pre></div><h3 id="basic-inference">Basic inference</h3>
+<p>One can ask Lean to infer an expression by replacing it with <code>_</code>. Depending on the context it might
+succeed or fail. In the example below <code>n</code> can be inferred from the <code>h*</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">theorem</span> t4 <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hn <span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> True <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h1 <span style="color:#f92672">:</span>= t1 _ hn
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h2 <span style="color:#f92672">:</span>= t2 _ hn
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h3 <span style="color:#f92672">:</span>= t3 _ h1
+</span></span><span style="display:flex;"><span>  trivial
+</span></span></code></pre></div><h3 id="inferred-arguments-declaration">Inferred Arguments declaration</h3>
+<p>Instead of asking every user of the theorem <code>t1</code> to write <code>_</code> the author of the theorem can flip the script
+and declare the argument as always inferable, since they know that <code>n</code> is present in the dependent type of <code>hn</code>.</p>
+<p>To do that we use <code>{}</code> curly brackets.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t1 <span style="color:#f92672">{</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">}</span> <span style="color:#f92672">(</span>hn<span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> n + <span style="color:#ae81ff">1</span> = <span style="color:#ae81ff">1</span> + n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t2 <span style="color:#f92672">{</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">}</span> <span style="color:#f92672">(</span>hn<span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> n + n = <span style="color:#ae81ff">2</span> * n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t3 <span style="color:#f92672">{</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">}</span> <span style="color:#f92672">(</span>hn<span style="color:#f92672">:</span> n + <span style="color:#ae81ff">1</span> = <span style="color:#ae81ff">1</span> + n<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> n + <span style="color:#ae81ff">2</span> = <span style="color:#ae81ff">2</span> + n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">theorem</span> t4 <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hn <span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> True <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h1 <span style="color:#f92672">:</span>= t1 hn
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h2 <span style="color:#f92672">:</span>= t2 hn
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h3 <span style="color:#f92672">:</span>= t3 h1
+</span></span><span style="display:flex;"><span>  trivial
+</span></span></code></pre></div><p>If the inference gets in the way one can always explicitly overwrite it with <code>t1 (n := ...) ...</code>.</p>
+<h3 id="variable-keyword">Variable keyword</h3>
+<p>The next step for ergonomics is noticing that <code>{n : Nat}</code> repeats in every <code>t*</code> theorem. Lean
+allows you to declare a variable for all declarations in a namespace using the <code>variable</code> keyword.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">variable</span> <span style="color:#f92672">{</span>n<span style="color:#f92672">:</span> Nat<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t1 <span style="color:#f92672">(</span>hn<span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> n + <span style="color:#ae81ff">1</span> = <span style="color:#ae81ff">1</span> + n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t2 <span style="color:#f92672">(</span>hn<span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> n + n = <span style="color:#ae81ff">2</span> * n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t3 <span style="color:#f92672">(</span>hn<span style="color:#f92672">:</span> n + <span style="color:#ae81ff">1</span> = <span style="color:#ae81ff">1</span> + n<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> n + <span style="color:#ae81ff">2</span> = <span style="color:#ae81ff">2</span> + n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">theorem</span> t4 <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>hn <span style="color:#f92672">:</span> n &gt; <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> True <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h1 <span style="color:#f92672">:</span>= t1 hn
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h2 <span style="color:#f92672">:</span>= t2 hn
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h3 <span style="color:#f92672">:</span>= t3 h1
+</span></span><span style="display:flex;"><span>  trivial
+</span></span></code></pre></div><p>Note, <code>t4</code> can keep an explicit <code>n</code> argument or not, there is no clash with the <code>variable</code> declaration.</p>
+<h3 id="structure-packing">Structure packing</h3>
+<p>One might notice that we keep talking about the natural numbers bigger than zero, i.e. the positive
+natural numbers. Naturally one might want to create a new type to define those. This should be
+a very natural refactoring to software people.</p>
+<p>Lean has the <code>structure</code> keyword for that, and we can just combine the underlying <code>carrier</code> object
+in Nat with the prop that it is bigger than zero.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">structure</span> PNat <span style="color:#f92672">where</span>
+</span></span><span style="display:flex;"><span>  val <span style="color:#f92672">:</span> ℕ
+</span></span><span style="display:flex;"><span>  hpos <span style="color:#f92672">:</span> val &gt; <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">variable</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> PNat<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t1 <span style="color:#f92672">:</span> n.val + <span style="color:#ae81ff">1</span> = <span style="color:#ae81ff">1</span> + n.val <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t2 <span style="color:#f92672">:</span> n.val + n.val = <span style="color:#ae81ff">2</span> * n.val <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t3 <span style="color:#f92672">(</span>hn<span style="color:#f92672">:</span> n.val + <span style="color:#ae81ff">1</span> = <span style="color:#ae81ff">1</span> + n.val<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> n.val + <span style="color:#ae81ff">2</span> = <span style="color:#ae81ff">2</span> + n.val <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">theorem</span> t4 <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> PNat<span style="color:#f92672">):</span> True <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h1 <span style="color:#f92672">:</span>= t1 n
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h2 <span style="color:#f92672">:</span>= t2 n
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h3 <span style="color:#f92672">:</span>= t3 n h1
+</span></span><span style="display:flex;"><span>  trivial
+</span></span></code></pre></div><p>Note, that we had to make our variable explicit <code>(n : PNat)</code> instead of implicit <code>{n : PNat}</code> because we trimmed the
+argument list so much there is nothing to infer it from.</p>
+<h3 id="operator-overloading">Operator overloading</h3>
+<p>You might have noticed that the structure refactoring forced us to add <code>.val</code> everywhere, making it hardly look
+any cleaner. As it turns out Lean has a form of operator overloading that allows us to define <code>+</code> and <code>*</code> on <code>PNat</code> which
+does the <code>.val</code> under the hood.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">structure</span> PNat <span style="color:#f92672">where</span>
+</span></span><span style="display:flex;"><span>  val <span style="color:#f92672">:</span> ℕ
+</span></span><span style="display:flex;"><span>  hpos <span style="color:#f92672">:</span> val &gt; <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">instance</span> PNatAdd <span style="color:#f92672">:</span> Add PNat <span style="color:#f92672">where</span>
+</span></span><span style="display:flex;"><span>  add a b <span style="color:#f92672">:</span>= ⟨a.val + b.val<span style="color:#f92672">,</span> add_pos a.hpos b.hpos⟩
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">instance</span> PNatMul <span style="color:#f92672">:</span> Mul PNat <span style="color:#f92672">where</span>
+</span></span><span style="display:flex;"><span>  mul a b <span style="color:#f92672">:</span>= ⟨a.val * b.val<span style="color:#f92672">,</span> mul_pos a.hpos b.hpos⟩
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">def</span> one <span style="color:#f92672">:</span> PNat <span style="color:#f92672">:</span>= ⟨<span style="color:#ae81ff">1</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">by</span> norm_num⟩
+</span></span><span style="display:flex;"><span><span style="color:#f92672">def</span> two <span style="color:#f92672">:</span> PNat <span style="color:#f92672">:</span>= ⟨<span style="color:#ae81ff">2</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">by</span> norm_num⟩
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">variable</span> <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> PNat<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t1 <span style="color:#f92672">:</span> n + one = one + n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t2 <span style="color:#f92672">:</span> n + n = two * n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t3 <span style="color:#f92672">(</span>hn<span style="color:#f92672">:</span> n + one = one + n<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> n + two = two + n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">theorem</span> t4 <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> PNat<span style="color:#f92672">):</span> True <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h1 <span style="color:#f92672">:</span>= t1 n
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h2 <span style="color:#f92672">:</span>= t2 n
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h3 <span style="color:#f92672">:</span>= t3 n h1
+</span></span><span style="display:flex;"><span>  trivial
+</span></span></code></pre></div><p>So the actual proof got noticeably simpler, but we had to add more and more infrastructure, including proofs that
+adding or multiplying two positive numbers gives us back a positive number (turns out those were already in Lean).
+Finally, we had to move away from the literals <code>1</code> and <code>2</code> and create custom <code>PNat</code> vars <code>one</code> and <code>two</code>. Lean has
+overloading mechanisms to allow us to keep the literals, but that would take us too far.</p>
+<h3 id="custom-type-classes">Custom type classes</h3>
+<p>Finally, you might have noticed the operator overloading of <code>+</code> and <code>*</code> was done through the type class system, using
+the <code>instance</code> keyword. As it turns out that system is extremely flexible and open to customization.</p>
+<p>At its core it is another type of &ldquo;implicit&rdquo; resolution, where a piece of Lean data - type or prop is attached
+to some other one. One mental picture is of a big global hashmap. Then whenever we need that extra data, Lean can
+run a query to fetch what is needed. One can view it as a functional type of dependency injection (if coming from
+a more OOP world) and very similar to Haskell&rsquo;s type classes (if coming from FP, but note there are some differences).</p>
+<p>Let&rsquo;s use a custom type class to attach implicitly the proof that <code>n</code> is positive to a given <code>n</code>. First we extend
+the type class system by defining a new type class with the <code>class</code> keyword. The key to use in the search is a
+given <code>a : Nat</code> and the returned data is <code>pos : a &gt; 0</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">class</span> IsPos <span style="color:#f92672">(</span>a<span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">where</span>
+</span></span><span style="display:flex;"><span>  pos <span style="color:#f92672">:</span> a &gt; <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p>Now every time we need a positive proof for some <code>n</code> we pull it with <code>[IsPos n]</code> and every next function
+invocation that needs it also gets it inferred from the one present in the local context.
+Of course, we can use <code>[IsPos n]</code> with the variable keyword.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">variable</span> <span style="color:#f92672">(</span>n<span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>IsPos n<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t1 <span style="color:#f92672">:</span> n + <span style="color:#ae81ff">1</span> = <span style="color:#ae81ff">1</span> + n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t2 <span style="color:#f92672">:</span> n + n = <span style="color:#ae81ff">2</span> * n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span><span style="color:#f92672">lemma</span> t3 <span style="color:#f92672">(</span>hn<span style="color:#f92672">:</span> n + <span style="color:#ae81ff">1</span> = <span style="color:#ae81ff">1</span> + n<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> n + <span style="color:#ae81ff">2</span> = <span style="color:#ae81ff">2</span> + n <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> sorry
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">theorem</span> t4 <span style="color:#f92672">(</span>n <span style="color:#f92672">:</span> Nat<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>IsPos n<span style="color:#f92672">]:</span> True <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h1 <span style="color:#f92672">:</span>= t1 n
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h2 <span style="color:#f92672">:</span>= t2 n
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">have</span> h3 <span style="color:#f92672">:</span>= t3 n h1
+</span></span><span style="display:flex;"><span>  trivial
+</span></span></code></pre></div><p>Finally, while the <code>[IsPos n]</code> instance stays anonymous and it is implicitly passed between function calls, we
+can always give it a name in a local variable with <code>have hnpos : IsPos n := by infer_instance</code> and now
+we can treat <code>hnpos</code> as a structure and get <code>hnpos.pos</code> for the actual <code>Prop</code>.</p>
+<p>Also, if we want to explicitly put a proof that n is positive in the type system, we can do so like this.
+Note the instance can be named before the <code>:</code> — otherwise it gets an auto-generated name like <code>instIsPosA</code>.
+The name doesn&rsquo;t need to be used most of the time, but it is useful for debugging.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">def</span> a <span style="color:#f92672">:</span>= <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">instance</span> aIsPos <span style="color:#f92672">:</span> IsPos a <span style="color:#f92672">where</span>
+</span></span><span style="display:flex;"><span>  pos <span style="color:#f92672">:</span>= <span style="color:#66d9ef">by</span> decide
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">def</span> h <span style="color:#f92672">:</span>= t4 a
+</span></span></code></pre></div><p>When typeclass resolution fails, the error messages can be cryptic. You can ask Lean to show
+you exactly what it searched for and where it got stuck by enabling the synthesis trace. This is
+invaluable for debugging &ldquo;failed to synthesize instance&rdquo; errors.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lean" data-lang="lean"><span style="display:flex;"><span><span style="color:#f92672">set_option</span> trace.Meta.synthInstance true <span style="color:#66d9ef">in</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">def</span> h <span style="color:#f92672">:</span>= t4 a
+</span></span></code></pre></div><p>In summary, the type class system is another way of implicitly passing data around, but it has more
+of a global flavor - the <code>IsPos a</code> instance can be pulled out of the global hashmap with <code>[IsPos a]</code>
+whenever one has access to <code>a</code>.</p>
+<h2 id="learn-more">Learn more</h2>
+<p>Hopefully, this contrived example has given you a more concrete understanding of how the various
+language features exist to improve the ergonomics of writing complicated proofs, by showing you how they
+are used on a very minimal example (doesn&rsquo;t even need Mathlib). I encourage you to paste these
+examples in the <a href="https://live.lean-lang.org/">Lean playground</a> and try to extend or break them.</p>
+<p>You can learn a lot more about implicits, variable declarations and type classes
+by reading the <a href="https://leanprover.github.io/theorem_proving_in_lean4/">official guide</a> and the
+<a href="https://lean-lang.org/doc/reference/latest/">language reference</a>.</p>
+
+</content>
+<p>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+    
+</body>
+
+</html>
