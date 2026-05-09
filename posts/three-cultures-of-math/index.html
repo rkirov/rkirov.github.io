@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Three Cultures of Math | Rado&#39;s Radical Reflections</title>
+<meta name="title" content="Three Cultures of Math" />
+<meta name="description" content="Recent advances in general models — ChatGPT and Claude — have started to autonomously solve open mathematical problems. For example, Erdős 1196, Tim Gowers&rsquo;s PhD student problems, OpenAI&rsquo;s Ramsey numbers result. There are a lot of caveats — were the problems widely enough studied, could the solutions be coming from some past human result, etc. But if one zooms out and considers the progression of AI capabilities, it is hard not to conclude that more and more open problems will be solvable by autonomous AI." />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="https://rkirov.github.io/posts/three-cultures-of-math/">
+  <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
+  <meta property="og:title" content="Three Cultures of Math">
+  <meta property="og:description" content="Recent advances in general models — ChatGPT and Claude — have started to autonomously solve open mathematical problems. For example, Erdős 1196, Tim Gowers’s PhD student problems, OpenAI’s Ramsey numbers result. There are a lot of caveats — were the problems widely enough studied, could the solutions be coming from some past human result, etc. But if one zooms out and considers the progression of AI capabilities, it is hard not to conclude that more and more open problems will be solvable by autonomous AI.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-05-08T20:45:53-07:00">
+    <meta property="article:modified_time" content="2026-05-08T20:45:53-07:00">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Three Cultures of Math">
+  <meta name="twitter:description" content="Recent advances in general models — ChatGPT and Claude — have started to autonomously solve open mathematical problems. For example, Erdős 1196, Tim Gowers’s PhD student problems, OpenAI’s Ramsey numbers result. There are a lot of caveats — were the problems widely enough studied, could the solutions be coming from some past human result, etc. But if one zooms out and considers the progression of AI capabilities, it is hard not to conclude that more and more open problems will be solvable by autonomous AI.">
+      <meta name="twitter:site" content="@radokirov">
+
+
+
+
+  <meta itemprop="name" content="Three Cultures of Math">
+  <meta itemprop="description" content="Recent advances in general models — ChatGPT and Claude — have started to autonomously solve open mathematical problems. For example, Erdős 1196, Tim Gowers’s PhD student problems, OpenAI’s Ramsey numbers result. There are a lot of caveats — were the problems widely enough studied, could the solutions be coming from some past human result, etc. But if one zooms out and considers the progression of AI capabilities, it is hard not to conclude that more and more open problems will be solvable by autonomous AI.">
+  <meta itemprop="datePublished" content="2026-05-08T20:45:53-07:00">
+  <meta itemprop="dateModified" content="2026-05-08T20:45:53-07:00">
+  <meta itemprop="wordCount" content="1168">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Rado&#39;s Radical Reflections</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/posts/">Blog</a>
+
+<a href="/about/">About</a>
+
+
+</nav>
+</header>
+  <main>
+
+<h1>Three Cultures of Math</h1>
+<p>
+  <i>
+    <time datetime='2026-05-08' pubdate>
+      08 May, 2026
+    </time>
+  </i>
+</p>
+
+<content>
+  <p>Recent advances in general models — ChatGPT and Claude — have started to autonomously solve open mathematical problems. For example, <a href="https://terrytao.wordpress.com/2026/05/03/primitive-sets-and-von-mangoldt-chains-erdos-problem-1196-and-beyond/">Erdős 1196</a>, <a href="https://gowers.wordpress.com/2026/05/08/a-recent-experience-with-chatgpt-5-5-pro/">Tim Gowers&rsquo;s PhD student problems</a>, <a href="https://cdn.openai.com/pdf/6dc7175d-d9e7-4b8d-96b8-48fe5798cd5b/Ramsey.pdf">OpenAI&rsquo;s Ramsey numbers result</a>. There are a lot of caveats — were the problems widely enough studied, could the solutions be coming from some past human result, etc. But if one zooms out and considers the progression of AI capabilities, it is hard not to conclude that more and more open problems will be solvable by autonomous AI.</p>
+<p>It is going to be extremely disruptive to the practice of human mathematics. As disruptions often do, it is
+starting to expose internal rifts as it turns out &ldquo;what is mathematics and why we do it&rdquo; has subtly different answers to
+different practitioners. Moreover, the impending AI takeover will have vastly different effects on each of the possible
+answers. In this post, I will discuss three different &ldquo;cultures&rdquo; of mathematics and how differently they
+will react to the AI incursion.</p>
+<h2 id="math-as-a-sport">Math as a Sport</h2>
+<p>This is how math is portrayed in popular culture. Man against the problem, years of
+full dedication and struggle, the eventual triumph, the problem is solved, everyone celebrates (though only a handful even understand the problem, and a single-digit number follow the proof).
+Most of the rest of mathematical practice is preparation for this triumph, sharpening one&rsquo;s skills, finding new problems.</p>
+<p>Of course, there is far more to mathematics than this — theory-building, making conjectures, initiating &ldquo;programs&rdquo; of research
+by connecting different areas. But all of those are hard to explain to the general public. The ultimate brain sport, man
+against nature, is so much more palatable.</p>
+<p>Competition is a universal human motivator, and this version of math speaks to many practitioners. Solved problems
+get people&rsquo;s names attached to them, a small version of immortality as mathematics is as timeless as anything can be.</p>
+<p>This is the culture that is most directly endangered by AI. If math is a sport, using AI is the ultimate
+doping and there is no way to ban it. It is not crazy to foresee a future where all novel problem solutions come
+from AI. Humans still need to read and verify the solution, but that&rsquo;s not the position of an active player. Who wants to play such a sport?</p>
+<p>The damage isn&rsquo;t only internal — no one will want to watch that sport either. Math&rsquo;s public-facing brand runs on the same sport
+metaphor — Fields Medals are not given to better exposition or shorter proofs of known results. Hollywood (<em>Good Will Hunting</em>, <em>A Beautiful Mind</em>, the Fermat documentaries) tell stories of David-vs-Goliath, the brilliant mathematician tackling the big open problem. When AI eats the sport, the public won&rsquo;t see it as &ldquo;one culture of math is dying&rdquo; — they&rsquo;ll see math itself is dying.</p>
+<h2 id="math-as-an-economic-activity">Math as an economic activity</h2>
+<p>This is how math is sold to funding agencies. It is undeniable that mathematical research has downstream utility to many fields — engineering, the natural sciences, computer science and machine learning, cryptography, finance, statistics. But that utility can often be oversold, and the time from
+discovery to adoption can often be measured in years if not decades. With AI this is also at risk, as the
+consumers of math — engineers, quants, ML researchers — might turn straight to AI to directly invent and adapt novel mathematics. This is more hypothetical right now, but also the implications are more dire as most of math is funded through this narrative.</p>
+<p>Part of the risk is that these applications of mathematics can be exaggerated. For example, engineers are resourceful
+and often can come up with advanced solutions before mathematicians come later to explain why something that already
+works works. The mathematical eye can direct further innovation, but the gaps between theory and practice are often large. In this already tricky funding environment, AI gives funders a fresh reason to cut ties.</p>
+<p>This is the real existential risk, as math was never particularly well funded and greatly relies on a small number
+of external funding sources like the Simons Foundation.</p>
+<h2 id="math-as-an-aesthetic">Math as an aesthetic</h2>
+<p>This is the secret culture of mathematics, the one that makes it irresistible for some people (myself included).
+There are many other competitive sports and much better economic opportunities, but mathematics offers a unique aesthetic
+experience. Russell calls it &ldquo;a beauty cold and austere, like that of sculpture&rdquo;. Like all arts, one can do it in private, but also it can be very enjoyable to share that with other practitioners.</p>
+<p>I would like to believe this version of math is fully AI-proof, because it is by definition an essentially human activity. Like literature or comedy, it is not impossible to imagine a world where AI does it as well, but certainly extending the timelines way further. The problem: the thing that would save math from the AI disaster is often undervalued in math circles, and completely unintelligible to an outsider.</p>
+<p>For a hobbyist like me, this is the culture that keeps me coming back to math and I relate to the most. So recent
+AI advances don&rsquo;t bother me and if anything I am happy to have a more knowledgeable teacher that is available 24/7
+and doesn&rsquo;t roll their eyes when I ask a stupid question. Of course, it&rsquo;s easier to be optimistic when your career doesn&rsquo;t ride on it.</p>
+<h2 id="what-does-the-future-hold">What does the future hold</h2>
+<p>The math competition culture has no future. The application culture will probably also be absorbed more directly
+into engineering for efficiency reasons. These disruptions can deliver a one-two punch. First, the field loses a real cohort of practitioners — not everyone is doing math from love alone; for many, priority and a place in history is part of what makes the work worth doing. Then the funding model thins out further, leaving departments a shadow of their former selves.</p>
+<p>The only hope is for the aesthetic culture to come out of the closet of math department coffee rooms.
+Moreover, it has to quickly mature and build processes and institutions around it. I wish luck to folks
+(like Terence Tao and Timothy Gowers) leading that rebuilding and will be cheering them from the sideline.</p>
+<p>Note: David Bessis has a very similar post - <a href="https://davidbessis.substack.com/p/the-fall-of-the-theorem-economy">The Fall of the Theorem Economy</a>. I was already thinking in the same direction, but his post helped me clarify
+my own thinking, and finally put this down. If you agree with what you read above, go read his
+post which is both more eloquent and covers a lot more examples.</p>
+<p>Note on AI Usage: I wrote the draft of this post without AI for ~2 hours, and used AI to edit extensively. Given this
+is not a technical piece, I did not let Claude directly edit the post (other than typos and grammar), and instead conversed
+to analyze weak spots in the reasoning. Definitely took longer. Claude had good suggestions for weak
+spots in reasoning, but I rewrote the fixes myself to maintain my voice.</p>
+
+</content>
+<p>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+    
+</body>
+
+</html>

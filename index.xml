@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Sun, 12 Apr 2026 09:25:28 -0700</lastBuildDate>
+    <lastBuildDate>Fri, 08 May 2026 20:45:53 -0700</lastBuildDate>
     <atom:link href="https://rkirov.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Three Cultures of Math</title>
+      <link>https://rkirov.github.io/posts/three-cultures-of-math/</link>
+      <pubDate>Fri, 08 May 2026 20:45:53 -0700</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/three-cultures-of-math/</guid>
+      <description>&lt;p&gt;Recent advances in general models — ChatGPT and Claude — have started to autonomously solve open mathematical problems. For example, &lt;a href=&#34;https://terrytao.wordpress.com/2026/05/03/primitive-sets-and-von-mangoldt-chains-erdos-problem-1196-and-beyond/&#34;&gt;Erdős 1196&lt;/a&gt;, &lt;a href=&#34;https://gowers.wordpress.com/2026/05/08/a-recent-experience-with-chatgpt-5-5-pro/&#34;&gt;Tim Gowers&amp;rsquo;s PhD student problems&lt;/a&gt;, &lt;a href=&#34;https://cdn.openai.com/pdf/6dc7175d-d9e7-4b8d-96b8-48fe5798cd5b/Ramsey.pdf&#34;&gt;OpenAI&amp;rsquo;s Ramsey numbers result&lt;/a&gt;. There are a lot of caveats — were the problems widely enough studied, could the solutions be coming from some past human result, etc. But if one zooms out and considers the progression of AI capabilities, it is hard not to conclude that more and more open problems will be solvable by autonomous AI.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>From Painfully Explicit to Implicit in Lean</title>
       <link>https://rkirov.github.io/posts/lean-implicits/</link>
