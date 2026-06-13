@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Fri, 08 May 2026 20:45:53 -0700</lastBuildDate>
+    <lastBuildDate>Tue, 26 May 2026 19:11:14 -0700</lastBuildDate>
     <atom:link href="https://rkirov.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Virtuous intellectual chores - now optional</title>
+      <link>https://rkirov.github.io/posts/virtuous_chores/</link>
+      <pubDate>Tue, 26 May 2026 19:11:14 -0700</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/virtuous_chores/</guid>
+      <description>&lt;p&gt;AI Disclosure: Draft was written fully by a human. Heavy use of AI for editing. See &lt;code&gt;On AI usage&lt;/code&gt; for more.&lt;/p&gt;&#xA;&lt;p&gt;At this point no one doubts that AI is a tremendous capability boost for all human intellectual activities. There are interesting questions about what happens next - at what point this stops being a human operating an AI tool and becomes a fully autonomous AI. However, in this post I will stick to the current paradigm, and address critiques rising at the current level of capability.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Three Cultures of Math</title>
       <link>https://rkirov.github.io/posts/three-cultures-of-math/</link>
