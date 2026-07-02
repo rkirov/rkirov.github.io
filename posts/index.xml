@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>rkirov@gmail.com</managingEditor>
     <webMaster>rkirov@gmail.com</webMaster>
-    <lastBuildDate>Tue, 26 May 2026 19:11:14 -0700</lastBuildDate>
+    <lastBuildDate>Mon, 22 Jun 2026 15:14:33 -0700</lastBuildDate>
     <atom:link href="https://rkirov.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Jacobian Challenge Retro</title>
+      <link>https://rkirov.github.io/posts/jacobian/</link>
+      <pubDate>Mon, 22 Jun 2026 15:14:33 -0700</pubDate><author>rkirov@gmail.com</author>
+      <guid>https://rkirov.github.io/posts/jacobian/</guid>
+      <description>&lt;p&gt;In April 2026, Kevin Buzzard posed the following challenge for Lean AI autoformalization: can an AI&#xA;system both define the &lt;a href=&#34;https://en.wikipedia.org/wiki/Jacobian_variety&#34;&gt;Jacobian variety&lt;/a&gt; in Lean and prove basic properties about it? (&lt;a href=&#34;https://leanprover.zulipchat.com/#narrow/channel/583336-Autoformalization/topic/Jacobian.20challenge/near/586351299&#34;&gt;zulip thread&lt;/a&gt;, &lt;a href=&#34;https://gist.github.com/kbuzzard/778bc714030b3e974ab5f4038783d1a9&#34;&gt;github gist&lt;/a&gt;). The motivation behind this&#xA;challenge, as far as I can tell, was to point the autoformalization community at a specific problem chosen by Kevin, instead&#xA;of letting people choose freely from the vast number of known missing formalizations. Because few are incentivized to publish&#xA;their failed attempts, there were doubts about whether recent successes reflected general capability or just clever problem selection.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Virtuous intellectual chores - now optional</title>
       <link>https://rkirov.github.io/posts/virtuous_chores/</link>

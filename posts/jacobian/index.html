@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Jacobian Challenge Retro | Rado&#39;s Radical Reflections</title>
+<meta name="title" content="The Jacobian Challenge Retro" />
+<meta name="description" content="In April 2026, Kevin Buzzard posed the following challenge for Lean AI autoformalization: can an AI
+system both define the Jacobian variety in Lean and prove basic properties about it? (zulip thread, github gist). The motivation behind this
+challenge, as far as I can tell, was to point the autoformalization community at a specific problem chosen by Kevin, instead
+of letting people choose freely from the vast number of known missing formalizations. Because few are incentivized to publish
+their failed attempts, there were doubts about whether recent successes reflected general capability or just clever problem selection." />
+<meta name="keywords" content="" />
+
+
+<meta property="og:url" content="https://rkirov.github.io/posts/jacobian/">
+  <meta property="og:site_name" content="Rado&#39;s Radical Reflections">
+  <meta property="og:title" content="The Jacobian Challenge Retro">
+  <meta property="og:description" content="In April 2026, Kevin Buzzard posed the following challenge for Lean AI autoformalization: can an AI system both define the Jacobian variety in Lean and prove basic properties about it? (zulip thread, github gist). The motivation behind this challenge, as far as I can tell, was to point the autoformalization community at a specific problem chosen by Kevin, instead of letting people choose freely from the vast number of known missing formalizations. Because few are incentivized to publish their failed attempts, there were doubts about whether recent successes reflected general capability or just clever problem selection.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-06-22T15:14:33-07:00">
+    <meta property="article:modified_time" content="2026-06-22T15:14:33-07:00">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Jacobian Challenge Retro">
+  <meta name="twitter:description" content="In April 2026, Kevin Buzzard posed the following challenge for Lean AI autoformalization: can an AI system both define the Jacobian variety in Lean and prove basic properties about it? (zulip thread, github gist). The motivation behind this challenge, as far as I can tell, was to point the autoformalization community at a specific problem chosen by Kevin, instead of letting people choose freely from the vast number of known missing formalizations. Because few are incentivized to publish their failed attempts, there were doubts about whether recent successes reflected general capability or just clever problem selection.">
+      <meta name="twitter:site" content="@radokirov">
+
+
+
+
+  <meta itemprop="name" content="The Jacobian Challenge Retro">
+  <meta itemprop="description" content="In April 2026, Kevin Buzzard posed the following challenge for Lean AI autoformalization: can an AI system both define the Jacobian variety in Lean and prove basic properties about it? (zulip thread, github gist). The motivation behind this challenge, as far as I can tell, was to point the autoformalization community at a specific problem chosen by Kevin, instead of letting people choose freely from the vast number of known missing formalizations. Because few are incentivized to publish their failed attempts, there were doubts about whether recent successes reflected general capability or just clever problem selection.">
+  <meta itemprop="datePublished" content="2026-06-22T15:14:33-07:00">
+  <meta itemprop="dateModified" content="2026-06-22T15:14:33-07:00">
+  <meta itemprop="wordCount" content="1997">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  body {
+    font-family: Verdana, sans-serif;
+    margin: auto;
+    padding: 20px;
+    max-width: 720px;
+    text-align: left;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: #444;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: #222;
+  }
+
+  a {
+    color: #3273dc;
+     
+  }
+
+  .title {
+    text-decoration: none;
+    border: 0;
+  }
+
+  .title span {
+    font-weight: 400;
+  }
+
+  nav a {
+    margin-right: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+
+  content {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+  }
+
+  pre code {
+    color: #222;
+    display: block;
+    padding: 20px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  div.highlight pre {
+    background-color: initial;
+    color: initial;
+  }
+
+  div.highlight code {
+    background-color: unset;
+    color: unset;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: #222;
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .helptext {
+    color: #777;
+    font-size: small;
+  }
+
+  .errorlist {
+    color: #eba613;
+    font-size: small;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: #8b6fcb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    b {
+      color: #eee;
+    }
+
+    a {
+      color: #8cc2dd;
+    }
+
+    code {
+      background-color: #777;
+    }
+
+    pre code {
+      color: #ddd;
+    }
+
+    blockquote {
+      color: #ccc;
+    }
+
+    textarea,
+    input {
+      background-color: #252525;
+      color: #ddd;
+    }
+
+    .helptext {
+      color: #aaa;
+    }
+  }
+
+</style>
+
+</head>
+
+<body>
+  <header><a href="/" class="title">
+  <h2>Rado&#39;s Radical Reflections</h2>
+</a>
+<nav><a href="/">Home</a>
+
+<a href="/posts/">Blog</a>
+
+<a href="/about/">About</a>
+
+
+</nav>
+</header>
+  <main>
+
+<h1>The Jacobian Challenge Retro</h1>
+<p>
+  <i>
+    <time datetime='2026-06-22' pubdate>
+      22 Jun, 2026
+    </time>
+  </i>
+</p>
+
+<content>
+  <p>In April 2026, Kevin Buzzard posed the following challenge for Lean AI autoformalization: can an AI
+system both define the <a href="https://en.wikipedia.org/wiki/Jacobian_variety">Jacobian variety</a> in Lean and prove basic properties about it? (<a href="https://leanprover.zulipchat.com/#narrow/channel/583336-Autoformalization/topic/Jacobian.20challenge/near/586351299">zulip thread</a>, <a href="https://gist.github.com/kbuzzard/778bc714030b3e974ab5f4038783d1a9">github gist</a>). The motivation behind this
+challenge, as far as I can tell, was to point the autoformalization community at a specific problem chosen by Kevin, instead
+of letting people choose freely from the vast number of known missing formalizations. Because few are incentivized to publish
+their failed attempts, there were doubts about whether recent successes reflected general capability or just clever problem selection.</p>
+<p>The Jacobian challenge was definitions-focused rather than theorem-focused. On the surface it just asks for the definition of a classically known object — its namesake lived in the 1800s — but implicitly it requires building a lot of non-trivial differential geometry that mathlib is missing, down to the definition of the genus of a Riemann surface. Kevin also attached a number of &ldquo;universal&rdquo; properties that the Jacobian should satisfy (universal in quotes, because I don&rsquo;t think they&rsquo;re rigorously universal in the category theory sense). It was also a test of whether the theorems listed are good enough to pin the formalization down, possibly preventing AI from submitting mathematically wrong definitions.</p>
+<p>After about 22 working days of OSS collaboration using Claude Code, spread between April 19 and June 13, I produced a solution that was verified by <a href="https://lean-lang.org/eval/problems/jacobian_challenge_diffgeo/">lean-eval</a> on June 11 (the last two days were final cleanup). Subsequent discussion on zulip gives some signal from the experts that it is correct — i.e. that misformalization hasn&rsquo;t happened — but since I don&rsquo;t know the math, I can&rsquo;t fully review it and vouch for that myself. In any case, this is a small retro, an experience report on that autoformalization.</p>
+<p>To read more about the math see the <a href="https://rkirov.github.io/jacobian-claude/">Verso exposition</a> (per-unit pages linked from <a href="https://rkirov.github.io/jacobian-claude/units.html"><code>units.html</code></a>). The <a href="https://github.com/rkirov/jacobian-claude/blob/main/formalization.yaml"><code>formalization.yaml</code></a> records the <a href="https://github.com/mathlib-initiative/formalization.yaml">mathlib-initiative</a> self-reporting metadata for what was formalized.</p>
+<h2 id="the-facts">The facts</h2>
+<ul>
+<li>the final solution is ~45k loc (<code>cloc</code>, excluding comments), after cleanup.</li>
+<li>I used Claude Code exclusively, always on the newest model available, on the $100/month subscription plan. Per the commit trailers, that meant Opus 4.7 at the start (late April), Opus 4.8 for most of the project, and a brief stint on Fable 5 during the window it was available. Fable 5 made good progress, though it&rsquo;s hard to say it wasn&rsquo;t just working through an easier stretch of the proof at that point.</li>
+<li>I saturated the subscription&rsquo;s weekly usage limit for four weeks running, so a rough estimate for the AI cost would be ~$100.</li>
+<li>I spent a lot of time monitoring the models and giving them project-management advice. That made it a poor experiment for <em>autoformalization</em>, but an excellent one for observing how AI fails on a project of this size. Either way, I don&rsquo;t know differential geometry, so I certainly couldn&rsquo;t have helped with the math itself. I asked the agent to summarize my inputs in a <a href="https://github.com/rkirov/jacobian-claude/blob/main/human_input.md">human steering log</a>.</li>
+<li>the agents looked at and borrowed parts from other OSS attempts at this challenge: degree/fibre well-definedness infrastructure ported from <a href="https://github.com/Brsanch/jacobian-lean-challenge">Brsanch/jacobian-lean-challenge</a>, the rectangle Green&rsquo;s theorem for the planar Stokes atom from <a href="https://github.com/tangentstorm/JacobianChallenge">tangentstorm/JacobianChallenge</a>, and a contour-deformation development (later superseded) plus an axiom inventory from <a href="https://github.com/mrdouglasny/jacobian-challenge">mrdouglasny/jacobian-challenge</a>.</li>
+<li>probably there is no path to upstreaming this into mathlib — partly the lack of generality (the differential geometry machinery was built for curves only), partly mathlib&rsquo;s policy on AI usage.</li>
+</ul>
+<h2 id="what-worked-well">What worked well</h2>
+<ul>
+<li>I showed that off-the-shelf AI models and harnesses (Claude Code) are very capable at Lean formalization, even for definition-heavy tasks, given enough time and some basic project management help. I am confident that I overinfluenced the output, out of my own curiosity and desire to try things and poke around with the work. That said, I also feel that zero human involvement would have made the project slower, while hard to pinpoint exactly by how much.</li>
+<li>I learned a lot about Claude Code&rsquo;s newer features — auto-approval, /goal, /remote-control, subagents, and so on — but that space is evolving so fast it isn&rsquo;t worth writing up here; it&rsquo;d be outdated in a few weeks.</li>
+<li>the key to successful autoformalization of a known result is reminding AI to follow the existing informal proof. It does try to be overly creative, in order to find possibly shorter, cleverer proofs, but that&rsquo;s how it got to dead ends that Lean rejected or ended up with useless proofs (ones with unsatisfiable hypotheses). My most common comment was &ldquo;did you follow the literature&rdquo;.</li>
+<li>AI did not get stuck on details (it did work through some instance diamonds), nor did it try any crazy cheating exploit to close a goal. The only thing I caught it doing: early on, tasked with &ldquo;remove the sorries&rdquo;, it turned them into uninstantiated type-classes — which of course solves nothing. When I pointed it out, it saved &ldquo;avoid progress-theater&rdquo; to memory and didn&rsquo;t repeat it.</li>
+<li>some slight parallelization was possible (2-3 subagents), which was the limit of my subscription token cost and VM memory usage.</li>
+<li>I spent almost no time reading the code, but it&rsquo;s of average quality as far as I can tell. I&rsquo;ve only been writing Lean for a year, so I write only intermediate level Lean myself. At a glance I can&rsquo;t say the AI&rsquo;s code is worse than mine.</li>
+</ul>
+<h2 id="what-didnt-work-so-well">What didn&rsquo;t work so well</h2>
+<ul>
+<li>the final proof had a lot of garbage in it. I was focused on getting the thing working end-to-end, so I didn&rsquo;t ask it to clean up as it went. Once the proof passed lean-eval, I had it do a cleanup pass and we removed close to 20% of the code as dead code. There were a lot of warnings to work through too, but it did all cleanups in 2 days.</li>
+<li>while line-level Lean is fine, the AI is weak at the structural side: managing variables and namespaces, deciding where <code>set_option</code>s and comments belong, and small placement nits like putting a theorem before its first use site. It&rsquo;s also reluctant to do large refactors, tending to build a parallel structure alongside the old one rather than rework it in place — though I can&rsquo;t fully tell how much of that is an AI limitation versus just how painful Lean refactoring is.</li>
+<li>build times slowly got notably worse. The final solution takes 25 min on CI. I attempted to have AI improve build times for some time after the solution, with little initial success (but didn&rsquo;t give it a lot of time).</li>
+<li>the biggest source of wasted effort was the existence of multiple, vastly different proof paths for standard theorems in differential geometry. Again, I don&rsquo;t know this math, but from reading the AI&rsquo;s thought trace, a key result is proved in Forster and in Miranda (the two standard Riemann surfaces textbooks) using very different machinery. The agent would go down one path, hit a snag, pivot to the other, and leave a lot of half-finished machinery behind. It got worse with subagents: each starts with fresh context, so they flip-flopped a few times before settling on the final path.</li>
+<li>AI really starts to struggle to keep a consistent view of the project around the 10k loc mark, and it gets progressively worse toward 50k. Even with the 1M context window, things fill up, and I&rsquo;d watch the agent grep around just to rediscover what was already in the project. We tried to help with .md plans and comments, but those added context pollution of their own and then drifted out of sync with the actual code — so I&rsquo;m honestly unsure whether to recommend more of that or less. Since this is a general large-software problem, nothing specific to math or formalization, I&rsquo;m optimistic it&rsquo;ll improve soon.</li>
+<li>I used the <a href="https://github.com/oOo0oOo/lean-lsp-mcp">lean-lsp MCP</a> and the <a href="https://github.com/cameronfreer/lean4-skills">lean4 skills</a>, but can&rsquo;t tell whether they helped much or at all. Agents were haphazardly using MCP and sometimes switching to just shelling out to <code>lake build</code>.</li>
+</ul>
+<h3 id="which-path-to-pick-through-the-theory">Which path to pick through the theory</h3>
+<p>The core challenge in formalizing a classical subject — auto or not — is which path to pick through it. The churn above is the cost of getting that choice wrong, but the choice is also where the interesting work lives. Coincidentally I&rsquo;m also currently autoformalizing <a href="https://github.com/rkirov/linear-algebra-done-right-lean/tree/main/LinearAlgebraDoneRightLean">Axler&rsquo;s Linear Algebra</a>, and I&rsquo;m excited about how one might innovate in teaching hundred-year-old subjects by finding new — more pedagogical, or more aesthetically pleasing — proof paths through what is nominally the same classical material. Without AI and formalization these explorations were too laborious and unglamorous (AI lowers the cost of experimentation), and too easy to get wrong (Lean guarantees you never lean on a true-but-unproven claim). While I picked the most standard path and told the agent to not risk and explore non-standard, it could be and interesting outcome of formalization that shorter (or better in some way) paths through known theories are found.</p>
+<h2 id="which-direction-to-build">Which direction to build</h2>
+<p>Generally, formalizing a large project (auto or not) goes: 1) read the literature and make a plan (a <em>blueprint</em>, in Lean lingo); 2) follow the plan to write the Lean code. Inevitably the informal plan misses something, and step 2 forces iteration on step 1. Nothing new here — it&rsquo;s the same tension present in all software projects, well documented in <a href="https://en.wikipedia.org/wiki/The_Mythical_Man-Month"><em>The Mythical Man-Month</em></a>.</p>
+<p>Within step 2, you can build in one of two directions:</p>
+<ol>
+<li><strong>leaf-to-root</strong> — upstream-to-downstream, forward linking (lots of names for the same thing): start from the foundations and build up toward the target theorem.</li>
+<li><strong>root-to-leaf</strong> — downstream-to-upstream, back linking: start from the target and work down toward the foundations.</li>
+</ol>
+<p>Each direction has its own failure mode:</p>
+<ol>
+<li>you might prove theorems that, while correct, aren&rsquo;t needed — either trivially true, or mathematically meaningful but not on the path to the goal.</li>
+<li>you might prove theorems from hypotheses that turn out to be unprovable.</li>
+</ol>
+<p>In my experience the second failure mode is the more costly one, so I recommend building leaf-to-root. Better to have mathematically correct proofs that just aren&rsquo;t needed than proofs that follow from a false premise. It also parallelizes better. The catch is that it requires enough planning up front to actually see where the leaves are, while 2) can work &ldquo;just-in-time&rdquo;.</p>
+<h2 id="clean-room-rebuilds">Clean room rebuilds</h2>
+<p>Somewhat inspired by Gowers&rsquo;s discussion of &ldquo;Kolmogorov complexity modulo experts&rdquo; in the remarks on the AI solution to the <a href="https://cdn.openai.com/pdf/74c24085-19b0-4534-9c90-465b8e29ad73/unit-distance-remarks.pdf">unit distance problem</a>, I asked the agent to post-factum produce a short blueprint file. The goal is to map the now-known path to the solution, but removing all Lean details — just the math, references, and maybe some gotchas. This file is <a href="https://github.com/rkirov/jacobian-claude/blob/main/docs/clean_room_blueprint.md">clean_room_blueprint.md</a>. If interested, give it to your agent, instruct it not to use the internet, and see how long it takes to solve the challenge — now hopefully fully autonomously. In a sense this inverts Gowers&rsquo;s measure: he asks how short a hint sequence lets a human expert reconstruct a proof; here the hint is fixed and we measure how long an AI takes to rebuild the solution from it. I plan to test it with Fable 5 soon.</p>
+<h2 id="summary">Summary</h2>
+<p>Off-the-shelf AI tools like Claude Code are very capable at autoformalizing mathematics with no human mathematical guidance, but with significant project management. As a very rough estimate: about three weeks of a Claude Max subscription on current Opus 4.8 (1M context) buys roughly one <a href="https://en.wikipedia.org/wiki/Graduate_Texts_in_Mathematics">GTM</a> textbook&rsquo;s worth of formal Lean content, or ~30k loc of Lean. My estimation is that the Jacobian challenge was about 1.5 GTM textbooks and ~45k loc in the end. If you&rsquo;re interested in math formalization but blocked by missing foundational definitions or theorems, I&rsquo;d recommend looking into autoformalization. A lot of math missing from mathlib is in reach for AI tools with a bit of patience. If hobbyists like me on a personal subscription can quickly formalize whole textbooks, much more ambitious projects will be in scope very soon for  autoformalization with bigger resources - say Poicare&rsquo;s conjecture, FLT or classification of finite simple groups.</p>
+
+</content>
+<p>
+  
+</p>
+
+  </main>
+  <footer>Made with <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</footer>
+
+    
+</body>
+
+</html>
